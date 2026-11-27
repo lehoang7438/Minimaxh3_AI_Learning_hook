@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E286 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E288 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -83,6 +83,8 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E284** | ❌ **REVOKED — ĐỪNG ÁP DỤNG.** Em đọc máy móc câu "tay rút xuống" và chấp nhận bàn tay trắng nổi bật; user phủ nhận vì thiếu logic kinh dị. Xem E285. | verdict cũ, đã thu hồi | revoked |
 | **E285** | **Logic kinh dị > compliance chữ**: G02 là *hậu quả của G01*, không phải hoạt hình bàn tay biến mất. Cánh tay ma G01 vẫn nằm sâu dưới gầm 27A; chỉ một méo nhỏ màu xương bẩn + cuff xanh đen ló ra rồi rụt vào bóng tối, **không ai để ý**. View vẫn là view wide G02, lối đi đứng yên. Đây là dramatic irony: khán giả nhận ra, nhân vật thì không. | chỉnh `ACTION_OVERRIDE['G02']`, `BEAT_OVERRIDE['G02']`, `DURATION_OVERRIDE['G02']=6.0` | A |
 | **E286** | Triển khai E285 đúng 1 lớp prompt: bỏ "bone-white hand", thêm "dirty dark-bone forearm / near-black nails / wide near-black navy cuff", "thin sliver ... peeks a little ... eases back", "nobody turns, looks down or reacts"; beat dùng `{tc}` (00:00.000/00:02.900/00:05.700). Rebuild 4175 chars, lint 6 s PASS 0 warning. G02 v2 bị supersede, chờ GPU rảnh để render lại. | `rebuild_prompts.py` G02 action/beats + duration | A |
+| **E287** | G03 v3 gradient vẫn nặng hơn baseline dù đã bỏ "lights up" (so v2↔v3: nhẹ hơn nhưng cấu trúc không đổi). Trigger thật = dòng `Scene`: G02 phẳng có "plain solid oval windows + thin solid bone-white ceiling strip + flat muted-teal floor runner", G03 `seat_27a` chỉ có "dark night cabin + thin ceiling strip". Sửa 1 lớp prompt: `SCENE_OVERRIDE['G03']` mượn geometry/objects đã duyệt của G02 + điện thoại phẳng trên đùi. Rebuild 3591 chars, lint 6 s PASS. | `SCENE_OVERRIDE` (~117), `build_prompt` (~750) | A |
+| **E288** | Pre-fix G05 theo E275: cùng plate 27A nên kế thừa `SCENE_OVERRIDE` phẳng và bỏ hẳn "lit phone / glows / still lit" trước render đầu. Rebuild 4559 chars, lint 8 s PASS 0 warning (00:00/00:03.900/00:07.700). | `SCENE_OVERRIDE['G05']`, `ACTION/BEAT_OVERRIDE['G05']` | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -153,8 +155,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File art\comfy\ALH\learn_hook.ps1
 | **G01 v11** | PASS (E272, auto-chot theo E271). Cuff navy đọc ash-grey = **deviation đã chấp nhận** từ v10, không blocker. |
 | **G02 v2** | Bị user phủ nhận (E285): đúng chữ nhưng sai logic kinh dị — bàn tay trắng nổi bật, không phải cánh tay ma G01 ló nhẹ dưới gầm. E284 đã revoked. Prompt đã sửa (E286), 6 s, **chưa render lại — đợi GPU rảnh**. |
 | **G03 v2** | Held-state đúng nhưng gradient trần/sàn nặng hơn baseline G02 → tái phạm E273 (E283). Backup `video-v2-gradient-fail.mp4`. |
-| **G03 v3** | Seed 20263901, 6 s, đã render xong (`48004c76…`). **Đang QA held-state + so sánh flat với G02 baseline — chưa có verdict.** |
-| **G05 v1** | FAIL: eyebrows + mũi ở mid/last. Prompt đã face-flat (E280) + 8 s (E281). **Chưa queue — đợi G03 v3 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
+| **G03 v3** | Seed 20263901, 6 s: held-state sạch nhưng trần/sàn vẫn gradient nặng hơn G02 → E273 tái phạm lần 2; E287 sửa dòng Scene. |
+| **G03 v4** | Seed 20264101, 6 s, `SCENE_OVERRIDE` phẳng. **Đang render nền — chờ QA, chưa có verdict.** |
+| **G05** | v1 FAIL eyebrows + mũi (E280). Prompt đã face-flat + 8 s + `SCENE_OVERRIDE` + bỏ light wording (E288), lint PASS. **Chưa queue — đợi G03 v4 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
 
 ---
 
