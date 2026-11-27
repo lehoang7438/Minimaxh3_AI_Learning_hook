@@ -33,7 +33,7 @@ chứng, rồi tiếp tục cập nhật ALH thay vì học lại từ đầu.
 
 ## Trạng thái chốt tại lần sync này
 
-- ALH: **302 event** — 142 accepted / 100 archived / 55 proposed / 5 revoked.
+- ALH: **303 event** — 143 accepted / 100 archived / 55 proposed / 5 revoked.
 - **112 accepted chưa mirror** vào `SKILL.md` / `GLOBAL-RULES.md`; rule chỉ thành
   hard gate sau khi mirror và được user duyệt.
 - GPU: `qa_hold`. G01 v12 / G02 v3 / G05 đã lint PASS nhưng **chưa queue**.

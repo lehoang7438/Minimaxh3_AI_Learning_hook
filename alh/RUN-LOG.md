@@ -446,3 +446,4 @@ is recorded as E296 (elimination) / E297 (ranked hypothesis).
 - E300 proposed/rule_gap/h3-prompt-writing /part1/G03/prompt — reviewer proposals awaiting user decision, not applied
 - E301 accepted/rule_gap/freevideo-runner /part1/G01-G05/gate — FreeVideo install cleanup 27/11 - see CLEANUP-REPORT-FREEVIDEO-20261127.md
 - E302 accepted/rule_gap/global /part1/ALL/gate — user asked to push all shareable assets to the GitHub repo
+- E303 accepted/rule_gap/global /part1/ALL/gate — User asked to restructure the GitHub bundle so other AIs can learn from it and keep updating it

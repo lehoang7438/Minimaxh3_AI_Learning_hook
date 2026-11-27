@@ -1,12 +1,12 @@
-# ALH report - 2026-11-27 22:49
+# ALH report - 2026-11-27 22:51
 
-log: `art\comfy\ALH\learning-log.jsonl`  |  total 302 event(s)
+log: `art\comfy\ALH\learning-log.jsonl`  |  total 303 event(s)
 
 ### Status
 
 | value | n | share |
 |---|---|---|
-| accepted | 142 | 47% |
+| accepted | 143 | 47% |
 | archived | 100 | 33% |
 | proposed | 55 | 18% |
 | revoked | 5 | 2% |
@@ -15,7 +15,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 302 event(s)
 
 | value | n | share |
 |---|---|---|
-| rule_gap | 116 | 38% |
+| rule_gap | 117 | 39% |
 | asset_qa_fail | 51 | 17% |
 | verdict | 46 | 15% |
 | qa_fail | 42 | 14% |
@@ -28,12 +28,12 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 302 event(s)
 | value | n | share |
 |---|---|---|
 | asset-qa | 139 | 46% |
-| comfyui-runner | 59 | 20% |
+| comfyui-runner | 59 | 19% |
 | h3-prompt-writing | 52 | 17% |
 | h3-visual-qa | 34 | 11% |
 | character-bible | 9 | 3% |
 | h3-storyboard | 3 | 1% |
-| global | 2 | 1% |
+| global | 3 | 1% |
 | h3-prompt-linter | 2 | 1% |
 | bitnet | 1 | 0% |
 | freevideo-runner | 1 | 0% |
@@ -42,16 +42,16 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 302 event(s)
 
 | value | n | share |
 |---|---|---|
-| prompt | 53 | 18% |
+| prompt | 53 | 17% |
 | asset | 48 | 16% |
 | workflow | 42 | 14% |
 | magenta_key | 15 | 5% |
 | asset_qa | 12 | 4% |
 | context | 9 | 3% |
 | clip | 9 | 3% |
+| gate | 9 | 3% |
 | mitten_anatomy | 8 | 3% |
 | visual | 8 | 3% |
-| gate | 8 | 3% |
 | set_geometry | 6 | 2% |
 | palette_lock | 6 | 2% |
 | lighting_logic | 6 | 2% |
