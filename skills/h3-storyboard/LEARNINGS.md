@@ -2,18 +2,11 @@
 
 ## Auto-learned (ALH)
 
-_Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. **Only `Accepted rules` are active.** Detail/verdicts are in `RUN-LOG.md` and the log; a rule is mandatory only after it is mirrored into `SKILL.md` / `GLOBAL-RULES.md`._
-
-### Accepted rules (active)
-
-- [E243] ALH:E243 — User requires 3-4 passengers on the plane: Khang in 27A plus three generic passengers in rows 27/28 (part1 spec G02/G03, cabin-map 1+1 four seats).
-
-### Proposed (needs review, not a rule yet)
-
-- E110 proposed: rule_gap / G03 / visual (detail in RUN-LOG.md)
+_Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. Only rules moved into SKILL.md are mandatory._
 
 ### Archived (pre-v2 history, 1 events)
 
-_One line per layer. Evidence stays in `RUN-LOG.md` / the JSONL log._
+_Full text: `alh.py report --status archived`. One line per layer, latest kept._
 
-- anchor (1x, E001-E001): evidence in RUN-LOG.md
+- anchor (1x, E001-E001): Wide plate as first-frame for INS; cake melted. Use dedicated INS anchor.
+- [E110] **rule_gap / G03 / visual** - G03 carried blur 6 on the whole canvas, so the only blurred keyframe of part 1 was the toast: ink contour gone, foam turned into soft blobs, and the clip had the lowest motion of the part (1.85). Blur is for close POV/phone screens (G20/G25/G46) and must stay <=4; a flat storybook wide/insert shot keeps crisp edges.

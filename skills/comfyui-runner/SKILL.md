@@ -5,9 +5,6 @@ description: Queue a MiniMax H3 render through a local ComfyUI API-format workfl
 
 # ComfyUI Runner
 
-Sau khi sửa workflow / queue / decode node_errors → mở `WORKFLOW-INDEX.md` để nhắc bước kế + ALH.
-Không thay browser queue bằng tay; workflow phải ở API format và qua `preflight_workflow.py`.
-
 **Hợp đồng 3 tầng (24/11/2026):** Spec định nghĩa chuẩn → Skill ngăn lỗi trước GPU → QA đối
 chiếu đúng chuẩn đó. Không chờ tới lúc ra video mới soi (ca G02 tốn 3 lần render vì thiếu mốc).
 

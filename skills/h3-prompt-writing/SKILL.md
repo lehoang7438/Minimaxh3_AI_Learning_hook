@@ -6,10 +6,6 @@ compatibility: Portable to any agent that can read local files — no external A
 
 # H3 Prompt Writing
 
-Sau khi viết/xuất prompt → lint (`h3-prompt-linter`) rồi mở `WORKFLOW-INDEX.md` để nhắc bước kế + ALH.
-Style contract **không viết tay**: lấy từ `art/tests/h3_prompt_rules.py` (`video_style_contract()`), cùng nguồn
-với prompt asset, để ảnh và video không lệch số ghế/ánh sáng. Mọi prompt đi qua `validate_prompt()` trước khi ghi file.
-
 **Input contract — identity (24/11, bản nháp chờ batch xong):** lấy `appearance + wardrobe`
 **nguyên văn** từ `characters.json`, **cấm slug** `wardrobe_id` (`khang-navy-longsleeve`,
 `vy-crew-*`). **WS/MS** dùng `appearance + wardrobe` đầy đủ; **CU/INS** dùng `appearance +
@@ -23,8 +19,6 @@ gọn / rẽ ngôi — chỉ apply sau khi gen lại canon ref + asset-qa. `frie
 **Chỉ đưa field `prompt_visible`.** Các field `metadata_only` (fps, resolution, aspect_ratio,
 target_duration, trục 180°, relative_height so với shot trước, ghi chú Chain QA) phải nằm trong
 global context để script/QA đối chiếu, **không viết vào prompt** — prompt dài làm loãng trọng số.
-
-**ALH:E248 (user 27/11, G01 under-seat insert):** mở khung ngay trong khe tối dưới ghế, camera lia ngắn trong khe (không lia xuống từ tầm hành khách), một cánh tay bị cắn dạng **mitten liền**, mắt chấm không lông mày/mũi, một nguồn sáng lạnh mờ và 65–75 % near-black; contract riêng G01 không nhắc cabin rows/oval windows/ngồi.
 
 **Vị trí style contract (sửa sau ca G02):** cụm `Solid flat fills / palette / mitten / no gradient`
 phải đặt **ngay đầu field `integrated_multimodal_description`**, trước phần mô tả `[Shot 1]` —

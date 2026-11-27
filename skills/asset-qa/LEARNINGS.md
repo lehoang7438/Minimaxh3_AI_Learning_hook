@@ -2,115 +2,41 @@
 
 ## Reviewed / promoted 2026-11-25 (user approved)
 
-- **Rule key character ref (sửa lần 3, user duyệt; E132/E205 thay E082):** H3 Image không tạo nổi `#FF00FF` chính xác. Chấp nhận **near-magenta** sau downscale 1024²: corner `R≥240, G≤40, B≥200`, uniform ≥95 %, corner-sampled keyer cắt sạch. `B≥230` đã bị thu hồi (canon r1 có `B=222`; keyer `compose_keyframe.py` lấy median 4 góc rồi key theo khoảng cách màu, không dùng ngưỡng tuyệt đối). Cũng **không thêm số kênh RGB** vào prompt — dùng cụm near-magenta đã chứng minh rồi đổi seed. Key hồng chỉ là nền tạm của ref nhận diện; **nền thật trong video lấy từ set plate QA**. Raspberry cũ (`B≈100–137`) vẫn FAIL. Cụm `exact FF00FF` vẫn giữ trong prompt để kéo màu sát nhất.
+- **Rule key character ref (sửa lần 2, user duyệt A):** H3 Image không tạo nổi `#FF00FF` chính xác. Chấp nhận **near-magenta** sau downscale 1024²: corner `R≥240, G≤40, B≥230`, uniform ≥95 %, corner-sampled keyer cắt sạch. Key hồng chỉ là nền tạm của ref nhận diện; **nền thật trong video lấy từ set plate QA**. Raspberry cũ (`B≈100–137`) vẫn FAIL, phải gen lại. Cụm `exact FF00FF` vẫn giữ trong prompt để kéo màu sát nhất.
 - Khang r2-1024: corner `(255,8,246)`, color_count 112, band 0, nhân vật đúng bible → **PASS**, đăng ký canon. Các entry `warn_accepted ... magenta_key` cũ chỉ áp dụng lại với ngưỡng mới này.
 
 ## Auto-learned (ALH)
 
-_Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. **Only `Accepted rules` are active.** Detail/verdicts are in `RUN-LOG.md` and the log; a rule is mandatory only after it is mirrored into `SKILL.md` / `GLOBAL-RULES.md`._
+_Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. Only rules moved into SKILL.md are mandatory._
 
-### Accepted rules (active)
+### Archived (pre-v2 history, 74 events)
 
-- [E083] ALH:E083 — friend_beer regenerated ref key corner (255,8,128) after 1024 downscale - blue channel far too low, raspberry not near-magenta; FAIL under approved option A (needs B>=230).
-- [E126] ALH:E126 — User rejected Hy4 PASS_WITH_WARN for G01 hand: v3 script explicitly requires a hand that is blood-soaked OR bitten/chipped with blood spreading.
-- [E128] ALH:E128 — Promoted ALH E126 into mandatory asset-qa SKILL.md: Asset QA must compare each asset against the shot script/spec (script fidelity), not only the bible; PASS_WITH_WARN is not allowed when the script s…
-- [E132] ALH:E132 — Use the corner-sampled near-magenta key gate R>=240, G<=40, B>=200 on a uniform field with RGB-distance keying; do not require B>=230.  [supersedes E082]
-- [E133] ALH:E133 — Keep one unbroken paddle-mitten with a jagged bite notch, flat dark-red blood, a flat key and a low colour count on the G01 bite ref.
-- [E148] ALH:E148 — Final shot P3G12 had no bg in the v3 spec; SCENE_OVERRIDE had assigned the cabin_chaos set, so the live Ghe27AContext node would have opened the final black-card shot on a chaotic cabin plate (blood-s…
-- [E154] ALH:E154 — Full part1 QA of 18 shots: only G01/G05/G11/G12 PASS; 14 FAIL.
-- [E159] ALH:E159 — Shot POV-K không dùng canon ref toàn thân: H3 đổi góc sang 3P và vẽ trọn người.
-- [E164] ALH:E164 — seat27a-flat-r2 FAIL: mat nhan vat co vong cung nhamat thay vi 2 cham den, ban tay co duong tach ngon cai, manh hinh teal trong khong co anh sinh nhat.
-- [E165] ALH:E165 — lav-mirror-flat-r2 FAIL: mat trong guong drift sang toc bob va vai tran, khong phai Khang toc xu xao ao navy dai tay.
-- [E181] ALH:E181 — User 26/11 chot huong moi cho kho asset: nen duoc phep GIAU CHI TIET va CO CHIEU SAU, nhan vat van flat tuyet doi; lam lai toan bo kho 60 shot v3, xoa asset cu, ra soat lai prompt asset cho nhat quan,…
-- [E188] ALH:E188 — G01 take 2026112906 (camera-lock prompt sau E179/E180) render xong, 2 file video cung hash.
-- [E189] ALH:E189 — User da approve xoa toan bo asset cu.
-- [E190] ALH:E190 — Hy4 soi cabin-master-map-v4: dat 1 diem nhin, perspective 1 diem, 3 lop phang co che khuat, 0 nguoi/0 do ro, khong magenta/amber -> dung huong nen sau.
-- [E193] ALH:E193 — Khang turnaround v4 seed 20261126100: Hy4 mo ta 1/1 - 4 hinh dung 1 hang/cung scale/chan cung baseline, 1:6, 4 ngon thang+1 cai khong mong, khop vai/khuyu co.
-- [E194] ALH:E194 — User 26/11 quyet dinh: 9 sheet turnaround 4 huong LA anchor nhan dang/bố cuc, KHONG duoc dua lam <Picture N> trong video va KHONG qua keyer, nen co the dung nen bone-white phang; bo cong magenta R>=24…
-- [E199] ALH:E199 — Hy4 soi friend_girl_bob seed 43106 thay cham/dau tron nho o vai va khuỷu tay.
-- [E200] ALH:E200 — Plate G02 (red_allowed=false) ra 2 cham do nho gan diem hoi tu du du prompt co cum `red only for blood and recording dot` trong style contract.
-- [E202] ALH:E202 — Cabin variant plates generated without any <Picture N> drifted twice on G03 (third seat, amber dot) even with tight positive prompts.
-- [E205] ALH:E205 — Restore the proven vivid near-magenta wording and change the seed when a chroma-key ref fails; do not add numeric RGB channel minima.  [supersedes E082]
-- [E210] ALH:E210 — one aisle plate does not match the map.
-- [E212] ALH:E212 — Route-map 3D r1 is geometry authority for the whole G01-G04 rebuild, but Hy4 description-only QA found 1+1 seats per row and only one visible window wall instead of the cabin-map invariant 3+3 (A-B-C/…
-- [E213] ALH:E213 — Route-map 3D r2 still rendered 1+1 seats and one window wall after an explicit 3+3 prompt; the wrong-count r1 placed first in refs anchored the geometry.
-- [E215] ALH:E215 — Master horror r3 FAIL/PARTIAL.
-- [E252] ALH:E252 — User override past the 3/3 cap: regenerate the G01 mitten prop from corrected story-assets/cabin-map, Asset QA and register it, wire it as <Picture 1> in the one shared workflow, then render one fresh-seed G01 with the same visual review.
-- [E254] ALH:E254 — The G01 bitten mitten must look ragged and chewed: several uneven chunks torn from the edge with blood in the notches, while remaining one unbroken silhouette with a solid navy cuff and no inner finger lines.
-- [E256] ALH:E256 — The G01 reference is the 1024x1024 ragged mitten with a solid navy cuff, bright near-magenta key and one unbroken hand; wire it as <Picture 1>, keep the sleeve crop warning documented, and do not regenerate past asset retry 3.
-- [E257] ALH:E257 — G01 v5 is FAIL: the hand must look like a real hand with thumb, separate fingers and nails, not a one-piece mitten; this supersedes E248/E133 for G01 while E254 ragged bite and blood still apply.
-- [E258] ALH:E258 — Override-v6: G01 must use a realistic flat-2D hand with thumb, four separate fingers, short dark nails, a dirty darker ash-grey bone tone, ragged chewed bite and navy cuff; supersedes the v5 mitten for G01 only.
-- [E259] ALH:E259 — Override-v6 asset bloody-arm-real-r6-1024.png is PASS_WITH_WARN: real flat hand with thumb, four fingers, dark nails, darker split ash-grey/bone tone, navy cuff, ragged blood, bright key; use it as <Picture 1> and do not regenerate without a new override.
-- [E261] ALH:E261 — Override-v7: one final G01 pass must lock the cuff and nails as the darkest near-black navy fills, use uniformly dirty dark bone skin, remove the cool edge light that bleached them, and make the forearm snap up/down twice instead of only zooming.
-- [E262] ALH:E262 — Override-v7 prop bloody-arm-real-r7-1024.png is PASS_WITH_WARN: wide near-black navy cuff, real flat hand with thumb/four fingers/near-black nails, one uniform dirty dark bone tone, ragged bite; pale teal in a few notches and cropped cuff top are documented warnings. Use as <Picture 1>; no regeneration without a new override.
-- [E263] ALH:E263 — Override-v8: r8 prop must fill every chewed notch with flat dark-red blood only (no teal anywhere on the prop); the G01 camera and ambience are locked so the whole forearm rises twice with fingers spread, not camera pan or finger curl.
-- [E264] ALH:E264 — Override-v8 prop bloody-arm-real-r8-1024.png is PASS_WITH_WARN: all four chewed notches are dark-red only with measured teal_pct 0.0, wide navy cuff, near-black nails, uniform dirty dark bone tone; cuff top edge cropped. Use as <Picture 1>; no regeneration without a new override.
+_Full text: `alh.py report --status archived`. One line per layer, latest kept._
 
-### Accepted run records (evidence, not rules)
-
-- E192 verdict / G01 / asset (detail in RUN-LOG.md)
-- E195 verdict / G01 / asset (detail in RUN-LOG.md)
-- E216 verdict / G02 / asset (detail in RUN-LOG.md)
-- E217 verdict / G02 / asset (detail in RUN-LOG.md)
-- E218 verdict / G03 / asset (detail in RUN-LOG.md)
-- E219 verdict / G04 / asset (detail in RUN-LOG.md)
-- E239 verdict / G01-G04 / asset (detail in RUN-LOG.md)
-
-### Proposed (needs review, not a rule yet)
-
-- E103 proposed: asset_qa_fail / G29 / magenta_key (detail in RUN-LOG.md)
-- E109 proposed: rule_gap / G37 / prop_identity (detail in RUN-LOG.md)
-- E117 proposed: rule_gap / G01 / asset_qa (detail in RUN-LOG.md)
-- E127 proposed: asset_qa_fail / G01 / asset_qa (detail in RUN-LOG.md)
-- E130 proposed: asset_qa_fail / G01 / asset_qa (detail in RUN-LOG.md)
-- E151 proposed: rule_gap / FULL / asset (detail in RUN-LOG.md)
-- E221 proposed: rule_gap / G01-G04 / asset (detail in RUN-LOG.md)
-- E223 proposed: rule_gap / G01-G04 / asset (detail in RUN-LOG.md)
-- E224 proposed: asset_qa_fail / G01-G04 / asset (detail in RUN-LOG.md)
-- E226 proposed: asset_qa_fail / G01-G04 / asset (detail in RUN-LOG.md)
-- E227 proposed: asset_qa_fail / G01-G04 / asset (detail in RUN-LOG.md)
-- E229 proposed: asset_qa_fail / G01-G04 / asset (detail in RUN-LOG.md)
-- E231 proposed: rule_gap / G01-G04 / story (detail in RUN-LOG.md)
-- E233 proposed: rule_gap / G01-G04 / qa (detail in RUN-LOG.md)
-- E236 proposed: rule_gap / ALL / qa (detail in RUN-LOG.md)
-- E237 proposed: asset_qa_fail / G01-G04 / asset (detail in RUN-LOG.md)
-- E238 proposed: rule_gap / G01-G04 / qa (detail in RUN-LOG.md)
-- E241 proposed: verdict / G01-G04 / asset (detail in RUN-LOG.md)
-- E253 proposed: asset_qa_fail / G01 / asset (detail in RUN-LOG.md)
-- E255 proposed: asset_qa_fail / G01 / asset (detail in RUN-LOG.md)
-
-### Revoked (do NOT apply - kept for history)
-
-- E082 REVOKED - DO NOT APPLY: warn_accepted / freshstart-khang-magenta-r2-1024 / magenta_key (detail in RUN-LOG.md)
-- E204 REVOKED - DO NOT APPLY: verdict / G01 / asset (detail in RUN-LOG.md)
-
-### Archived (pre-v2 history, 76 events)
-
-_One line per layer. Evidence stays in `RUN-LOG.md` / the JSONL log._
-
-- aisle_geometry (1x, E022-E022): evidence in RUN-LOG.md
-- archived_hair_refs (1x, E003-E003): evidence in RUN-LOG.md
-- asset_qa (4x, E085-E123): evidence in RUN-LOG.md
-- asset_reuse (2x, E089-E090): evidence in RUN-LOG.md
-- assets (1x, E056-E056): evidence in RUN-LOG.md
-- cabin_geometry (2x, E036-E037): evidence in RUN-LOG.md
-- camera_composition (2x, E023-E024): evidence in RUN-LOG.md
-- camera_view (1x, E035-E035): evidence in RUN-LOG.md
-- character_bible (1x, E046-E046): evidence in RUN-LOG.md
-- composition_palette (1x, E015-E015): evidence in RUN-LOG.md
-- identity (1x, E032-E032): evidence in RUN-LOG.md
-- injury_logic (6x, E063-E071): evidence in RUN-LOG.md
-- lighting_logic (6x, E043-E059): evidence in RUN-LOG.md
-- magenta_key (11x, E006-E086): evidence in RUN-LOG.md
-- mitten_anatomy (8x, E004-E088): evidence in RUN-LOG.md
-- palette_lock (5x, E038-E042): evidence in RUN-LOG.md
-- panel_layout (1x, E020-E020): evidence in RUN-LOG.md
-- pose_logic (3x, E049-E051): evidence in RUN-LOG.md
-- prop_identity (2x, E028-E029): evidence in RUN-LOG.md
-- qa (1x, E235-E235): evidence in RUN-LOG.md
-- set_geometry (6x, E016-E027): evidence in RUN-LOG.md
-- sheet_contract (3x, E047-E057): evidence in RUN-LOG.md
-- style_eyes (4x, E034-E054): evidence in RUN-LOG.md
-- style_flatness (1x, E011-E011): evidence in RUN-LOG.md
-- style_geometry (1x, E018-E018): evidence in RUN-LOG.md
-- window_fill (1x, E021-E021): evidence in RUN-LOG.md
+- aisle_geometry (1x, E022-E022): Flat single-view plate with empty seats, teal floor path, cool ceiling and dark tail; quantized color_count 47. Shows many additional rows and a small far-end door, but far end still reads as rear/lavatory rather than cockpit; accept with chain review.
+- archived_hair_refs (1x, E003-E003): Two legacy hair refs were marked qa_passed in characters.json but their visible chroma field is raspberry rather than the prescribed flat magenta; re-verify refs before canon registration.
+- asset_qa (1x, E085-E085): User-approved mechanism: before generating a new asset, scan the existing asset store (art/assets/**) for a suitable already-QA-passed object and reuse it; only generate when nothing suitable exists. Applied to canon-ref key search: found exact FF00FF in khang-sheet2/B/C and pz-sheet, but no suitable near-magenta friend_beer ref, so the colour-reference retry remains justified.
+- asset_reuse (2x, E089-E090): Regenerated infected ref failed mitten QA (visible finger lines and toes) while the existing infected_canon had clean mittens and correct red-eyes/torn-navy identity. Reused existing QA-passed refs for infected, crew, friend_girl_bob, friend_girl_pony under asset-reuse rule with raspberry-key WARN. All G02 canon refs are now registered with a recorded QA verdict; no more ref generation.
+- assets (1x, E056-E056): g13-teeth: white teeth on flat red flash insert, correct for G16. p11-seat27a: dark night cabin, navy seat with bone trim, oval black windows, faint teal floor, heavy vignette; matches dim_night_flight tier and fixes 3 missing part3 backgrounds. Both QA pass.
+- cabin_geometry (2x, E036-E037): Chaos plate now eye-level with centered continuous aisle, oval windows both sides, far end=tail, debris and red stains resting on floor. Seat blocks read closer to 2+2 than contract 3+3, likely partly cropped by the perspective; accept with a chain-QA warning rather than another blind retry. Eye-level rule is now enforced in cabin-map.json.
+- camera_composition (2x, E023-E024): Low floor-level under-seat plate now matches the row31 camera: two seat legs, dark center gap, teal floor sliver at bottom, no people/shoe/hand, flat color_count 34. Very minimal, so the shoe (G13) and grip (G14) actor layers must carry the shot; verify in keyframe review.
+- camera_view (1x, E035-E035): Debris pile was rendered with a top-down/vertical viewpoint; the shot needs an eye-level horizontal view so debris reads as scattered on the cabin floor. Regenerate with an explicit front eye-level camera looking across the pile on the floor.
+- character_bible (1x, E046-E046): Added two new distinct birthday friends to characters.json (friend_girl_bob: short bob + teal blouse; friend_girl_pony: low ponytail + bone blouse/charcoal trousers), each with a fresh H3 Image canon ref at 1024^2, edge key 1.0, color_count 44/51, dot eyes and solid mitten hands; registered qa_passed=true. Standard fuchsia key warning applies.
+- composition_palette (1x, E015-E015): One continuous flat room, but plate has only two chairs instead of the mapped three and red icing on the cake violates the restaurant palette; retries must lock chair count/placement and use bone-white/flat-amber cake details with unlit candles.
+- identity (1x, E032-E032): khang-seated (eyes closed), khang-seated-awake and v3-khang-sing all keep messy hair/navy shirt/no-vest/dot eyes from canon; simple mitten hands. Standard fuchsia key accepted.
+- injury_logic (6x, E063-E071): Five injury assets regenerated from the approved r3 bite reference and r2 blood reference. Critical rule satisfied: no white teeth on the skin, only dark-red indentations/bruising/drips; blood is an asymmetric lopsided pool with drops, not a starburst. Mitten hands correct. Minor soft shading remains on the wound, accepted with warning at INS scale.
+- lighting_logic (6x, E043-E059): All 9 previously-bright plates regenerated in dim/horror tiers using the dark master as <Picture 1>. Measured mean luma now consistent across cabin sets (master 39.2, p1b/p2/lav/galley all in the same dark band), front galley keeps a small amber emergency fixture on a dark field. Resolves pass-2 set-wide lighting inconsistency.
+- magenta_key (13x, E006-E086): friend_beer r3 with Khang near-magenta colour reference: corner (255,10,228) after downscale, uniform, flat, colour count 166, no bands; identity correct (neat hair, navy tee, charcoal trousers, white sneakers, dot eyes, mittens). Blue channel 2 units under the 230 rule -> accepted PASS_WITH_WARN under user option A (a slight key deviation on a character ref is fine because the real video background comes from the QA set plate). Stop regenerating this ref.
+- mitten_anatomy (8x, E004-E088): friend_clap r2 still shows separated finger grooves despite Khang mitten reference; second anatomy FAIL. One last skill-prescribed attempt with the project asset v4-friend-clap.png (already QA-passed with solid mitten blocks) as Picture 2. If it fails again, stop generating and reuse the existing QA-passed friend-clap-sidepart-hair.png under the asset-reuse rule with a WARN.
+- palette_lock (5x, E038-E042): CCTV r3 keeps master form and object colors: seat near-target 32.0% vs master 34.6%, floor 60.8% vs master 60.0%. Wall bone reads 2.9% because the intended faint green-grey CCTV veil shifts cream toward sage; this is the declared veil, not an object recolor. Accept with warning; form match and prop continuity pass.
+- panel_layout (1x, E020-E020): The seat-27A plate came back as three stacked repeated horizontal panels, violating one scene/one viewpoint; it also duplicates window rows. Reject before context registration and retry with a single uninterrupted frame constraint.
+- pose_logic (3x, E049-E051): Resolved seated-awake by reusing QA-passed khang-seated.png (correct seated geometry, closed eyes) for G06/G10 body layers; G10 eye-open state comes from its dedicated INS anchor G10-face.png rather than a regenerated full-body sprite. Two H3 retries failed (standing pose + finger lines), so no further GPU burn.
+- prop_identity (2x, E028-E029): Debris-only pile of cups/bags/bottle now has no person, no fingers, flat navy/teal/bone fills and clean magenta key; accept. Consider adding a machine check that flags large bone-white face-like regions in inanimate props.
+- set_geometry (6x, E016-E027): p3 chaos (red floor stains, scattered debris on supports), p3b barricade (luggage carts blocking aisle, black shoe on floor), p12 CCTV (overhead green-grey tint, empty rows) are single flat views. Barricade luggage is multi-colored green/blue/brown/red, outside strict navy-bone-teal palette; accept as debris props with a continuity warning and keep red limited to stains/shoe. Colors 43/61/38.
+- sheet_contract (3x, E047-E057): 4 failed H3 sheets rebuilt deterministically from QA-passed single-pose assets at equal 1/N column width, feet on one baseline, nothing cropped. All 7 sheets now have correct figure count by eye (pz-sheet column-group detector reports 8 because the infected lunge pose has a gap between extended arms and torso; visual check confirms exactly 4 figures). Accept.
+- style_eyes (4x, E034-E054): G19 r3 has exactly two solid dot eyes, no rings/creases/heart, matching bible. Mirror frame sits slightly high and crops at the right edge, but the required face/eye content is correct and the shot is an INS face insert; accept with warning. All 7 INS anchors now pass.
+- style_flatness (1x, E011-E011): Wardrobe and mitten hands are correct; after 1024 downscale, subtle textured/grainy pattern remains in the magenta key field and the side-part is weak. Retry once with Khang flat canon as style/key-background reference while preserving charcoal outfit and swept side-part.
+- style_geometry (1x, E018-E018): Empty cabin and correct aisle orientation, but output uses gradients/shading and too many visible seat rows; map requires flat fills and only rows 27-30. Retry with stricter flat graphic contract and exactly four rows.
+- window_fill (1x, E021-E021): Single uninterrupted row-27 set plate with one window seat 27A beside exactly one adjacent seat; no duplicated bands or prop. Quantized color_count 66. Slight blue variation is confined to the city view through the window; accept with a style warning and review in the chain.
+- [E103] **asset_qa_fail / G29 / magenta_key** - key_magenta despill was mean(r+b)/2 - g, which is positive for navy too (blue>green) so it quietly shifted every navy garment, and at 0.55 it left a 1-2 px raspberry ring on 4 assets. Measured on final keyframes: khang-sheetB (G22/G26/G27/G29/G30/G31) 0.08-0.14 percent magenta pixels, khang-sheetC (G38-G45) 0.14-0.23, khang-sheet2 (G18) 0.13, pz-sheet (G29) 0.25. Fixed to min(r-g, b-g) at 0.9: G22 0.140 -> 0.001, G26 0.083 -> 0.000, G29 0.249 -> 0.001.
+- [E109] **rule_gap / G37 / prop_identity** - bite-arm-navy.png is a severed forearm: it ends in a bare rounded stump (no mitten) and its wound is a multi-tone gradient blot with drips, both against BODY-LITE/flat-fill. Used at h 0.5 in G37 the stump reads as a white club; at h 1.15 the arm cuts the frame. Added layer.crop (fractions of the sprite) so a shot can frame only the wound, and logged that a proper flat forearm-with-mitten asset is still owed to H3 Image.

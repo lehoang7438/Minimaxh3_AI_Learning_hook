@@ -7,65 +7,25 @@
 
 ## Auto-learned (ALH)
 
-_Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. **Only `Accepted rules` are active.** Detail/verdicts are in `RUN-LOG.md` and the log; a rule is mandatory only after it is mirrored into `SKILL.md` / `GLOBAL-RULES.md`._
+_Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. Only rules moved into SKILL.md are mandatory._
 
-### Accepted rules (active)
+### Accepted (applied and verified - read as a rule)
 
-- [E092] ALH:E092 — G02 first QA by eye FAIL: frame 1 (t=0.2s) is a 72.6% pink character sheet of Khang, not the restaurant plate, despite plate being ref slot 1 and first_frame anchored to the QA plate.
-- [E095] ALH:E095 — G02 attempt 3 layer=anchor/reference: dropped keyed character sheets from Media panel for G02 (MEDIA_CHAR_DROP) so only the QA restaurant plate is a picture; cast identity remains in prompt wardrobe t…
-- [E096] ALH:E096 — G02 attempt 3: first frame now correct restaurant plate (pink sheet fixed by MEDIA_CHAR_DROP).
-- [E097] ALH:E097 — ALH v1 lost lessons in two ways: completion_handler built its qa-notes path by concatenating 'part' + 'part1' (out\partpart1-t2v, which never existed, so every session summary reported 0 verdicts) and…
-- [E100] ALH:E100 — Context node (the UI prompt path) still prepended the 'Set continuity/Objects/Light/wardrobe' blob and re-appended the context contract, so the style contract sat ~1900 chars into field 1 - the same b…
-- [E101] ALH:E101 — upscale_factor '2' is the engine's no-upscale sentinel: UPSCALE_OPTIONS=('2','1.5','1.2') and upscale_option() returns {} for '2' (comfy_nodes.py:94), so output stays at the graph canvas (704x1280), n…
-- [E102] ALH:E102 — UI workflow review: the context report floated unconnected, context_path was an absolute Windows path, SaveVideo prefix was identical for every shot, and seed was randomize.
-- [E150] ALH:E150 — User rule 26/11: never batch-render.
-- [E152] ALH:E152 — Hy4 QA of the batch-rendered part1 clips (G04-G07) found 3 FAILs of 4: G04 script PARTIAL (flat phone-screen INS rendered as a wide three-woman restaurant scene), G06 hard palette FAIL (old khang-face…
-- [E155] ALH:E155 — When a shot plate is replaced after QA fail, run_master seed must change too: ComfyUI caches the Ghe27AContext node by the context filename, so reusing the old seed serves the rejected plate even when…
-- [E157] ALH:E157 — Node Ghe27AContext chỉ đọc shot.bg cho Picture1 + first frame.
-- [E160] ALH:E160 — FAIL của clip cũ trước khi sửa source không chứng minh source mới sai.
-- [E163] ALH:E163 — Rebuild global context TRUOC roi moi rebuild prompts.
-- [E166] ALH:E166 — run_master.ps1 -DryRun van goi mix_h3_audio va assemble part1-t2v-final.mp4 tu clip cu.
-- [E167] ALH:E167 — Background render G04 bi SIGTERM do goi shell background voi timeout 1000ms.
-- [E174] ALH:E174 — Mo hinh Flow cho G01-G04: mot bo ref co dinh gom background plate QA-passed + character/body/voice/avatar (Ghe27AContext assets/first/voice) + prop; moi hanh dong = 1 clip, G01/G02/G03/G04 moi shot co…
-- [E175] ALH:E175 — Khong noi context output 5/6/7 seconds/width/height vao FreeVideoGenerate: engine custom validation yeu cau seconds la widget literal; lien ket context [1,5] khien validate_inputs bao Duration must be…
-- [E177] ALH:E177 — Khi user phan nan prompt/video tren ComfyUI UI khong dung, khong ket luan ngay tu file prompt tren dia: UI widget co the giu prompt cua job cu.
-- [E180] ALH:E180 — Phat hien them 1 lop camera bi xung dot: feed_h3_context.py first_line luon chen Only the supplied subject moves; the camera only drifts or pushes in vao MOI enriched prompt, mau thuuan truc tiep voi …
-- [E185] ALH:E185 — ref asset moi phai di dung vao workflow de H3 gen chuan.
-- [E203] ALH:E203 — Per-shot PLATE_OVERRIDE in build_global_context only set shot.bg; the custom node gates first-frame injection on scene.qa_passed, so G01/G03 showed plate=<file> but first_from_plate=False and fell bac…
-- [E244] ALH:E244 — A chain4_run.py driver can be SIGTERM-ed by a 120s shell timeout AFTER queueing: the ComfyUI prompt keeps running server-side (queue_running=1, history empty).
-- [E249] ALH:E249 — ALH v2 log + v3 rule rendering is the single source of truth; alh_core.py is telemetry-only, the hook never writes LEARNINGS.md, sync owns every auto section, and status changes are audited.
+- [E092] qa_fail / G02 / visual - G02 first QA by eye FAIL: frame 1 (t=0.2s) is a 72.6% pink character sheet of Khang, not the restaurant plate, despite plate being ref slot 1 and first_frame anchored to the QA plate. Machine gate all PASS (context/prompt/workflow/video 12.25s). Mid frame is correct restaurant scene with 3 friends, cake, 4 glasses, 2 teal bars, no plants/red. Root cause is the H3 generate node opening on the character reference picture instead of the supplied first frame; fix at workflow/anchor layer: investigate first-frame wiring or re-run with plate-only first shot, not prompt patch. ALH: do not batch until G02 sample passes eye QA.
+- [E095] rule_gap / G02 / anchor - G02 attempt 3 layer=anchor/reference: dropped keyed character sheets from Media panel for G02 (MEDIA_CHAR_DROP) so only the QA restaurant plate is a picture; cast identity remains in prompt wardrobe text. Server restarted with node change loaded; doctor GO, preflight PASS. Rationale: two attempts with 5-6 keyed pictures opened on a pink sheet despite plate being ref slot 1.
+- [E096] qa_fail / G02 / prompt - G02 attempt 3: first frame now correct restaurant plate (pink sheet fixed by MEDIA_CHAR_DROP). Eye QA still FAIL at mid: large amber spotlight beam from ceiling plus gradient on wall, violating flat-fill style and the shots NO beam light clause. Likely the dense negative light clause primes the beam; root cause prompt layer. Fix by replacing the negative light clause with a short positive flat-light statement, then re-render G02 only. Also note 5 cast visible in mid with some standing; acceptable to recheck after style fix.
+- [E097] rule_gap / alh-v2 / review - ALH v1 lost lessons in two ways: completion_handler built its qa-notes path by concatenating 'part' + 'part1' (out\partpart1-t2v, which never existed, so every session summary reported 0 verdicts) and learn_hook took its project root from Get-Location, so a call from any other directory wrote a phantom log there and still printed success. v2 resolves the root from PSScriptRoot, verifies the write and exits non-zero on failure.
+- [E100] rule_gap / G01 / workflow - Context node (the UI prompt path) still prepended the 'Set continuity/Objects/Light/wardrobe' blob and re-appended the context contract, so the style contract sat ~1900 chars into field 1 - the same bug already fixed in feed_h3_context. It now slices the rebuilt field at [Shot 1] (the old 'no watermark.' marker missed once allow_text rewrote the contract) and inserts only the first-frame and <Audio 1> lines. Verified 1 contract at char 75 for G01/G02/G26/G35, <Audio 1> only when audio is actually wired.
+- [E101] rule_gap / G01 / model - upscale_factor '2' is the engine's no-upscale sentinel: UPSCALE_OPTIONS=('2','1.5','1.2') and upscale_option() returns {} for '2' (comfy_nodes.py:94), so output stays at the graph canvas (704x1280), not 1408x2560. first_frame_reference/voice_reference only reach the request when continue_from is set (comfy_nodes.py:413-414), so False in the graph is correct - the first frame and voice travel through FreeVideoMedia.
+- [E102] rule_gap / UI / workflow - UI workflow review: the context report floated unconnected, context_path was an absolute Windows path, SaveVideo prefix was identical for every shot, and seed was randomize. Both reports (context + FreeVideoGenerate 'Report JSON') are now wired to PreviewAny; prefix is ghe27a/<shot>_h3; seed fixed; the node re-points itself to the part that owns shot_id and says so in the report; build_single_node_ui.py --shot bakes prompt+seconds+prefix and keeps the absolute context path until the 25/11 node loads, then writes it relative.
 
-### Accepted run records (evidence, not rules)
+### Archived (pre-v2 history, 12 events)
 
-- E131 verdict / FULL / workflow (detail in RUN-LOG.md)
-- E137 verdict / FULL / audio (detail in RUN-LOG.md)
-- E141 verdict / G01 / workflow (detail in RUN-LOG.md)
-- E142 verdict / G01 / workflow (detail in RUN-LOG.md)
-- E145 verdict / FULL / context (detail in RUN-LOG.md)
-- E147 verdict / FULL / workflow (detail in RUN-LOG.md)
-- E242 verdict / CHAIN4 / workflow (detail in RUN-LOG.md)
+_Full text: `alh.py report --status archived`. One line per layer, latest kept._
 
-### Proposed (needs review, not a rule yet)
-
-- E104 proposed: qa_fail / G23 / prop_identity (detail in RUN-LOG.md)
-- E112 proposed: rule_gap / G02 / anchor (detail in RUN-LOG.md)
-- E114 proposed: rule_gap / G02 / workflow (detail in RUN-LOG.md)
-- E116 proposed: qa_fail / G02 / ref/style (detail in RUN-LOG.md)
-- E173 proposed: qa_fail / G01 / workflow (detail in RUN-LOG.md)
-- E186 proposed: qa_fail / G01 / context (detail in RUN-LOG.md)
-- E187 proposed: qa_fail / G01 / visual (detail in RUN-LOG.md)
-- E207 proposed: qa_fail / G03 / ref/style (detail in RUN-LOG.md)
-- E222 proposed: verdict / G01-G04 / workflow (detail in RUN-LOG.md)
-- E225 proposed: rule_gap / G01-G04 / workflow (detail in RUN-LOG.md)
-- E240 proposed: rule_gap / S01 / workflow (detail in RUN-LOG.md)
-- E282 proposed: rule_gap / G03 / workflow (detail in RUN-LOG.md)
-
-### Archived (pre-v2 history, 17 events)
-
-_One line per layer. Evidence stays in `RUN-LOG.md` / the JSONL log._
-
-- anchor (1x, E143-E143): evidence in RUN-LOG.md
-- audio (1x, E140-E140): evidence in RUN-LOG.md
-- job_json (1x, E005-E005): evidence in RUN-LOG.md
-- ref/style (2x, E079-E121): evidence in RUN-LOG.md
-- workflow (12x, E002-E125): evidence in RUN-LOG.md
+- job_json (1x, E005-E005): gen_image.py --jobs expects a JSON array; PowerShell serializes a single-item array as an object and Set-Content UTF-8 adds a BOM. Normalize to a one-row JSON array encoded as UTF-8 without BOM before calling the generator.
+- ref/style (1x, E079-E079): see diagnose output; layer(s) failed machine gate
+- workflow (10x, E002-E091): After H3 Image ref regeneration, restarting the FreeVideo app no longer spawns the ComfyUI server: app window appears but no main.py process, no comfy-runs record, doctor NO-GO (no server on 8188). Multiple app relaunches (exe and Start Menu shortcut) did not help; no stray generation process and no lock held. Need user to open/interact with the FreeVideo desktop window so the app starts its engine. Video render is blocked at this point; all refs/prompts are QA-passed and ready.
+- [E104] **qa_fail / G23 / prop_identity** - props-chaos/props-galley/props-blood are ONE object per file, but the spec declared count 2-3, so split_pose cut them into equal columns and each fragment was scaled to layer height. G23 showed a giant white cup rim plus a cart upside down in mid-air, G36/G42 a vertical white bar in the aisle, G47 a brown swirl. Rule: count is only for multi-figure sheets; a single prop is count 1, pose 0.
+- [E112] **rule_gap / G02 / anchor** - G02 attempt 5 layer=anchor/reference: restored the 5 character refs to the Media panel (MEDIA_CHAR_DROP emptied) because attempt 3-4 with plate-only media produced generic backs and dropped friend_beer/friend_clap. The improved feed/rebuild now keeps plate as ref slot 1, one style contract at field head, English motion beats and named cast, so the earlier pink-frame trigger is addressed without suppressing cast identity. Re-render G02 only.
+- [E114] **rule_gap / G02 / workflow** - G02 attempt 6 returned a pixel-identical clip to attempt 5 despite removing all character refs from context and Media. Cause: same prompt text + same seed -> engine cache hit, so the media/context change never reached generation. Rule proposed: whenever only context/media/anchor changes, vary the seed (or force regenerate) or QA is meaningless. Fix workflow seed for G02 and re-render.

@@ -5,10 +5,6 @@ description: Find visual and continuity errors in storyboard keyframes before re
 
 # H3 Visual QA
 
-Sau khi QA xong (kể cả PASS) → mở `WORKFLOW-INDEX.md` để nhắc bước kế + ALH.
-Hy4 chỉ mô tả bằng tiếng Việt và kết thúc `Đã nhìn 1/1 ảnh`; agent tự chốt verdict,
-`visible_check: seen` + `script_fidelity: MET` mới được PASS. Cấm `PASS_WITH_WARN`.
-
 Two passes. Never skip pass 1: it is cheap and catches the boring mistakes. Pass 2 catches the ones a script cannot see.
 
 **Chain QA (Tầng 3 — nhịp thứ 2, sau Per-shot).** Mỗi cụm 3–5 shot cùng chain: xem liền mạch với
@@ -16,6 +12,10 @@ Two passes. Never skip pass 1: it is cheap and catches the boring mistakes. Pass
 nhân vật (`relative_height`), **trôi màu/ánh sáng** giữa shot, **nhịp cắt** (không 3–4 shot cùng cỡ
 cảnh/góc liên tiếp) và **khớp thoại** với `target_duration`. Chain FAIL thì sửa spec/context, không
 sửa từng clip một. Các field dùng ở đây là `metadata_only`, không đưa vào prompt H3.
+Trước render, quyết định `continue_from` hay fresh bằng `art/tests/smart_chain.py`: H3 chỉ được
+cắt trong chain khi cùng `set` + cùng lighting tier + không ranh giới UI đen; khác môi trường
+hoặc khác tier sáng thì render fresh. Chain QA sau đó soi chính các ranh giới đó (trôi sáng, đổi
+set, eyeline) thay vì chấm từng clip riêng lẻ.
 
 **Vai trò:** QA nhằm sửa **workflow / global context / prompt** rồi chạy lại — không tự sửa frame,
 không tạo file QA rời rạc làm artifact của agent (chỉ `out/<name>/qa/*.png` để đọc bằng mắt).
@@ -31,7 +31,7 @@ chính shot đó. Đọc `first.png` + `mid.png` bằng mắt (không chỉ tin 
 | 1 | **Style contract** | Có giữ flat fill / nét sạch không, hay gradient tường–đèn–sàn, bóng mờ, painterly? |
 | 2 | **Palette lock** | Màu có nằm navy / bone / teal (+ amber nhà hàng) không, hay lọt hồng/teal lạ (vd bánh)? |
 | 3 | **Character & Wardrobe lock** | Trang phục đúng `wardrobe_id`/`hex` không (quần bạn charcoal/dark, KHÔNG teal)? Mặt giữ canonical? |
-| 4 | **Anatomy & rule riêng** | Tay có đúng **mitten, không mọc ngón** không? Nhận diện có ổn giữa first và mid không? |
+| 4 | **Anatomy & rule riêng** | Ghi nhận dạng tay/mặt (mitten vs ngón, có lông mày không) làm **soft note**; nhận diện có ổn giữa first và mid không? Từ 27/11/2026 user đã nới bible: lông mày + ngón tay + ngón chân **KHÔNG được chấm FAIL** (xem AGENTS.md, relaxation #1). |
 | 5 | **Motion / Continuity / Audio** | Chuyển động có gãy/biến dạng nặng không; khớp anchor chain, duration probe và thoại không? |
 
 `target_duration` trong global context là **số giây thực tế sau làm tròn lưới frame** (`17k+5`,

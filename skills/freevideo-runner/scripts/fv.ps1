@@ -44,6 +44,7 @@ function Resolve-Engine {
     if ($Engine) { $cands += $Engine }
     if ($env:FREEVIDEO_ENGINE) { $cands += $env:FREEVIDEO_ENGINE }
     $cands += 'C:\Users\Admin\FreeVideo\FreeVideo-engine'
+    $cands += 'E:\MiniMax-H3\FreeVideo'
     foreach ($c in $cands) {
         if (-not $c) { continue }
         if (Test-Path -LiteralPath (Join-Path $c 'agent\token')) { return (Resolve-Path -LiteralPath $c).Path }
@@ -57,7 +58,7 @@ function Resolve-Engine {
 
 $engineRoot = Resolve-Engine
 if (-not $engineRoot) {
-    Bad 'FreeVideo engine not found' 'Pass -Engine C:\Users\Admin\FreeVideo\FreeVideo-engine'
+    Bad 'FreeVideo engine not found' 'Pass -Engine <folder with agent\token and launcher\source> (this machine: E:\MiniMax-H3\FreeVideo)'
     exit 2
 }
 $tokenFile = Join-Path $engineRoot 'agent\token'

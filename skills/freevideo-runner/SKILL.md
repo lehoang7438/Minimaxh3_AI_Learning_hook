@@ -133,6 +133,7 @@ Tell the user the plan estimate before any run over ~10 min. Draft at 960x544 wh
 3. One render at a time; look at a frame before reporting success (`fv.ps1` + contact sheet).
 4. Lint every prompt: `h3-prompt-linter` (3 sections base, 6 sections Ref2VA).
 5. Report the real duration and the estimate you promised; keep `ref` stable only for retries.
+6. **Smart chain cut (user approved 27/11/2026):** inside one chain, shot N may use `--continue-from` shot N-1 and let H3 make the cut **only** when chain, `set` and lighting tier match and neither shot is a black-screen UI boundary. A jump in environment (`yard` ↔ `bedroom_night` ↔ `phone_ui` ↔ `under_bed` ↔ `flashback_warm`) or lighting tier (`cold_morning` ↔ `cold_night` ↔ `warm_flashback` ↔ `unprotective_night`) must stay **fresh**. Decide with `python art/tests/smart_chain.py` before touching the plan; it is read-only and reports upgrades/downgrades against `art/t2v/plan.json`. When converting a shot to continuation: 175 requested frames → 153 output, shift every timed beat by **+0.917 s**, add a new seed, re-lint. The user's eye verdict is final; an advisory reviewer FAIL is recorded as a warning, not a re-render trigger.
 
 ## Related skills
 

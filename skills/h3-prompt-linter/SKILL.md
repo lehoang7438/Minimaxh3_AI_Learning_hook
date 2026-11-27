@@ -5,10 +5,6 @@ description: Validate MiniMax H3 prompts before rendering. Use when checking h3-
 
 # H3 Prompt Linter
 
-Sau khi lint → mở `WORKFLOW-INDEX.md` để nhắc bước kế + ALH. Với G01–G04 dùng
-`powershell -NoProfile -ExecutionPolicy Bypass -File .opencode\skills\h3-prompt-linter\scripts\lint_h3.ps1 -Path prompts\part1-rebuilt\<Gxx>.txt -Seconds 10 -Mode base`.
-Ngoài linter PowerShell, prompt còn đi qua `h3_prompt_rules.validate_prompt()` ngay lúc `rebuild_prompts.py` ghi file.
-
 Gate between `h3-prompt-writing` and rendering. It catches the mistakes that make local H3 output freeze, desync audio, or ignore references.
 
 **Kiểm xung đột (Tầng 2):** chặn từ khóa mâu thuẫn với `mood` / `shot_size` đã khai báo trong spec
