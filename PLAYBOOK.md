@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E288 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E291 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -86,6 +86,8 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E287** | G03 v3 gradient vẫn nặng hơn baseline dù đã bỏ "lights up" (so v2↔v3: nhẹ hơn nhưng cấu trúc không đổi). Trigger thật = dòng `Scene`: G02 phẳng có "plain solid oval windows + thin solid bone-white ceiling strip + flat muted-teal floor runner", G03 `seat_27a` chỉ có "dark night cabin + thin ceiling strip". Sửa 1 lớp prompt: `SCENE_OVERRIDE['G03']` mượn geometry/objects đã duyệt của G02 + điện thoại phẳng trên đùi. Rebuild 3591 chars, lint 6 s PASS. | `SCENE_OVERRIDE` (~117), `build_prompt` (~750) | A |
 | **E288** | Pre-fix G05 theo E275: cùng plate 27A nên kế thừa `SCENE_OVERRIDE` phẳng và bỏ hẳn "lit phone / glows / still lit" trước render đầu. Rebuild 4559 chars, lint 8 s PASS 0 warning (00:00/00:03.900/00:07.700). | `SCENE_OVERRIDE['G05']`, `ACTION/BEAT_OVERRIDE['G05']` | A |
 | **E289** | G01 v11 FAIL E270 theo user + Hy4: khung đứng yên, chỉ tay giật; "short lateral slide" bị H3 bỏ qua. Sửa 1 lớp prompt: 3 chỗ đều nói "one clear short sideways pan" + parallax "fixed jagged seat edge and dark floor gap travel visibly ... hand keeps its size", vẫn 7 nhịp jerk, không dolly. Rebuild 5097 chars, lint 10 s PASS 0 warning. E272 chỉ đúng phần jerk/blood, **verdict lia camera bị E289 thay thế**. | `G01_STYLE_CONTRACT`, `UNDER_SEAT_PAN`, `ACTION_OVERRIDE['G01']`, `JERK_AMBIENCE` | A |
+| **E290** | Audit prompt phải so **prompt ↔ cabin-map/global-context** theo `set_id` bằng trường có cấu trúc (tier ánh sáng + dải luma, ghế 1+1/2+2/3+3, geometry/camera, hex, `state_chain` props, wardrobe/chân/tỉ lệ, rò rỉ tiếng Việt/phủ định) — không so prompt↔prompt bằng regex. Bố cục ghế đang mâu thuẫn across rules → báo **CHƯA CHỐT**, không tự chọn. Output Big Pickle phải đọc lại tay 3 FAIL + 3 PASS. | gate mới `prompt_consistency_audit.py` (Big Pickle dựng) | A |
+| **E291** | G03 v4 FAIL lần 3 (seed 20264101, 6.58 s, job `fc194b2d…`): Hy4 so sánh trần/sàn với G02 baseline vẫn thấy quầng xám mềm + ramps teal xa điện thoại → E287 `SCENE_OVERRIDE` không đủ; thêm regression mới: hai tay mitten đỡ/cầm máy f01–f14 và đầu Khang ngẩng nhẹ f05–f08, phá E280/E281. Hai giả thuyết prompt-only đã cạn (E283, E287) → dừng, hỏi user theo E271 trước khi render hoặc đổi T2V/`continue_from`. | clip G03 v4 (không sửa prompt lúc này) | **P** |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -153,12 +155,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File art\comfy\ALH\learn_hook.ps1
 
 | Shot | Trạng thái |
 |---|---|
-| **G01 v11** | E272 PASS chỉ cho jerk/blood; **phần lia camera bị user + Hy4 bác (E289)**: khung đứng yên. Prompt đã sửa (5097 chars, lint 10 s PASS), **chưa render v12 — đợi G03 v4 xong rồi queue seed mới kèm r8**. |
+| **G01 v11** | E272 PASS chỉ cho jerk/blood; **phần lia camera bị user + Hy4 bác (E289)**: khung đứng yên. Prompt đã sửa (5097 chars, lint 10 s PASS), **chưa render v12 — đợi user chốt hướng G03 (E291) rồi queue seed mới kèm r8**. |
 | **G02 v2** | Bị user phủ nhận (E285): đúng chữ nhưng sai logic kinh dị — bàn tay trắng nổi bật, không phải cánh tay ma G01 ló nhẹ dưới gầm. E284 đã revoked. Prompt đã sửa (E286), 6 s, **chưa render lại — đợi GPU rảnh**. |
 | **G03 v2** | Held-state đúng nhưng gradient trần/sàn nặng hơn baseline G02 → tái phạm E273 (E283). Backup `video-v2-gradient-fail.mp4`. |
 | **G03 v3** | Seed 20263901, 6 s: held-state sạch nhưng trần/sàn vẫn gradient nặng hơn G02 → E273 tái phạm lần 2; E287 sửa dòng Scene. |
-| **G03 v4** | Seed 20264101, 6 s, `SCENE_OVERRIDE` phẳng. **Đang render nền — chờ QA, chưa có verdict.** |
-| **G05** | v1 FAIL eyebrows + mũi (E280). Prompt đã face-flat + 8 s + `SCENE_OVERRIDE` + bỏ light wording (E288), lint PASS. **Chưa queue — đợi G03 v4 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
+| **G03 v4** | Seed 20264101, 6.58 s, `SCENE_OVERRIDE` phẳng: **FAIL lần 3 (E291)** — trần vẫn quầng xám mềm, sàn vẫn ramp teal xa máy; hai tay cầm máy + đầu ngẩng nhẹ. `GPU-LOCK = qa_hold`, **chờ user chọn** (a) anchor ref G02 / (b) `continue_from` G02 / (c) thêm 1 pass prompt + seed mới. |
+| **G05** | v1 FAIL eyebrows + mũi (E280). Prompt đã face-flat + 8 s + `SCENE_OVERRIDE` + bỏ light wording (E288), lint PASS. **Chưa queue — đợi user chốt hướng G03 (E291) rồi mới render 8 s `continue_from` last-frame G03 mới.** |
 
 ---
 
