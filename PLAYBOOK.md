@@ -6,9 +6,9 @@
 → skill (SKILL.md) → ALH (`learning-log.jsonl` / `REPORT.md`) → QA (máy + Hy4 + agent chốt).
 `global-context*.json` là **output**, không bao giờ làm nguồn prompt.
 
-> **Trạng thái ALH (REPORT.md 27/11 22:24):** 294 event — 136 accepted / 100 archived / 53 proposed / 5 revoked.
+> **Trạng thái ALH (REPORT.md 27/11 22:25):** 297 event — 138 accepted / 100 archived / 54 proposed / 5 revoked.
 > Accepted = **đang áp dụng**, nhưng **rule chỉ thành hard gate sau khi mirror vào SKILL.md / GLOBAL-RULES.md**;
-> **107 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
+> **109 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
 > **không promote** rule nào — nó chỉ trỏ tới rule đã có bằng chứng.
 
 ---
@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E294 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E297 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -91,6 +91,9 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E292** | Payload `/history` chứng minh **E287 bị bác**: Scene + Props flat-surface của G03 v4 **byte-identical** với G02 v2 đã duyệt (job `1005c5e3` ↔ `fc194b2d`); chỉ còn khác `wide→medium` và khối điện thoại đổi nội dung. Không viết lại Scene thêm lần nữa. | bằng chứng diff payload | **P** |
 | **E293** | Reviewer đề xuất kiến trúc 3 lớp: 1 style contract duy nhất + 1 plate block theo `set_id` byte-identical giữa G02/G03/G05 + 1 shot block; linter cấm từ ánh sáng/nền trong shot block; audit cả clip rendered (60–75 % bóng phẳng, palette, số ghế/cửa sổ). Gom accepted rule thành danh sách ngắn + supersede trước khi mirror SKILL.md. | đề xuất, chờ user duyệt | **P** |
 | **E294** | Sửa nhãn: E292 là phát hiện gradient payload-diff (text bên trong tự gọi nhầm là E293); E293 là kiến trúc 3 lớp. | ALH bookkeeping | A |
+| **E295** | Audit Big Pickle đã đọc lại tay 3 FAIL + 3 PASS: đúng hết, nhưng sót G04 vẫn nói `2+2 seats` dù map/G02/G03/G05 dùng 1+1. PASS của model rẻ không phải bằng chứng. | `prompt-consistency-report.md` + đối chiếu file | A |
+| **E296** | Payload `/history` loại thêm 3 giả thuyết gradient: Scene (v4 byte-identical G02 v2 vẫn FAIL), từ `lit/glowing` (G03 v1 và G05 v1 có mà không FAIL), medium/điện thoại (có ở v1/G05). Seed không tách được khi chưa render. Cấm viết lại Scene lần 5 hoặc đổi chữ sáng. | `g03-gradient-rootcause.md` | A |
+| **E297** | Giả thuyết còn lại (**P**): phone **tĩnh** (v1/G05) ổn, phone **tự đổi/lên sáng** (v2 `lights up`, v3/v4 `changes by itself`) FAIL 3 lần → H3 đọc sự kiện đổi sàng làm ánh sáng, tràn ramp lên trần/sàn xiên. E287 cũng gây regression tay bám máy/ngẩng đầu ở v4. Chờ user chọn đổi anchor/composition theo E271; GPU vẫn `qa_hold`. | đề xuất, chưa render | **P** |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),

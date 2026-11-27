@@ -1,23 +1,23 @@
-# ALH report - 2026-11-27 22:21
+# ALH report - 2026-11-27 22:25
 
-log: `art\comfy\ALH\learning-log.jsonl`  |  total 294 event(s)
+log: `art\comfy\ALH\learning-log.jsonl`  |  total 297 event(s)
 
 ### Status
 
 | value | n | share |
 |---|---|---|
-| accepted | 136 | 46% |
+| accepted | 138 | 46% |
 | archived | 100 | 34% |
-| proposed | 53 | 18% |
+| proposed | 54 | 18% |
 | revoked | 5 | 2% |
 
 ### Event
 
 | value | n | share |
 |---|---|---|
-| rule_gap | 108 | 37% |
+| rule_gap | 111 | 37% |
 | asset_qa_fail | 51 | 17% |
-| verdict | 46 | 16% |
+| verdict | 46 | 15% |
 | qa_fail | 42 | 14% |
 | warn_accepted | 41 | 14% |
 | node_error | 4 | 1% |
@@ -29,8 +29,8 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 294 event(s)
 |---|---|---|
 | asset-qa | 139 | 47% |
 | comfyui-runner | 59 | 20% |
-| h3-prompt-writing | 48 | 16% |
-| h3-visual-qa | 33 | 11% |
+| h3-prompt-writing | 50 | 17% |
+| h3-visual-qa | 34 | 11% |
 | character-bible | 9 | 3% |
 | h3-storyboard | 3 | 1% |
 | bitnet | 1 | 0% |
@@ -41,7 +41,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 294 event(s)
 
 | value | n | share |
 |---|---|---|
-| prompt | 50 | 17% |
+| prompt | 52 | 18% |
 | asset | 48 | 16% |
 | workflow | 42 | 14% |
 | magenta_key | 15 | 5% |
@@ -61,10 +61,10 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 294 event(s)
 | identity | 4 | 1% |
 | style_eyes | 4 | 1% |
 | ref/style | 4 | 1% |
+| gate | 4 | 1% |
 | camera_composition | 3 | 1% |
 | sheet_contract | 3 | 1% |
 | pose_logic | 3 | 1% |
-| gate | 3 | 1% |
 | cabin_geometry | 2 | 1% |
 | asset_reuse | 2 | 1% |
 | audio | 2 | 1% |
@@ -142,6 +142,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 294 event(s)
 - [E291] qa_fail / G03 / clip - E291 G03 v4 FAIL (3rd consecutive): ceiling/floor ramp still heavier than approved G02 baseline after SCENE_OVERRIDE, plus hands now hold the phone and head lifts slightly, breaking E280/E281. Two prompt-only hypotheses exhausted; per E271 stop and ask user before another GPU job or any T2V/continue_from change.
 - [E292] rule_gap / G03 / prompt - E293 E287 disproved by exact /history payload diff: G03 v4 Scene and Props flat-surface wording are byte-identical to approved G02 v2, so another Scene rewording cannot fix the gradient. Only wide->medium shot and the changing phone picture remain; ranked cause is H3 depth prior on oblique medium cabin surfaces primed by screen change. No prompt-only Scene pass.
 - [E293] rule_gap / ALL / gate - E293 proposed by reviewer: one style contract + one byte-identical plate block per set_id + shot-only block; linter forbids light/background wording in shot block; audit checks plate byte-identity and rendered clips (60-75pct flat shadow, palette, seat/window count). Condense accepted rules into short imperative list with supersede chains before mirroring to SKILL.md. E230/E231/E237 stay proposed -> seat layout CHUA CHOT.
+- [E297] rule_gap / G03 / prompt - E297 ranked remaining cause: static lit phone (v1/G05 v1) passes, autonomous screen-change event (v2 lights up, v3/v4 changes by itself) FAILs 3x. H3 likely reads a changing screen as a light event and ramps oblique cabin surfaces; v4 front-near/tail-far wording may sustain it. E287 Scene edit also created the v4 hands-on-phone/head-lift regression. Needs user-chosen composition/anchor change or one controlled render; no GPU while status qa_hold.
 
 ### Accepted but not promoted to SKILL.md/GLOBAL-RULES.md
 
@@ -252,6 +253,8 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 294 event(s)
 - [E289] h3-prompt-writing / G01 / prompt - E289 G01 v11 FAIL of E270: no visible camera pan; Hy4 saw only wrist/finger snaps with the seat edge static. Lateral-slide wording was too weak; add explicit parallax reference (fixed jagged seat edge and floor gap visibly travel sideways while hand keeps size) in style contract, camera line, action and jerk ambience. Rebuilt 5097 chars lint 10s PASS 0 warning. Render v12 fresh seed after G03 v4.
 - [E290] h3-visual-qa / ALL / gate - E290 prompt audit must compare each prompt against ONE structured source of truth (cabin-map/global-context) by set_id, not prompt-vs-prompt; dimensions = light tier/luma band, seat layout, geometry/camera, palette hex, prop state_chain, wardrobe/feet/proportion, language leakage. Seat layout 3+3/2+2/1+1 still contradictory across rules: report CHUA CHOT, do not pick. Big Pickle output needs manual 3 FAIL + 3 PASS verification.
 - [E294] h3-prompt-writing / ALL / gate - E294 numbering correction: E292 = gradient payload diff / E293 = reviewer 3-layer architecture. Ignore the E293 label inside E292 rule text.
+- [E295] h3-visual-qa / G01-G05 / gate - E295 Big Pickle audit hand-checked: 3 sampled FAIL (G02 composited-later leakage, G03 missing khang wardrobe clause, G04 superseded fixture/slate light) and 3 sampled PASS (G01 clean insert, G03 phone props, G05 khang wardrobe clause) all confirmed. Extra miss: G04 still says 2+2 seats while cabin-map/G02/G03/G05 say 1+1. Cheap-model PASS is not evidence; sample by hand before acting.
+- [E296] h3-prompt-writing / G03 / prompt - E296 exact /history payload trace eliminates three G03 gradient hypotheses: E287 Scene wording (v4 byte-identical to approved G02 v2 yet still FAIL), E283 lit/glow vocabulary (G03 v1 and G05 v1 had glowing phones with no recorded gradient FAIL), medium framing and phone presence (both in v1/G05); seed-only cannot be isolated without a render. Fifth Scene rewrite or glow-word swap is not a valid fix.
 
 ### Contradictions / superseded-but-active
 
