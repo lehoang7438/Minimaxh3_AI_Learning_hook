@@ -55,6 +55,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 - [ ] Canvas **704×1280**; `upscale_factor:"2"` = *no upscale* (không phải 1408×2560).
 - [ ] `art/comfy/GPU-LOCK.json` một owner (`asset` hoặc `video`); chỉ set `free` sau job kết thúc **và** verdict đã ghi ledger.
 - [ ] `workflow_state.py --check` sạch; ALH state fresh; không chốt verdict / không sleep khi QA shot hiện tại chưa xong.
+- [ ] Download lỗi `IOException` do file mp4 bị app khác giữ → đọc `/history/<job_id>`, tải `/view` sang tên `-v2`, measure + copy handoff; **không queue lại GPU** (E282 proposed).
 
 ---
 
