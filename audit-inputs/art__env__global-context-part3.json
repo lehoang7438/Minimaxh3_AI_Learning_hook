@@ -1,0 +1,962 @@
+{
+  "version": 1,
+  "style": {
+    "prompt_contract": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges with bold uneven black outlines, low-key night-horror lighting: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, and 60 to 75 percent of each frame held in flat near-black shadow shapes with a heavy flat vignette. Palette: near-black navy, bone white and one muted teal, with flat amber restaurant accents. All clothing is near-black navy, bone white or one muted teal. All hair is one solid black silhouette. Faces show only two solid black dot eyes and one short mouth line. Hands are flat simplified human hands with four straight finger blocks and one thumb, solid fill, no nails and no drawn finger joints. Full bodies use adult 1:6 proportions with flat segmented shoulders, elbows, hips and knees. Backgrounds keep layered flat depth and one-point perspective. The number of visible figures stays fixed from the first frame to the last.",
+    "forbid": [
+      "panel",
+      "grid",
+      "comic page",
+      "multiple views",
+      "gradient",
+      "watermark"
+    ],
+    "canvas": [
+      704,
+      1280
+    ],
+    "fps": 24
+  },
+  "voice": {
+    "ref": "art/env/voice-narrator.wav",
+    "description": "Khang, narration voice (Thai Son), Vietnamese, slow tired timbre",
+    "max_seconds": 15,
+    "role": "timbre",
+    "note": "timbre/speaker reference only; 4.16s sample does NOT drive shot length or lip rhythm"
+  },
+  "characters": {
+    "khang": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/khang-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 1>",
+      "wardrobe_id": "khang-navy-longsleeve",
+      "wardrobe": "Near-black navy long-sleeve shirt with a small muted teal chest pocket, muted teal trousers, and near-black low shoes with thick bone-white soles.",
+      "wardrobe_hex": "#183060",
+      "forbidden_tokens": [
+        "jacket",
+        "jumpsuit",
+        "onesie",
+        "scarf",
+        "vest",
+        "waistcoat"
+      ],
+      "relative_height": 1.0,
+      "appearance": "Vietnamese man, 29, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, short messy solid black hair silhouette, slim build, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "vy": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/vy-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 2>",
+      "wardrobe_id": "vy-crew-uniform-teal-scarf",
+      "wardrobe": "Bone-white blouse under an open navy flight-attendant jacket and a navy A-line skirt ending above the knee with a clear hem line and visible lower legs, TEAL scarf and teal name badge, black low shoes with bone-white soles.",
+      "wardrobe_hex": "#003048",
+      "forbidden_tokens": [
+        "vest",
+        "t-shirt"
+      ],
+      "relative_height": 0.95,
+      "appearance": "Vietnamese woman, 27, small head including the neat bun about one sixth of total height, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, brown hair in a neat bun, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slender build, clearly narrow waist, flat stomach, slender arms and slim thighs and calves, rounded shoulders about two head widths wide, no rounded belly and no thick torso; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "friend_beer": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/friend_beer-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 3>",
+      "wardrobe_id": "friend-navy-tee-charcoal-trousers",
+      "wardrobe": "Muted teal short-sleeve polo shirt, charcoal grey trousers, white low sneakers with dark grey soles.",
+      "wardrobe_hex": "#183048",
+      "forbidden_tokens": [
+        "uniform",
+        "scarf",
+        "epaulette"
+      ],
+      "relative_height": 1.02,
+      "appearance": "Vietnamese man, 28, bone-white oval face with two dot eyes and one short mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, short neat combed solid black hair, slim build, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "friend_clap": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/friend_clap-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 4>",
+      "wardrobe_id": "friend-charcoal-tee-dark-trousers",
+      "wardrobe": "Bone-white short-sleeve t-shirt, charcoal grey trousers, dark low sneakers with bone-white soles.",
+      "wardrobe_hex": "#303048",
+      "forbidden_tokens": [
+        "uniform",
+        "scarf",
+        "epaulette"
+      ],
+      "relative_height": 0.98,
+      "appearance": "Vietnamese man, 28, bone-white oval face with two dot eyes and one short mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, side-parted swept solid black hair, slim build, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "infected": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/infected-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 5>",
+      "wardrobe_id": "infected-torn-navy-barefoot",
+      "wardrobe": "Torn bone-white shirt with ragged sleeves, dark charcoal trousers, bare feet.",
+      "wardrobe_hex": "#183048",
+      "forbidden_tokens": [
+        "sneakers",
+        "shoes",
+        "boots",
+        "clean shirt"
+      ],
+      "relative_height": 1.0,
+      "appearance": "Vietnamese man, 30, bone-white face with two small red infected eyes and one short mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, short solid black hair, slack posture, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "crew": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/crew-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 6>",
+      "wardrobe_id": "crew-pilot-jacket-epaulettes",
+      "wardrobe": "Dark navy pilot-style jacket with shoulder epaulettes and a teal badge, bone-white trousers, near-black low shoes with bone-white soles.",
+      "wardrobe_hex": "#1b2a41",
+      "forbidden_tokens": [
+        "t-shirt",
+        "scarf"
+      ],
+      "relative_height": 1.0,
+      "appearance": "Vietnamese man, 35, bone-white oval face with two dot eyes and one short mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, short neat solid black hair, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "friend_girl_bob": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/friend_girl_bob-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 7>",
+      "wardrobe_id": "friend-teal-blouse-navy-trousers",
+      "wardrobe": "Muted teal short-sleeve blouse, bone-white trousers, black low shoes with bone-white soles.",
+      "wardrobe_hex": "#2E6E6E",
+      "forbidden_tokens": [
+        "flight-attendant",
+        "uniform",
+        "scarf",
+        "vest",
+        "jacket"
+      ],
+      "relative_height": 0.93,
+      "appearance": "Vietnamese woman, 27, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, short straight bob of solid black hair, slim build, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    },
+    "friend_girl_pony": {
+      "ref": null,
+      "ref_qa_passed": false,
+      "qa_passed": false,
+      "color_count": null,
+      "turnaround": {
+        "path": "art/assets/h3/refs/friend_girl_pony-turnaround-4view-v4-1024.png",
+        "qa_passed": true,
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "role": "canonical four-direction full-body identity and scale anchor"
+      },
+      "label": "<Subject 8>",
+      "wardrobe_id": "friend-bone-blouse-charcoal-trousers",
+      "wardrobe": "Bone-white short-sleeve blouse, charcoal grey trousers, dark low sneakers with bone-white soles.",
+      "wardrobe_hex": "#EDE7D9",
+      "forbidden_tokens": [
+        "flight-attendant",
+        "uniform",
+        "scarf",
+        "vest",
+        "jacket"
+      ],
+      "relative_height": 0.95,
+      "appearance": "Vietnamese woman, 26, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebrows, no eyelashes, black hair tied in a low ponytail, slim build, natural flat human hands with four gently curved fingers and one thumb, softly rounded tips and small gaps between fingers, solid bone-white fill, thick uneven black ink outlines, no nails and no finger knuckle lines; full-body adult human proportions about 1:6.5 to 1:7 with a slim build, rounded shoulders about two head widths wide, a slight waist taper and gentle curves at thighs and calves; relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent; torso and limbs are smooth connected flat planes; the outer outline runs continuously from shoulder down each arm and from hip down each leg with only long soft contour curves."
+    }
+  },
+  "sets": {
+    "restaurant": {
+      "geometry": "one round table at centre, three chairs around it, karaoke screen on the far wall showing only two thin teal horizontal bars on a dark navy rectangle",
+      "objects": "one birthday cake with candles baked into the table center; amber beer glasses on the table; one single cake",
+      "light": "flat uniform colour fill with amber as one flat tint",
+      "plate": null,
+      "plates": {
+        "v3-r1-restaurant.png": null,
+        "v3-r1b-empty-table.png": null
+      },
+      "qa_passed": false
+    },
+    "aircraft_forward": {
+      "geometry": "narrow-body cabin, single aisle running front(near)->tail(far); exactly rows 27 and 28 visible, one seat per side in each row (1+1, four seats total); oval windows on BOTH sides; front galley/cockpit door at the near end",
+      "objects": "empty seats only; overhead bins closed; one uninterrupted cabin aisle",
+      "light": "cool white ceiling strips, city lights through the windows, faint teal aisle floor path",
+      "plate": null,
+      "plates": {
+        "p1b-cabin-wide.png": null
+      },
+      "qa_passed": false
+    },
+    "seat_27a": {
+      "geometry": "one dark night passenger cabin with exactly rows 27 and 28, one seat per side in each row, seat 27A beside one solid oval window and one thin ceiling strip",
+      "objects": "one seated navy-clad passenger in 27A, three generic passengers in the other seats, and one flat phone screen resting on the lap",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "aisle": {
+      "geometry": "same narrow-body aisle, continuous with seat_27a; rows 27->28 toward the tail, one seat per side in each row; the far dark end is the rear; row 28 is the last row before the lavatory",
+      "objects": "one black shoe under the aisle seat of row 28; a second hand under the same seat; patient 0 rises from under that seat",
+      "light": "teal floor path strips on both sides of the aisle, cool ceiling strips, dark toward the tail",
+      "plate": null,
+      "plates": {
+        "p1-aisle-bg.png": null,
+        "v2-p11-row31-dark.png": null
+      },
+      "qa_passed": false
+    },
+    "lavatory": {
+      "geometry": "tail lavatory: steel sink and mirror on the left wall, toilet on the right; narrow corridor outside; door opens into that corridor; the door is on the SAME side in G21/G22/G24",
+      "objects": "one steel sink, one mirror, one door, one light gap under the door; phone is a hand-held prop from G20 onward",
+      "light": "cold teal inside the lavatory; one white sliver from the lit cabin through the door gap",
+      "plate": null,
+      "plates": {
+        "p4-lavatory.png": null,
+        "p6-lav-door.png": null,
+        "p7-lav-gap.png": null
+      },
+      "qa_passed": false
+    },
+    "cabin_chaos": {
+      "geometry": "same narrow-body two-row 1+1 cabin (four seats total) with centered aisle, oval windows both sides, eye-level view toward the tail; a few seats tipped askew in their rows",
+      "objects": "cups, paper scraps, bags on the floor; overturned carts and luggage blocking the aisle; one black shoe on the floor; dark-red stains on the floor",
+      "light": "FAILURE tier: main lights dead, one harsh broken fixture and faint teal floor path, 70%+ of frame in deep flat shadow, heavy vignette",
+      "plate": null,
+      "plates": {
+        "p3-chaos-flat.png": null,
+        "p3b-barricade.png": null,
+        "p9-hiding-corner.png": null
+      },
+      "qa_passed": false
+    },
+    "black_card": {
+      "geometry": "one flat near-black navy field filling the full 9:16 frame",
+      "objects": "one bone-white waveform in the lower third and one small red recording dot centred above it, nothing else",
+      "light": "flat uniform colour lighting with even fill across every surface",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "aisle_flat": {
+      "geometry": "one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, closed overhead bins",
+      "objects": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "lav_door_flat": {
+      "geometry": "one flat closed navy lavatory door centred in a plain muted-teal corridor with solid navy walls",
+      "objects": "one small bone-white door handle",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "lav_gap_flat": {
+      "geometry": "extreme close-up of the lower gap beneath a flat closed navy lavatory door, door panel above and one flat near-black navy floor below",
+      "objects": "one thin dark-red line at the gap and one flat dark-red pool on the floor",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "phone_ins": {
+      "geometry": "one flat bone-white smartphone close-up, its solid muted-teal screen holding one small birthday cake and one small group photo",
+      "objects": "one cake and one group photo of three simple dot-eyed faces drawn on the screen",
+      "light": "one small lit screen or fixture is the only bright flat shape; the rest of the close insert falls into flat near-black navy shadow with a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "face_ins": {
+      "geometry": "one flat bone-white face close-up with one solid black hair silhouette, two black dot eyes and one short mouth line on a muted-teal field",
+      "objects": "one flat muted-teal field around the face",
+      "light": "one small lit screen or fixture is the only bright flat shape; the rest of the close insert falls into flat near-black navy shadow with a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "cabin_bowed": {
+      "geometry": "one continuous wide cabin view down a flat navy aisle with empty seat rows on both sides and plain solid oval windows",
+      "objects": "one bowed seated passenger a few rows ahead, the only figure in the frame",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "cabin_prone": {
+      "geometry": "one continuous flat navy cabin floor with lower seat bases and one viewpoint",
+      "objects": "one flight attendant lying face down in a still navy uniform, the only figure in the frame",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "lav_mirror": {
+      "geometry": "one flat lavatory mirror on a plain muted-teal wall with one solid sink below it",
+      "objects": "inside the mirror exactly one bone-white face with solid black hair, two black dot eyes and one short mouth line, with one dark flat silhouette behind it",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "pov_shoulders": {
+      "geometry": "one continuous first-person POV inside a small lavatory, one flat closed navy door centred ahead on a muted-teal wall, one small mirror and sink at the left edge, only the top of both shoulders visible at the lower frame edge",
+      "objects": "two one-piece bone-white mitten hands raised at the lower edges, one small round peephole on the door",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": null,
+      "plates": {},
+      "qa_passed": false
+    },
+    "cabin_master": {
+      "geometry": "one continuous eye-level master view of the whole night cabin used as the re-usable layout anchor for every cabin plate",
+      "objects": "seat rows, one central aisle and oval windows in fixed one-point perspective",
+      "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
+      "plate": "art/assets/h3/flat/cabin-master-map-horror-2row-r7.png",
+      "plates": {
+        "cabin-master-map-horror-2row-r7.png": "art/assets/h3/flat/cabin-master-map-horror-2row-r7.png"
+      },
+      "qa_passed": true,
+      "color_count": 53
+    }
+  },
+  "props": {
+    "phone-video": {
+      "file": "art/assets/phone-video.png",
+      "role": "prop",
+      "color_count": 131,
+      "qa_passed": true
+    }
+  },
+  "chains": [
+    {
+      "id": "story-open-cabin",
+      "shots": [
+        "G01",
+        "G02",
+        "G03",
+        "G05"
+      ],
+      "last_to_first": false,
+      "note": "from G01; Khang + three generic passengers; G04 stays a separate insert"
+    }
+  ],
+  "shots": {
+    "P3G01": {
+      "scene": "cabin_chaos",
+      "seconds": 10,
+      "start": "8:00",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [
+        "khang",
+        "vy"
+      ],
+      "props": [
+        "art/assets/bite-arm-navy.png"
+      ],
+      "shot_size": "medium",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "giữ trục 180° của chain",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        },
+        {
+          "image": "art/assets/h3/refs/vy-magenta-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        },
+        {
+          "image": "art/assets/bite-arm-navy.png",
+          "role": "prop",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [
+        "khang-navy-longsleeve",
+        "vy-crew-uniform-teal-scarf"
+      ],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G02": {
+      "scene": "seat_27a",
+      "seconds": 10,
+      "start": "8:10",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [],
+      "props": [],
+      "shot_size": "close-up",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "nhìn ra cửa sổ",
+      "props_state": [],
+      "target_duration": 10.125,
+      "wardrobe_ids": [],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G03": {
+      "scene": "aisle",
+      "seconds": 10,
+      "start": "8:20",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [],
+      "props": [
+        "art/assets/h3/refs/bloody-paddle-hand-r4-1024.png"
+      ],
+      "shot_size": "ui",
+      "camera_motion": "zoom",
+      "mood": "căng thẳng",
+      "eyeline": "nhìn về phía đuôi",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/bloody-paddle-hand-r4-1024.png",
+          "role": "prop",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [],
+      "allow_text": [],
+      "red_allowed": true
+    },
+    "P3G04": {
+      "scene": "cabin_chaos",
+      "seconds": 10,
+      "start": "8:30",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [
+        "vy"
+      ],
+      "props": [],
+      "shot_size": "medium",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "giữ trục 180° của chain",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/vy-magenta-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [
+        "vy-crew-uniform-teal-scarf"
+      ],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G05": {
+      "scene": "lavatory",
+      "seconds": 10,
+      "start": "8:40",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [],
+      "props": [],
+      "shot_size": "close-up",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "nhìn vào gương/bồn",
+      "props_state": [],
+      "target_duration": 10.125,
+      "wardrobe_ids": [],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G06": {
+      "scene": "cabin_chaos",
+      "seconds": 10,
+      "start": "8:50",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [
+        "khang"
+      ],
+      "props": [],
+      "shot_size": "medium",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "giữ trục 180° của chain",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [
+        "khang-navy-longsleeve"
+      ],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G07": {
+      "scene": "cabin_chaos",
+      "seconds": 10,
+      "start": "9:00",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [
+        "khang",
+        "vy"
+      ],
+      "props": [],
+      "shot_size": "medium",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "giữ trục 180° của chain",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        },
+        {
+          "image": "art/assets/h3/refs/vy-magenta-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [
+        "khang-navy-longsleeve",
+        "vy-crew-uniform-teal-scarf"
+      ],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G08": {
+      "scene": "seat_27a",
+      "seconds": 10,
+      "start": "9:10",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [
+        "vy"
+      ],
+      "props": [],
+      "shot_size": "close-up",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "nhìn ra cửa sổ",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/vy-magenta-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [
+        "vy-crew-uniform-teal-scarf"
+      ],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G09": {
+      "scene": "aircraft_forward",
+      "seconds": 10,
+      "start": "9:20",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [],
+      "props": [],
+      "shot_size": "wide",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "nhìn về phía đuôi",
+      "props_state": [],
+      "target_duration": 10.125,
+      "wardrobe_ids": [],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G10": {
+      "scene": "cabin_chaos",
+      "seconds": 10,
+      "start": "9:30",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [
+        "khang"
+      ],
+      "props": [],
+      "shot_size": "wide",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "giữ trục 180° của chain",
+      "props_state": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [
+        "khang-navy-longsleeve"
+      ],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G11": {
+      "scene": "seat_27a",
+      "seconds": 10,
+      "start": "9:40",
+      "bg": "art/assets/phone-video.png",
+      "first_frame": null,
+      "image": null,
+      "characters": [],
+      "props": [
+        "art/assets/phone-video.png"
+      ],
+      "shot_size": "close-up",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "nhìn ra cửa sổ",
+      "props_state": [
+        {
+          "image": "art/assets/phone-video.png",
+          "role": "prop",
+          "support": "table/floor/hand (spec)",
+          "end": "unchanged"
+        }
+      ],
+      "target_duration": 10.125,
+      "wardrobe_ids": [],
+      "allow_text": [],
+      "red_allowed": false
+    },
+    "P3G12": {
+      "scene": "black_card",
+      "seconds": 10,
+      "start": "9:50",
+      "bg": null,
+      "first_frame": null,
+      "image": null,
+      "characters": [],
+      "props": [],
+      "shot_size": "ui",
+      "camera_motion": "zoom",
+      "mood": "u ám",
+      "eyeline": "giữ trục 180° của chain",
+      "props_state": [],
+      "target_duration": 10.125,
+      "wardrobe_ids": [],
+      "allow_text": [],
+      "red_allowed": true
+    }
+  },
+  "render": {
+    "fps": 24,
+    "width": 704,
+    "height": 1280,
+    "aspect": "9:16",
+    "strip_model_audio": true,
+    "concat": "reencode_once"
+  },
+  "qa_thresholds": {
+    "character": {
+      "warn": 150,
+      "fail": 200
+    },
+    "set": {
+      "warn": 300,
+      "fail": 450
+    },
+    "prop": {
+      "warn": 250,
+      "fail": 400
+    }
+  },
+  "master_plate": {
+    "path": "art/assets/h3/flat/cabin-master-map-horror-2row-r7.png",
+    "qa_passed": true,
+    "role": "one continuous eye-level low-key NIGHT-HORROR master view of the whole cabin; layout, palette and light anchor for every cabin plate"
+  },
+  "identity_scan": {
+    "revision": "v4-all-characters-20261126",
+    "rule": "Every character - lead, supporting, infected and shadow - has its own four-view full-body turnaround before any shot asset is generated.",
+    "entries": [
+      {
+        "character": "khang",
+        "path": "art/assets/h3/refs/khang-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 86
+      },
+      {
+        "character": "vy",
+        "path": "art/assets/h3/refs/vy-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 146
+      },
+      {
+        "character": "friend_beer",
+        "path": "art/assets/h3/refs/friend_beer-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 89
+      },
+      {
+        "character": "friend_clap",
+        "path": "art/assets/h3/refs/friend_clap-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 50
+      },
+      {
+        "character": "infected",
+        "path": "art/assets/h3/refs/infected-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 74
+      },
+      {
+        "character": "crew",
+        "path": "art/assets/h3/refs/crew-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 75
+      },
+      {
+        "character": "friend_girl_bob",
+        "path": "art/assets/h3/refs/friend_girl_bob-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 92
+      },
+      {
+        "character": "friend_girl_pony",
+        "path": "art/assets/h3/refs/friend_girl_pony-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "canonical four-direction full-body identity and scale anchor",
+        "qa_passed": true,
+        "color_count": 65
+      },
+      {
+        "character": "shadow_figure",
+        "path": "art/assets/h3/refs/shadow-figure-turnaround-4view-v4-1024.png",
+        "views": [
+          "front",
+          "left side",
+          "back",
+          "right side"
+        ],
+        "layout": "one single row, four equal cells, same scale, feet on one baseline",
+        "role": "flat solid-black standing silhouette reused for mirror, blackout and photo figures",
+        "qa_passed": true,
+        "color_count": 56
+      }
+    ]
+  },
+  "prompt_visible": [
+    "style.prompt_contract",
+    "set.geometry",
+    "set.objects",
+    "set.light",
+    "characters.wardrobe",
+    "voice.description",
+    "shot.description",
+    "action"
+  ],
+  "metadata_only": [
+    "render.fps",
+    "render.width",
+    "render.height",
+    "render.aspect",
+    "target_duration",
+    "eyeline",
+    "relative_height_vs_prev",
+    "props_state",
+    "chain",
+    "voice.role",
+    "allow_text",
+    "qa_passed",
+    "color_count"
+  ],
+  "validation": {
+    "ok": true,
+    "missing": []
+  }
+}
