@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E283 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E286 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -77,10 +77,12 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E278** | ❌ **ARCHIVED — ĐỪNG ÁP DỤNG LẠI.** Ép thứ tự awake→nod→đặt điện thoại là sai; user đã phủ nhận. | đã revert `ACTION_OVERRIDE`/`BEAT_OVERRIDE` | archived |
 | **E279** | ❌ **REVOKED — ĐỪNG ÁP DỤNG.** G03 v1 vốn đúng script; E278 bị thu hồi, không re-render G03/G05 vì lý do này. | đã revert về dạng single-beat 2875 chars | revoked |
 | **E280** | G03 = **held state**: đã gục ngủ từ frame 1, điện thoại **đã nằm trên đùi, không ai chạm**, màn hình tự sáng với 1 bánh sinh nhật được vây bởi ảnh nhóm. G05 Hy4 thấy eyebrows+mũi → `FACE_FLAT_CONTRACT` bỏ câu "tapered nose", thay bằng "exactly two dot eyes and one short mouth line and nothing else". | `ACTION_OVERRIDE['G03']` (~119), `BEAT_OVERRIDE['G03']` (~274), `FACE_FLAT_CONTRACT` (~104) | A |
-| **E281** | **Duration fit action**: `DURATION_OVERRIDE={'G03':6.0,'G05':8.0}`; beat G03 dùng `{tc}` để không timecode nào vượt clip ngắn. G01 (7 snap) & G02 giữ 10 s. | `DURATION_OVERRIDE` (~462), `{tc}` trong beat (~272) | A |
+| **E281** | **Duration fit action**: beat dùng `{tc}` để không timecode nào vượt clip ngắn. G01 (7 snap) giữ 10 s; E285 sau đó rút G02 xuống 6 s. | `DURATION_OVERRIDE` (~466), `{tc}` trong beat | A |
 | **E282** | Lỗi tải file mp4 bị app khác giữ → đọc `/history/<job_id>`, tải `/view` sang tên `-v2`, measure + copy handoff; **không queue lại GPU** (job đã success). | quy trình queue/download | proposed |
 | **E283** | G03 v2 gradient trần/sàn nặng hơn baseline G02 v2 đã duyệt (tái phạm E273). Trigger = cụm "lights up / lit phone" kích H3 vẽ ánh sáng lan. Sửa 1 lớp prompt: "screen changes by itself from a plain pale rectangle to one flat picture", "cabin keeps its same one-tone surfaces". | `ACTION_OVERRIDE['G03']`, `BEAT_OVERRIDE['G03']` | A |
-| **E284** | G02 hand re-review: tay rút xuống dưới 27A đúng kịch bản, biến mất từ 4.5 s, anatomy đúng. Cổ tay bị ghế đen che nên tay đọc như rời ("lòi lòi") — deviation chấp nhận, không render lại. | verdict, không đổi code | A |
+| **E284** | ❌ **REVOKED — ĐỪNG ÁP DỤNG.** Em đọc máy móc câu "tay rút xuống" và chấp nhận bàn tay trắng nổi bật; user phủ nhận vì thiếu logic kinh dị. Xem E285. | verdict cũ, đã thu hồi | revoked |
+| **E285** | **Logic kinh dị > compliance chữ**: G02 là *hậu quả của G01*, không phải hoạt hình bàn tay biến mất. Cánh tay ma G01 vẫn nằm sâu dưới gầm 27A; chỉ một méo nhỏ màu xương bẩn + cuff xanh đen ló ra rồi rụt vào bóng tối, **không ai để ý**. View vẫn là view wide G02, lối đi đứng yên. Đây là dramatic irony: khán giả nhận ra, nhân vật thì không. | chỉnh `ACTION_OVERRIDE['G02']`, `BEAT_OVERRIDE['G02']`, `DURATION_OVERRIDE['G02']=6.0` | A |
+| **E286** | Triển khai E285 đúng 1 lớp prompt: bỏ "bone-white hand", thêm "dirty dark-bone forearm / near-black nails / wide near-black navy cuff", "thin sliver ... peeks a little ... eases back", "nobody turns, looks down or reacts"; beat dùng `{tc}` (00:00.000/00:02.900/00:05.700). Rebuild 4175 chars, lint 6 s PASS 0 warning. G02 v2 bị supersede, chờ GPU rảnh để render lại. | `rebuild_prompts.py` G02 action/beats + duration | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -113,10 +115,15 @@ Chỉ user nâng `proposed → accepted`. Cuối phiên: `alh.py sync` + `verify
 ## 7. Lệnh mẫu chain4 (chạy từ project root — **chỉ là mẫu**)
 
 ```powershell
-# G03 — hard cut, 6s, seed 20263901 (ĐANG RENDER, chờ QA — không queue lại)
-& ".\.venv-tts\Scripts\python.exe" art\tests\chain4_run.py --start 1 --shots 1 `
+# G03 v3 — hard cut, 6s, seed 20263901 (ĐÃ render, đang QA — không queue lại)
+& ".\.venv-tts\Scripts\python.exe" art\tests\chain4_run.py --shots 1 `
   --shot-ids G03 --seconds 6 --seed-base 20263900 `
   --chain-name story-g01 --outdir out/story-g01-r3 --prompts prompts/part1-rebuilt
+
+# G02 v3 — E285 horror logic, 6s, seed mới (CHỈ queue sau khi G03 v3 QA xong)
+& ".\.venv-tts\Scripts\python.exe" art\tests\chain4_run.py --shots 1 `
+  --shot-ids G02 --seconds 6 --seed-base <seed_mới> `
+  --chain-name story-g01 --outdir out/story-g02-v3 --prompts prompts/part1-rebuilt
 
 # G05 — 8s, continue_from last-frame G03 (CHỈ chạy SAU khi G03 QA PASS)
 & ".\.venv-tts\Scripts\python.exe" art\tests\chain4_run.py --start 2 --shots 2 `
@@ -144,8 +151,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File art\comfy\ALH\learn_hook.ps1
 | Shot | Trạng thái |
 |---|---|
 | **G01 v11** | PASS (E272, auto-chot theo E271). Cuff navy đọc ash-grey = **deviation đã chấp nhận** từ v10, không blocker. |
-| **G02 v2** | PASS (E274, auto-chot). 3 deviation nhẹ: ghế/cửa sổ lùi xa, tỉ lệ vùng sáng phẳng, tay nối G01 đọc như tay rời do cổ tay bị ghế che (E284, review lại theo yêu cầu user). |
-| **G03 v2** | Held-state đúng (ngủ từ f1, tay không chạm máy, 4 người, mặt phẳng, bánh+ảnh nhóm), nhưng Hy4 so với baseline G02 v2 thấy gradient trần/sàn nặng hơn → tái phạm E273. E283 sửa prompt, backup `video-v2-gradient-fail.mp4`. **Seed 20263901, 6 s đang render nền — chờ QA, chưa có verdict.** |
+| **G02 v2** | Bị user phủ nhận (E285): đúng chữ nhưng sai logic kinh dị — bàn tay trắng nổi bật, không phải cánh tay ma G01 ló nhẹ dưới gầm. E284 đã revoked. Prompt đã sửa (E286), 6 s, **chưa render lại — đợi GPU rảnh**. |
+| **G03 v2** | Held-state đúng nhưng gradient trần/sàn nặng hơn baseline G02 → tái phạm E273 (E283). Backup `video-v2-gradient-fail.mp4`. |
+| **G03 v3** | Seed 20263901, 6 s, đã render xong (`48004c76…`). **Đang QA held-state + so sánh flat với G02 baseline — chưa có verdict.** |
 | **G05 v1** | FAIL: eyebrows + mũi ở mid/last. Prompt đã face-flat (E280) + 8 s (E281). **Chưa queue — đợi G03 v3 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
 
 ---
