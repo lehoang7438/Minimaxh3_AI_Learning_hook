@@ -120,7 +120,7 @@ $stamp = Get-Date -Format 'yyyy-MM-ddTHH:mm:sszzz'
 $all = Get-ChildItem -LiteralPath $Repo -File -Recurse -EA SilentlyContinue |
   Where-Object { $_.FullName -notmatch '\\\.git\\' }
 $lines = @(
-  '# MANIFEST — GHẺ 27A learning bundle',
+  '# MANIFEST - GHE 27A learning bundle',
   '',
   "synced: $stamp",
   "source: $Src",

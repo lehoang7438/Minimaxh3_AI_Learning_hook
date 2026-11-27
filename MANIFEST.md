@@ -1,6 +1,6 @@
-﻿# MANIFEST â€” GHáºº 27A learning bundle
+﻿# MANIFEST - GHE 27A learning bundle
 
-synced: 2026-11-27T22:52:48+07:00
+synced: 2026-11-27T22:53:33+07:00
 source: C:\Users\Admin\Documents\Default Project
 files: 111
 
