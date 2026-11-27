@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E281 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E283 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -78,6 +78,8 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E279** | ❌ **REVOKED — ĐỪNG ÁP DỤNG.** G03 v1 vốn đúng script; E278 bị thu hồi, không re-render G03/G05 vì lý do này. | đã revert về dạng single-beat 2875 chars | revoked |
 | **E280** | G03 = **held state**: đã gục ngủ từ frame 1, điện thoại **đã nằm trên đùi, không ai chạm**, màn hình tự sáng với 1 bánh sinh nhật được vây bởi ảnh nhóm. G05 Hy4 thấy eyebrows+mũi → `FACE_FLAT_CONTRACT` bỏ câu "tapered nose", thay bằng "exactly two dot eyes and one short mouth line and nothing else". | `ACTION_OVERRIDE['G03']` (~119), `BEAT_OVERRIDE['G03']` (~274), `FACE_FLAT_CONTRACT` (~104) | A |
 | **E281** | **Duration fit action**: `DURATION_OVERRIDE={'G03':6.0,'G05':8.0}`; beat G03 dùng `{tc}` để không timecode nào vượt clip ngắn. G01 (7 snap) & G02 giữ 10 s. | `DURATION_OVERRIDE` (~462), `{tc}` trong beat (~272) | A |
+| **E282** | Lỗi tải file mp4 bị app khác giữ → đọc `/history/<job_id>`, tải `/view` sang tên `-v2`, measure + copy handoff; **không queue lại GPU** (job đã success). | quy trình queue/download | proposed |
+| **E283** | G03 v2 gradient trần/sàn nặng hơn baseline G02 v2 đã duyệt (tái phạm E273). Trigger = cụm "lights up / lit phone" kích H3 vẽ ánh sáng lan. Sửa 1 lớp prompt: "screen changes by itself from a plain pale rectangle to one flat picture", "cabin keeps its same one-tone surfaces". | `ACTION_OVERRIDE['G03']`, `BEAT_OVERRIDE['G03']` | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -110,10 +112,10 @@ Chỉ user nâng `proposed → accepted`. Cuối phiên: `alh.py sync` + `verify
 ## 7. Lệnh mẫu chain4 (chạy từ project root — **chỉ là mẫu**)
 
 ```powershell
-# G03 — hard cut, 6s, seed 20263701 (ĐANG RENDER, chờ QA — không queue lại)
+# G03 — hard cut, 6s, seed 20263901 (ĐANG RENDER, chờ QA — không queue lại)
 & ".\.venv-tts\Scripts\python.exe" art\tests\chain4_run.py --start 1 --shots 1 `
-  --shot-ids G03 --seconds 6 --seed-base 20263700 `
-  --chain-name story-g01 --outdir out/story-g01 --prompts prompts/part1-rebuilt
+  --shot-ids G03 --seconds 6 --seed-base 20263900 `
+  --chain-name story-g01 --outdir out/story-g01-r3 --prompts prompts/part1-rebuilt
 
 # G05 — 8s, continue_from last-frame G03 (CHỈ chạy SAU khi G03 QA PASS)
 & ".\.venv-tts\Scripts\python.exe" art\tests\chain4_run.py --start 2 --shots 2 `
@@ -142,8 +144,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File art\comfy\ALH\learn_hook.ps1
 |---|---|
 | **G01 v11** | PASS (E272, auto-chot theo E271). Cuff navy đọc ash-grey = **deviation đã chấp nhận** từ v10, không blocker. |
 | **G02 v2** | PASS (E274, auto-chot). 2 deviation nhẹ: ghế/cửa sổ lùi xa, tỉ lệ vùng sáng phẳng. |
-| **G03 v1** | Bị Hy4 re-QA bác: tay đưa điện thoại từ f003 (không phải held state). E280/E281 đã sửa prompt (held-state + face-flat + 6 s). **Seed 20263701, 6 s đang render nền — chờ QA, chưa có verdict.** |
-| **G05 v1** | FAIL: eyebrows + mũi ở mid/last. Prompt đã face-flat (E280) + 8 s (E281). **Chưa queue — đợi G03 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
+| **G03 v2** | Held-state đúng (ngủ từ f1, tay không chạm máy, 4 người, mặt phẳng, bánh+ảnh nhóm), nhưng Hy4 so với baseline G02 v2 thấy gradient trần/sàn nặng hơn → tái phạm E273. E283 sửa prompt, backup `video-v2-gradient-fail.mp4`. **Seed 20263901, 6 s đang render nền — chờ QA, chưa có verdict.** |
+| **G05 v1** | FAIL: eyebrows + mũi ở mid/last. Prompt đã face-flat (E280) + 8 s (E281). **Chưa queue — đợi G03 v3 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
 
 ---
 
