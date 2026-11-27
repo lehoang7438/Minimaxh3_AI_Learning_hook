@@ -1,0 +1,39 @@
+{
+  "1": {
+    "class_type": "FreeVideoMedia",
+    "inputs": {
+      "assets": "[]",
+      "audio_use": "reference"
+    }
+  },
+  "2": {
+    "class_type": "FreeVideoGenerate",
+    "inputs": {
+      "text": "{{PROMPT}}",
+      "width": 704,
+      "height": 1280,
+      "seconds": 6.0,
+      "seed": 20264101,
+      "two_pass": true,
+      "base_steps": 8,
+      "refine_steps": 3,
+      "force_regenerate": true,
+      "preview": false,
+      "refine_from": "",
+      "continue_from": "",
+      "frames": 0,
+      "first_frame_reference": true,
+      "voice_reference": false,
+      "hide_tail": false,
+      "step_cache": "none",
+      "upscale_factor": "2",
+      "allow_empty_prompt": false,
+      "upscale_from": "",
+      "upscale_to": "",
+      "media": [
+        "1",
+        0
+      ]
+    }
+  }
+}

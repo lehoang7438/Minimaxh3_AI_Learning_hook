@@ -1,0 +1,717 @@
+{
+  "title": "GHẾ 27A — Flat-icon v3 — Part 1",
+  "canvas": [
+    704,
+    1280
+  ],
+  "fps": 10,
+  "voices": {
+    "VO": "Thái Sơn",
+    "Khang": "Thái Sơn",
+    "Bạn": "Minh Đức",
+    "Vy": "Trúc Ly",
+    "Loa": "Quốc Tuấn"
+  },
+  "shots": [
+    {
+      "id": "G01",
+      "start": "0:00",
+      "end": "0:10",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "Under row 27 the camera holds one fixed framing on a blood-stained forearm in one uniform dirty dark bone tone, ending in a realistic flat hand with one thumb, four fingers and near-black nails; a wide near-black navy cuff anchors the top, every ragged chewed notch is filled with the same flat dark-red blood, and the whole forearm lifts twice while chewing echoes in the dark.",
+      "bg": "art/assets/v2-p11-row31-dark.png",
+      "first_frame": "art/assets/h3/refs/g01-ins-first-deterministic.png",
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/bloody-arm-real-r8-1024.png",
+          "role": "prop",
+          "outfit": "prop"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "chew",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G02",
+      "start": "0:10",
+      "end": "0:20",
+      "seconds": 10,
+      "camera": "3P",
+      "description": "Night cabin, rows 27 and 28. Three generic passengers sit in the seats other than 27A; the hand withdraws beneath the seat; the aisle stays still.",
+      "bg": "art/assets/p2-seat-empty-bg.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "breath",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G03",
+      "start": "0:20",
+      "end": "0:30",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang slumps asleep in seat 27A while three generic passengers sit in the other seats; a phone glowing on his lap shows a birthday photo.",
+      "bg": "art/assets/p11-seat27a.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        },
+        {
+          "image": "art/assets/phone-video.png",
+          "role": "prop"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G04",
+      "start": "0:30",
+      "end": "0:40",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "Flat phone screen showing one birthday cake and a small group photo, no moving text.",
+      "bg": "art/assets/phone-video.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G05",
+      "start": "0:40",
+      "end": "0:50",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang wakes abruptly, eyes open, head lifted, listening to the cabin.",
+      "bg": "art/assets/p11-seat27a.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "breath",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G06",
+      "start": "0:50",
+      "end": "1:00",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "Close flat face with two dot eyes, now open, one short mouth line, no other features.",
+      "bg": "art/assets/khang-face-flat.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G07",
+      "start": "1:00",
+      "end": "1:10",
+      "seconds": 10,
+      "camera": "3P",
+      "description": "A passenger a few rows ahead sits perfectly still, head bowed onto the chest.",
+      "bg": "art/assets/p1b-cabin-wide.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/infected_canon.png",
+          "role": "character",
+          "outfit": "infected-torn-navy-barefoot"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G08",
+      "start": "1:10",
+      "end": "1:20",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang leaves the seat and walks slowly toward the lavatory at the front.",
+      "bg": "art/assets/p1-aisle-bg.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "breath",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G09",
+      "start": "1:20",
+      "end": "1:30",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "The still passenger snaps his head up, two red infected eyes fixed on Khang.",
+      "bg": "art/assets/h3/ins/G10-face.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/infected_canon.png",
+          "role": "character",
+          "outfit": "infected-torn-navy-barefoot"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G10",
+      "start": "1:30",
+      "end": "1:40",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang steps into the lavatory and closes the door behind him.",
+      "bg": "art/assets/p4-lavatory.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "click",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G11",
+      "start": "1:40",
+      "end": "1:50",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "The mirror shows a flat dark silhouette standing behind Khang; the sink and tap are solid fills.",
+      "bg": "art/assets/h3/ins/G19-mirror.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G12",
+      "start": "1:50",
+      "end": "2:00",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "Khang turns around: the small lavatory is empty, only the flat door and mirror remain.",
+      "bg": "art/assets/p4-lavatory.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G13",
+      "start": "2:00",
+      "end": "2:10",
+      "seconds": 10,
+      "camera": "3P",
+      "description": "The lavatory door shakes under slow heavy pounding from the other side.",
+      "bg": "art/assets/p6-lav-door.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "knock",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G14",
+      "start": "2:10",
+      "end": "2:20",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "Dark red blood seeps through the gap under the door and spreads across the flat floor.",
+      "bg": "art/assets/p7-lav-gap.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/props-blood.png",
+          "role": "prop"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [
+        {
+          "who": "Bạn",
+          "at": 5.0,
+          "text": "Làm ơn... mở cửa..."
+        }
+      ],
+      "sfx": [
+        {
+          "type": "knock",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G15",
+      "start": "2:20",
+      "end": "2:30",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang approaches the door, one paddle hand raised, frozen before touching it.",
+      "bg": "art/assets/p6-lav-door.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G16",
+      "start": "2:30",
+      "end": "2:40",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "The blood under the door stops spreading; the floor stays a single flat dark field.",
+      "bg": "art/assets/p7-lav-gap.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G17",
+      "start": "2:40",
+      "end": "2:50",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "A second voice calls from immediately outside the door; the panel is otherwise empty.",
+      "bg": "art/assets/p6-lav-door.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [
+        {
+          "who": "Bạn",
+          "at": 6.0,
+          "text": "Anh Khang..."
+        }
+      ],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G18",
+      "start": "2:50",
+      "end": "3:00",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang freezes, shoulders raised, listening to a name he should not hear.",
+      "bg": "art/assets/p4-lavatory.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G19",
+      "start": "3:00",
+      "end": "3:10",
+      "seconds": 10,
+      "camera": "3P",
+      "description": "He opens the door. The passenger cabin beyond is completely silent and still.",
+      "bg": "art/assets/p1-aisle-bg.png",
+      "first_frame": null,
+      "layers": [],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G20",
+      "start": "3:10",
+      "end": "3:20",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "A flight attendant lies face down on the cabin floor, navy uniform flat and still.",
+      "bg": "art/assets/p3-chaos-flat.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/vy-magenta-1024.png",
+          "role": "character",
+          "outfit": "vy-crew-uniform-teal-scarf"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G21",
+      "start": "3:20",
+      "end": "3:30",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang kneels to check the attendant; the fall seats around them are empty.",
+      "bg": "art/assets/p3-chaos-flat.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        },
+        {
+          "image": "art/assets/h3/refs/vy-magenta-1024.png",
+          "role": "character",
+          "outfit": "vy-crew-uniform-teal-scarf"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G22",
+      "start": "3:30",
+      "end": "3:40",
+      "seconds": 10,
+      "camera": "INS",
+      "description": "The attendant's solid mitten hand suddenly clamps around Khang's ankle.",
+      "bg": "art/assets/v2-hand-grip.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/bloody-paddle-hand-r4-1024.png",
+          "role": "prop"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "thud",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    },
+    {
+      "id": "G23",
+      "start": "3:40",
+      "end": "3:50",
+      "seconds": 10,
+      "camera": "POV-K",
+      "description": "Khang jerks back and pulls his leg free, stumbling against a seat row.",
+      "bg": "art/assets/p3-chaos-flat.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/khang-flat-canon-magenta-r2-1024.png",
+          "role": "character",
+          "outfit": "khang-navy-longsleeve"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [],
+      "forbid_assets": []
+    },
+    {
+      "id": "G24",
+      "start": "3:50",
+      "end": "4:00",
+      "seconds": 10,
+      "camera": "3P",
+      "description": "The whole cabin begins to stir; distant shapes shift between the rows.",
+      "bg": "art/assets/p3-chaos-flat.png",
+      "first_frame": null,
+      "layers": [
+        {
+          "image": "art/assets/h3/refs/infected_canon.png",
+          "role": "character",
+          "outfit": "infected-torn-navy-barefoot"
+        }
+      ],
+      "motion": {
+        "zoom": [
+          1.0,
+          1.03
+        ],
+        "shake": 0.4,
+        "grain": 5
+      },
+      "dialogue": [],
+      "sfx": [
+        {
+          "type": "growl",
+          "at": 1.0,
+          "length": 1.5,
+          "level": 0.07
+        }
+      ],
+      "forbid_assets": []
+    }
+  ]
+}

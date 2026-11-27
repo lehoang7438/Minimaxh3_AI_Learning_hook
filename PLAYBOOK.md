@@ -6,9 +6,9 @@
 → skill (SKILL.md) → ALH (`learning-log.jsonl` / `REPORT.md`) → QA (máy + Hy4 + agent chốt).
 `global-context*.json` là **output**, không bao giờ làm nguồn prompt.
 
-> **Trạng thái ALH (REPORT.md 27/11):** 281 event — 128 accepted / 100 archived / 49 proposed / 4 revoked.
+> **Trạng thái ALH (REPORT.md 27/11 22:24):** 294 event — 136 accepted / 100 archived / 53 proposed / 5 revoked.
 > Accepted = **đang áp dụng**, nhưng **rule chỉ thành hard gate sau khi mirror vào SKILL.md / GLOBAL-RULES.md**;
-> **99 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
+> **107 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
 > **không promote** rule nào — nó chỉ trỏ tới rule đã có bằng chứng.
 
 ---
@@ -55,11 +55,11 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 - [ ] Canvas **704×1280**; `upscale_factor:"2"` = *no upscale* (không phải 1408×2560).
 - [ ] `art/comfy/GPU-LOCK.json` một owner (`asset` hoặc `video`); chỉ set `free` sau job kết thúc **và** verdict đã ghi ledger.
 - [ ] `workflow_state.py --check` sạch; ALH state fresh; không chốt verdict / không sleep khi QA shot hiện tại chưa xong.
-- [ ] Download lỗi `IOException` do file mp4 bị app khác giữ → đọc `/history/<job_id>`, tải `/view` sang tên `-v2`, measure + copy handoff; **không queue lại GPU** (E282 proposed).
+- [ ] **Chưa active — E282 đang `proposed`, chỉ áp dụng sau khi user nâng accepted:** download lỗi `IOException` do file mp4 bị app khác giữ → đọc `/history/<job_id>`, tải `/view` sang tên `-v2`, measure + copy handoff; **không queue lại GPU**.
 
 ---
 
-## 4. Rule prompt đang active — E267–E291 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E294 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -88,6 +88,9 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E289** | G01 v11 FAIL E270 theo user + Hy4: khung đứng yên, chỉ tay giật; "short lateral slide" bị H3 bỏ qua. Sửa 1 lớp prompt: 3 chỗ đều nói "one clear short sideways pan" + parallax "fixed jagged seat edge and dark floor gap travel visibly ... hand keeps its size", vẫn 7 nhịp jerk, không dolly. Rebuild 5097 chars, lint 10 s PASS 0 warning. E272 chỉ đúng phần jerk/blood, **verdict lia camera bị E289 thay thế**. | `G01_STYLE_CONTRACT`, `UNDER_SEAT_PAN`, `ACTION_OVERRIDE['G01']`, `JERK_AMBIENCE` | A |
 | **E290** | Audit prompt phải so **prompt ↔ cabin-map/global-context** theo `set_id` bằng trường có cấu trúc (tier ánh sáng + dải luma, ghế 1+1/2+2/3+3, geometry/camera, hex, `state_chain` props, wardrobe/chân/tỉ lệ, rò rỉ tiếng Việt/phủ định) — không so prompt↔prompt bằng regex. Bố cục ghế đang mâu thuẫn across rules → báo **CHƯA CHỐT**, không tự chọn. Output Big Pickle phải đọc lại tay 3 FAIL + 3 PASS. | gate mới `prompt_consistency_audit.py` (Big Pickle dựng) | A |
 | **E291** | G03 v4 FAIL lần 3 (seed 20264101, 6.58 s, job `fc194b2d…`): Hy4 so sánh trần/sàn với G02 baseline vẫn thấy quầng xám mềm + ramps teal xa điện thoại → E287 `SCENE_OVERRIDE` không đủ; thêm regression mới: hai tay mitten đỡ/cầm máy f01–f14 và đầu Khang ngẩng nhẹ f05–f08, phá E280/E281. Hai giả thuyết prompt-only đã cạn (E283, E287) → dừng, hỏi user theo E271 trước khi render hoặc đổi T2V/`continue_from`. | clip G03 v4 (không sửa prompt lúc này) | **P** |
+| **E292** | Payload `/history` chứng minh **E287 bị bác**: Scene + Props flat-surface của G03 v4 **byte-identical** với G02 v2 đã duyệt (job `1005c5e3` ↔ `fc194b2d`); chỉ còn khác `wide→medium` và khối điện thoại đổi nội dung. Không viết lại Scene thêm lần nữa. | bằng chứng diff payload | **P** |
+| **E293** | Reviewer đề xuất kiến trúc 3 lớp: 1 style contract duy nhất + 1 plate block theo `set_id` byte-identical giữa G02/G03/G05 + 1 shot block; linter cấm từ ánh sáng/nền trong shot block; audit cả clip rendered (60–75 % bóng phẳng, palette, số ghế/cửa sổ). Gom accepted rule thành danh sách ngắn + supersede trước khi mirror SKILL.md. | đề xuất, chờ user duyệt | **P** |
+| **E294** | Sửa nhãn: E292 là phát hiện gradient payload-diff (text bên trong tự gọi nhầm là E293); E293 là kiến trúc 3 lớp. | ALH bookkeeping | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -99,7 +102,7 @@ một câu text duy nhất cho UI shot, tiếng Việt chỉ trong `<d>...</d>`,
 
 - **Flat 2D storytime horror v2:** solid fills, không gradient/shading/texture/3D; viền đen đậm không đều; palette navy / bone-white / **một** teal; đỏ chỉ blood/eyes/rec dot.
 - **Mặt:** đúng 2 chấm mắt + 1 nét miệng; **không eyebrows, không mũi, không lashes** (E280 phát hiện G05 vi phạm). Tay: mitten/không ngón, trừ override G01 (`r8`: tay thật 4 ngón + móng đen, cuff navy rộng, máu đỏ sậm mọi vết cắn, teal 0).
-- **G01–G05 cabin:** đúng **4 hành khách**, rows 27/28 (1+1), 4 ghế/4 cửa sổ; **teal chỉ ở thảm/tường/áo 27A**; **đỏ chỉ trong màn hình điện thoại/prop**, không đỏ lan.
+- **G02/G03/G05 cabin (không áp cho G01 under-seat insert, E248):** đúng **4 hành khách**, rows 27/28 (1+1 theo cabin-map, nhưng E230/E231/E237 vẫn `proposed` → audit báo CHƯA CHỐT), 4 ghế/4 cửa sổ; **teal chỉ ở thảm/tường/áo 27A**; **đỏ chỉ trong màn hình điện thoại/prop**, không đỏ lan (quy tắc đỏ toàn cục vẫn là blood/infected eyes/recording dot).
 - **Handoff:** G05 `continue_from` last-frame của G03; MAE G03_last→G05_first thấp (~1.8 là sạch); chain giữ trục 180°, prop-state, eyeline, relative_height.
 - **Hy4 = mắt tai read-only**, tiếng Việt, **không verdict / không gợi ý fix**, kết thúc `Đã nhìn 1/1 ảnh`; hỏi nhiều vòng (mô tả tự do → vùng/đếm/tiếp xúc/viền/màu → mâu thuẫn thuật ngữ); agent đối chiếu từng câu + metric máy rồi mới chốt `MET|PARTIAL|MISSING`.
 - Ngưỡng máy: character WARN >150 / FAIL >200; set plate WARN >300 / FAIL >450; prop WARN >250 / FAIL >400; ≥3 gutter full-frame = FAIL; `outfit` sai `wardrobe_id` = FAIL, thiếu = WARN.

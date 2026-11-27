@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "purpose": "Master set diagram. Every background must be one viewpoint of this same world, never an invented room.",
+  "rule": "Before generating or reviewing any background: pick scene_id, copy its set_sentence verbatim into the prompt, keep geometry/light/objects fixed. A plate that contradicts this map is FAIL.",
+  "cabin_geometry_contract": {
+    "layout": "narrow-body single aisle, EXACTLY two rows (27 near the camera, 28 far) with ONE seat on each side of the aisle (1+1) in every row: four seats total; redesign approved by user 26/11, pending QA master r6",
+    "window_seats": "the outer seat on each side touches an oval window; seat 27A is the LEFT window seat",
+    "aisle_seats": "the inner seat on each side touches the aisle",
+    "aisle_direction": "one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis",
+    "rows": "EXACTLY two rows visible (27 near the camera, 28 far); ONE seat on each side of the aisle in every row (1+1), four seats total. Row 28 is the last row before the tail lavatory. The former five-row 27-31 and 2+2-per-row conventions are retired; the full walkable route lives only in the topology-only 3D draft.",
+    "windows": "oval windows on BOTH sides, one per row, aligned with seats A and F",
+    "eye_level": "standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate",
+    "enforcement": "Every cabin plate must agree with master_plate: EXACTLY two rows / four seats, 1+1 per row, left window seat = 27A reserved for Khang, far end = tail, EYE-LEVEL view down the aisle. A plate with more than two rows, 2+2 or 3+3 seating, windows on one side only, a top-down/bird's-eye view or a flipped front/tail axis is FAIL. Generic background passengers are composited from the crowd sheet into the three seats other than 27A; they are never baked into a plate by H3. Chaos/barricade plates keep the same cabin structure and only add overturned seats, debris resting on the floor and dark-red floor stains."
+  },
+  "palette_lock": {
+    "rule": "ALL cabin and set plates use these exact flat fills. CCTV changes only the lighting tint, NEVER the underlying seat/wall/floor colors. Chaos/barricade are the same cabin with debris added, not a new color scheme. Pass the approved p1-aisle-bg.png as <Picture 1> color reference when regenerating cabin plates.",
+    "seat_navy": "#15233B",
+    "seat_trim_bone": "#EDE7D9",
+    "wall_bone": "#EFEDE6",
+    "floor_teal": "#2E6E6E",
+    "cctv_tint": "flat desaturated green-grey veil over the SAME navy seats and teal floor, do not recolor the objects",
+    "blood_red": "#8C2A22",
+    "amber_flat": "#D99A2B",
+    "forbid": "different seat navy between plates, pink/purple seats, mixed warm/cold wall tints in one cabin"
+  },
+  "lighting_contract": {
+    "rule": "STORYTIME HORROR at night. Create dread by lowering overall VALUE (brightness) with a few motivated light sources, NOT by repainting every surface navy. CRITICAL: do NOT make the WALL the same navy as the seats. Seats are #15233B and Khang/Vy/crew/infected all wear navy, so a navy wall makes flat-fill character-on-seat-against-wall merge into one indistinguishable mass. Keep each material a distinct VALUE/HUE so forms separate, then dim the whole frame with shadow regions.",
+    "wall_value": "walls and ceiling are a cool dark SLATE / dimmed bone (clearly lighter and cooler than #15233B seat navy, but NOT bright cream). They must stay visually distinct from seats and navy clothing so navy figures read against them.",
+    "seat_and_character": "seats and navy clothing keep #15233B; separate them from the wall by outline weight and value contrast, never by making the wall navy too",
+    "teal_usage": "teal only as a faint floor path / thin strip, never a broad bright floor",
+    "prompt_visible": "Low-key night-horror light: one small bone-white ceiling fixture visibly lit near the camera end; cool dark slate walls clearly lighter than the navy seats; 60 to 75 percent of the frame held in hard-edged flat navy shadow shapes; heavy flat four-corner vignette falling to near-black",
+    "sources": "1-2 visible emitting fixtures only: dim aisle ceiling strip, a failing emergency light, or city-light dots through the oval windows; the rest of the frame (60-75%) falls into flat dark shadow shapes, no beam, no gradient spotlight, no glowing wall with no fixture",
+    "vignette": "heavy dark vignette on every plate; corners fall to near-black",
+    "tiers": {
+      "dim_night_flight": "normal night flight (p1-aisle-bg master, seat_27a): cabin is dim/creepy but structure and faces stay readable; slate walls slightly lit by ceiling fixture, teal path faint",
+      "cctv": "same cabin under a faint green-grey veil plus darker corners, like a monitor feed; objects keep their colors",
+      "failure": "chaos/barricade: main lights dead or flickering, only floor/emergency strips or one harsh broken fixture; deep contrast, 70%+ of frame in shadow, much darker than dim_night_flight"
+    },
+    "restaurant_exception": "restaurant flashback keeps a flat warm amber tint on furniture only, no light beam or glow, still darker at the edges",
+    "forbid": "navy walls matching the seats, uniform bright bone walls, bright teal full floor, glowing surface with no fixture, gradient beams, pink/purple rim light, any frame that reads as daytime"
+  },
+  "state_chain": {
+    "rule": "Variants of one set must inherit BOTH color (palette_lock) AND object form/state from the master plate and the previous state. Passing only a color reference is NOT enough: it causes design drift (same color, wrong shape) and prop discontinuity (objects vanish or mutate between states).",
+    "order": "Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the previous qa_passed state and changes ONLY the declared state_delta.",
+    "picture_roles": {
+      "<Picture 1>": "Set/Layout Anchor - p1-aisle-bg.png: frame, eye-level, aisle, windows, palette",
+      "<Picture 2>": "Furniture/Prop Ref - p2-seat-empty-bg.png: exact seat headrest, armrest, oval-window form. Take the objects only and place them in the <Picture 1> environment so the magenta/lighting of a prop ref does not bleed into the cabin.",
+      "<Picture 3>": "Character Ref - only when the variant actually contains people; never force it into an empty plate"
+    },
+    "cctv_inventory_answer": "The archived CCTV plate contains ONLY the navy seats with teal headrests, the dark central aisle and the round wall fittings. No cart, no luggage, no passenger, no screen appears in that frame. Therefore the inherited item is the SEAT FORM (a form_ref), not a separate prop ref.",
+    "invariant_architecture": [
+      "exactly two rows (27 and 28) with four seats total, 1+1 per row",
+      "1+1 navy seats with slate headrests and armrests; same shape in every plate",
+      "one centered aisle running front-near to tail-far, never flipped",
+      "one oval window per row on BOTH sides, aligned with seats A and F; never square",
+      "closed overhead bins above the seats; cool ceiling strips; muted-teal floor path"
+    ],
+    "progressive_props": {
+      "CCTV": "the SAME empty cabin under a flat green-grey veil; the seats keep their navy/teal form",
+      "chaos": "the SAME seats, a few tipped askew; cups, paper scraps and small bags resting on the floor; dark-red floor stains; no new furniture type",
+      "barricade": "the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe on the floor; do not invent a different cart design"
+    },
+    "required_refs": {
+      "p12-cctv.png": {
+        "base_plate": "art/assets/p1-aisle-bg.png",
+        "form_refs": [
+          "art/assets/p2-seat-empty-bg.png"
+        ],
+        "cast_refs": []
+      },
+      "p3-chaos-flat.png": {
+        "base_plate": "art/assets/p1-aisle-bg.png",
+        "form_refs": [
+          "art/assets/p2-seat-empty-bg.png",
+          "art/assets/props-chaos.png"
+        ],
+        "cast_refs": []
+      },
+      "p3b-barricade.png": {
+        "base_plate": "art/assets/p1-aisle-bg.png",
+        "form_refs": [
+          "art/assets/p2-seat-empty-bg.png",
+          "art/assets/p3-chaos-flat.png"
+        ],
+        "cast_refs": []
+      }
+    },
+    "gate": "Before queuing an H3 Image job for any variant, every id in required_refs[plate] must exist and carry qa_passed=true; label each <Picture N> by its role in the prompt. Missing or un-QA'd ref = block generation. If a previous-state ref is not yet qa_passed, skip it and use only base_plate + form_refs, then record the skip in ALH."
+  },
+  "sets": {
+    "restaurant": {
+      "time": "flashback, warm night",
+      "geometry": "one round table at centre, three chairs around it, karaoke screen on the far wall showing only two thin teal horizontal bars on a dark navy rectangle",
+      "objects": "one birthday cake with candles baked into the table center; amber beer glasses on the table; one single cake",
+      "light": "flat uniform colour fill with amber as one flat tint",
+      "camera_height": "seated eye level, table edge around y=0.59 of frame",
+      "plates": {
+        "v3-r1-restaurant.png": "round table, cake lit, three chairs; usable for G02/G03/G05/G06",
+        "v3-r1b-empty-table.png": "same table after the party, glasses empty, cake gone"
+      },
+      "shots": [],
+      "deprecated": true,
+      "note": "Deprecated in v3: no restaurant shot exists in part1/2/3 specs. Do not generate restaurant plates."
+    },
+    "aircraft_forward": {
+      "time": "night, before takeoff",
+      "geometry": "narrow-body cabin, single aisle running front(near)->tail(far); exactly rows 27 and 28 visible, one seat per side in each row (1+1, four seats total); oval windows on BOTH sides; front galley/cockpit door at the near end",
+      "objects": "empty seats only; overhead bins closed; one uninterrupted cabin aisle",
+      "light": "cool white ceiling strips, city lights through the windows, faint teal aisle floor path",
+      "camera_height": "standing eye level, looking toward the tail",
+      "plates": {
+        "p1b-cabin-wide.png": "wide view down the aisle from the front galley toward the tail"
+      },
+      "shots": [
+        "G07"
+      ]
+    },
+    "seat_27a": {
+      "time": "night, cruising",
+      "geometry": "row 27 has exactly one seat on each side of the aisle; seat A is the single LEFT window seat; the row beyond is row 28, also one seat per side; oval window beside seat A",
+      "objects": "one folded navy vest resting on the adjacent seat as a prop; one water bottle held in Vy's hand",
+      "light": "blue-white city lights below the oval window; dim cool cabin strip above; teal floor path in aisle",
+      "camera_height": "level with a seated passenger",
+      "plates": {
+        "p2-seat-empty-bg.png": "empty window seat 27A, oval window with city lights"
+      },
+      "shots": [
+        "G08",
+        "G09",
+        "G10"
+      ]
+    },
+    "aisle": {
+      "time": "night, cabin dimmed",
+      "geometry": "same narrow-body aisle, continuous with seat_27a; rows 27->28 toward the tail, one seat per side in each row; the far dark end is the rear; row 28 is the last row before the lavatory",
+      "objects": "one black shoe under the aisle seat of row 28; a second hand under the same seat; patient 0 rises from under that seat",
+      "light": "teal floor path strips on both sides of the aisle, cool ceiling strips, dark toward the tail",
+      "camera_height": "standing eye level for G11/G12/G15/G17; under-seat level for G13/G14",
+      "plates": {
+        "p1-aisle-bg.png": "aisle perspective toward the tail, empty seats both sides, teal floor path",
+        "v2-p11-row31-dark.png": "row 31 dark row with under-seat gap on the aisle side"
+      },
+      "shots": [
+        "G11",
+        "G12",
+        "G13",
+        "G14",
+        "G15",
+        "G17"
+      ]
+    },
+    "lavatory": {
+      "time": "night, cold",
+      "geometry": "tail lavatory: steel sink and mirror on the left wall, toilet on the right; narrow corridor outside; door opens into that corridor; the door is on the SAME side in G21/G22/G24",
+      "objects": "one steel sink, one mirror, one door, one light gap under the door; phone is a hand-held prop from G20 onward",
+      "light": "cold teal inside the lavatory; one white sliver from the lit cabin through the door gap",
+      "camera_height": "standing for G18/G19/G21/G22/G23/G25; floor level for G24",
+      "plates": {
+        "p4-lavatory.png": "inside the lavatory, empty, sink left and mirror above",
+        "p6-lav-door.png": "closed lavatory door in the narrow corridor",
+        "p7-lav-gap.png": "floor-level angle at the door gap with white cabin light"
+      },
+      "shots": [
+        "G18",
+        "G19",
+        "G20",
+        "G21",
+        "G22",
+        "G23",
+        "G24",
+        "G25"
+      ]
+    },
+    "cabin_chaos": {
+      "time": "night, after the outbreak - cabin in disorder",
+      "geometry": "same narrow-body two-row 1+1 cabin (four seats total) with centered aisle, oval windows both sides, eye-level view toward the tail; a few seats tipped askew in their rows",
+      "objects": "cups, paper scraps, bags on the floor; overturned carts and luggage blocking the aisle; one black shoe on the floor; dark-red stains on the floor",
+      "light": "FAILURE tier: main lights dead, one harsh broken fixture and faint teal floor path, 70%+ of frame in deep flat shadow, heavy vignette",
+      "camera_height": "standing eye level (G22/G23/G25), floor level for the door-gap shot",
+      "plates": {
+        "p3-chaos-flat.png": "disordered cabin, scattered debris and blood on floor",
+        "p3b-barricade.png": "carts and luggage blocking the aisle, one black shoe",
+        "p9-hiding-corner.png": "dark nook behind galley cabinets where Khang hides"
+      },
+      "shots": []
+    }
+  },
+  "special": {
+    "G01": "Close insert under row 27: one blood-stained forearm in one uniform dirty dark ash-grey bone tone ending in a realistic flat human hand - one thumb, four separate fingers and near-black nails - with several uneven ragged chewed chunks missing from the hand edge, a WIDE torn solid near-black navy cuff at the top that is the darkest fill in frame, and every wound and chewed chunk filled with the same flat dark-red blood and no second wound colour, lying in the dark floor gap; deep layered flat under-seat structure, no people, flat fills only with no gradient or 3D.",
+    "G16": "0.4 s red flash with white teeth; a flash insert, not a room.",
+    "P3G03": "Short flash returning to the under-seat hand and the first bite.",
+    "P3G12": "Flat black field with one red recording dot pulsing.",
+    "transition": "v3 is a cold night cabin film throughout; warm amber restaurant palette is deprecated and must not be used in any new plate or prompt."
+  },
+  "generation_prompt_contract": [
+    "Begin: 'Vertical 9:16 flat 2D storytime horror BACKGROUND PLATE, EMPTY SCENE, one continuous space, one viewpoint, one-point depth, no panels, no borders, no text.'",
+    "Then paste the scene's geometry sentence verbatim from this file.",
+    "Then paste the scene's objects and light sentences verbatim, naming every object together with the surface that supports it. For night-cabin plates the light sentence must come from lighting_contract.tiers (dim_night_flight by default, failure for chaos): low-key, one or two motivated fixtures, slate walls lighter than navy seats, 60-75 percent flat shadow and a heavy flat vignette - never even fill.",
+    "Then add: 'Build depth with three flat layers (foreground / midground / background), distinct value tiers and visible occlusions; solid flat fills with at most two tone values per surface.'",
+    "End: 'Extra thick uneven black ink outlines, palette near-black navy / bone white / one muted teal, red only for blood and recording dot, no gradient, no shading, no texture, not realistic, not 3D.'",
+    "Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only.",
+    "Copy seat count, axis, window side and light values from master_plate / lighting_contract. Never hardcode a convention from memory: exactly two rows of 1+1 (four seats total) is canonical by user decision 26/11, pending QA master r6. A 2+2 reading would create eight seats and is FAIL under the new design.",
+    "For every flat cabin plate, <Picture 1> is master_plate.path with latest verdict PASS. The 3D route map supplies topology as TEXT only and is never injected as an image ref into a flat plate.",
+    "When red_allowed=false, omit the word red entirely - including the old 'red only for blood and recording dot' clause, which primed two red dots in G02.",
+    "Compose prompts with art/tests/h3_prompt_rules.py + art/tests/story_to_asset_prompts.py and run art/tests/check_asset_prompt.py before gen_image.py. One job = one asset. Sole user-approved waiver (26/11): one crowd sheet holding exactly four distinct generic seated figures in a single equal-width row may replace four separate character files; it must never carry Khang or Vy identity and must be QA'd as four figures, one row, no cropped edge.",
+    "Never write 'storybook page', 'comic panel', 'sequence', or 'multiple views' — they produce a 6-panel page (measured on v3-r1-restaurant.png).",
+    "For a cabin variant, first pass every required_refs[plate] id from state_chain (base_plate + form_refs + cast_refs) that has qa_passed=true and label each <Picture N> by its role; then paste the palette_lock hex values verbatim; then describe only the state_delta. A variant with no refs is a HARD FAIL, not a warning."
+  ],
+  "revision": "v4.2-two-row-20261126",
+  "revision_note": "User decision 26/11/2026: backgrounds are DEEPER (layered flat cut-paper depth, one-point perspective, visible supports/occlusions, distinct value tiers) while characters stay strictly flat. v4.1 syncs the light contract into global-context/rebuilt prompts: a horror film is low-key (one or two motivated fixtures, slate walls distinct from navy seats, 60-75 percent flat shadow, heavy flat vignette) - never evenly lit. v3 spec has 60 shots (G01-G24 / P2G01-P2G24 / P3G01-P3G12) and contains no restaurant scene.",
+  "design_change_20261126": "User approved exactly two rows / four seats (1+1 per row), a one-row four-figure generic crowd sheet composited into the three seats other than 27A, and Khang retained in 27A. The 2-row/4-seat label means 1+1, NOT 2+2; any prompt saying 2+2 or eight seats is FAIL.",
+  "depth_contract": {
+    "rule": "Background depth comes from flat geometry only: distinct foreground / midground / background planes, one-point perspective, visible occlusion, object-to-support contact and 2-3 flat value tiers. No gradient, no shading, no texture, no beam, no photorealism.",
+    "character_rule": "Characters remain strict flat storybook shapes: solid fills, two dot eyes, one mouth line, four-finger flat hands with a thumb, adult 1:6 full-body proportions with flat segmented shoulders, elbows, hips and knees, no modelling or shading.",
+    "qa_eye": "Hy4 is the read-only description-only eye for every generated asset. The agent writes the PASS/FAIL verdict only after Hy4 has described the file."
+  },
+  "master_plate": {
+    "path": "art/assets/h3/flat/cabin-master-map-horror-2row-r7.png",
+    "role": "one continuous eye-level low-key NIGHT-HORROR master view of the whole cabin; layout, palette and light anchor for every cabin plate",
+    "invariants": [
+      "exactly two rows (27 and 28) with four seats total, one seat on each side of the aisle in every row",
+      "seat 27A is the left window seat and stays empty in the plate; Khang and three generic passengers are added later at the compositing stage",
+      "1+1 navy seats with slate headrests and armrests; same shape in every plate",
+      "one centered aisle running front-near to tail-far, never flipped",
+      "oval windows on BOTH sides, one per row, aligned with the window seats; never square",
+      "closed overhead bins above the seats; one motivated ceiling fixture; muted-teal floor path",
+      "60 to 75 percent shadow built from hard-edged flat navy shapes and a heavy four-corner vignette"
+    ],
+    "layout_prompt": "Exactly two seat rows in one continuous cabin: one near row and one far row. Draw exactly four seat silhouettes in total, one single seat on the left and one single seat on the right in the near row, one single seat on the left and one single seat on the right in the far row; each single seat touches the oval wall window on its outer side and the aisle on its inner side. Leave a large empty dark floor area between the near row and the camera. One straight muted-teal aisle runner runs from the near bottom edge to the far tail door between the four seats. Seat 27A is the single left-window seat of the near row. Exactly four oval windows total: one in the left wall and one in the right wall beside each of the two rows, all oval and aligned with their seats. Closed overhead bins rest directly above the four seats. One small bone-white ceiling fixture is visibly lit near the camera end. The single closed tail-lavatory door stands at the far vanishing point with one small bright bone-white square window and one black round knob directly below it.",
+    "compositing_note": "QA metadata only, never prompt text: row numbers are 27 (near) and 28 (far); Khang and three generic passengers are composited later, not drawn by H3.",
+    "deviation_note": "26/11/2026 user redesign: exactly two rows and four seats total, one seat per side (1+1). The former 3+3, five-row and 2+2-per-row conventions are retired; the old r4 master is missing on disk and r5/r5d/r5e are archived. Master r6 FAILED QA (3 rows x 4 seats, 8 windows, fixture at far end) and is not canonical. Master r7 PASSED QA and IS canonical: Hy4 3 rounds saw exactly 4 seat backs in 2 rows of 1+1, 4 oval windows, fixture near the camera and one teal aisle; machine 53 colors / 65 percent shadow / 0 red. Residual soft tone around the fixture and in the wall vignette is tolerated at plate level but must not spread into seats/floor/walls in rendered frames; the r7 seats are single navy blocks, so seat-variant prompts must state the slate headrest and armrest forms explicitly.",
+    "qa_passed": true
+  },
+  "route_map": {
+    "path": "art/assets/h3/refs/cabin-route-map-3d-2row-r4.png",
+    "role": "internal 3D full-length cutaway TOPOLOGY draft of every nook the protagonist walks through: route, corridor, door and lavatory-interior anchor only. NEVER injected as video style and NEVER used as the authority for seat count, window side, palette or light.",
+    "scope": "topology-only; the pending two-row flat master r6 owns exactly two rows of 1+1 seats, two oval window rows, axis, palette and low-key light",
+    "must_show": [
+      "full front-to-tail route along one central aisle",
+      "front cockpit/galley door",
+      "rear lavatory corridor/vestibule and door with one bone-white rectangle and one black knob",
+      "lavatory interior with sink, mirror and toilet",
+      "closed overhead bins above the route"
+    ],
+    "known_limitation": "r3 renders 2+2 seats and only one visible window wall; three H3 Image attempts (1+1, 1+1, 2+2) could not produce 3+3 in a 3D cutaway. This is out of scope for a topology reference; flat plates must take all counts from master_plate.",
+    "style_note": "3D clay study is allowed for this reference only. Final video plates stay strict flat 2D; use the flat master plate for palette, flatness, seat count and light.",
+    "qa_passed": true
+  }
+}

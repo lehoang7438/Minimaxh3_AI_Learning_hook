@@ -1,0 +1,937 @@
+{
+  "tool": "prompt_consistency_audit",
+  "mode": "structured-source-only / read-only",
+  "authority": [
+    "art/env/cabin-map.json",
+    "art/env/global-context-part1.json",
+    "art/part1-spec.json",
+    "characters.json",
+    "art/comfy/ALH/learning-log.jsonl",
+    "prompts/part1-rebuilt/*.txt"
+  ],
+  "dimensions": [
+    "layout_seat",
+    "light_tier",
+    "sightline",
+    "palette_hex",
+    "props_state",
+    "character_wardrobe",
+    "language_negation",
+    "timecode_duration",
+    "refs"
+  ],
+  "luma_band": [
+    39.2,
+    52.2
+  ],
+  "seat_layout": {
+    "status": "CHƯA CHỐT",
+    "closure_events": [],
+    "accepted_events": [
+      "E212",
+      "E213",
+      "E214",
+      "E216"
+    ],
+    "proposed_events": [
+      "E226",
+      "E227",
+      "E230",
+      "E231",
+      "E237"
+    ],
+    "reason": "E212-E214 accepted 3+3 invariant / E216 accepted 2+2 master; E231 (proposed) rewrote cabin-map to 1+1. No accepted event makes 1+1 authoritative, so the tool does not pick a winner."
+  },
+  "seat_conflicts": [
+    {
+      "source": "cabin_geometry_contract.layout",
+      "status": "map text",
+      "text": "narrow-body single aisle, EXACTLY two rows (27 near the camera, 28 far) with ONE seat on each side of the aisle (1+1) in every row: four seats total; redesign approved by user 26/11, pending QA master r6"
+    },
+    {
+      "source": "cabin_geometry_contract.window_seats",
+      "status": "map text",
+      "text": "the outer seat on each side touches an oval window; seat 27A is the LEFT window seat"
+    },
+    {
+      "source": "master_plate.invariants[0]",
+      "status": "map text",
+      "text": "exactly two rows (27 and 28) with four seats total, one seat on each side of the aisle in every row"
+    },
+    {
+      "source": "master_plate.deviation_note",
+      "status": "map text",
+      "text": "26/11/2026 user redesign: exactly two rows and four seats total, one seat per side (1+1). The former 3+3, five-row and 2+2-per-row conventions are retired; the old r4 master is missing on disk and r5/r5d/r5e are archived. Master r6 FAILED QA (3 rows x 4 seats, 8 windows, fixture at far end) and is …"
+    },
+    {
+      "source": "generation_prompt_contract[6]",
+      "status": "map text",
+      "text": "Copy seat count, axis, window side and light values from master_plate / lighting_contract. Never hardcode a convention from memory: exactly two rows of 1+1 (four seats total) is canonical by user decision 26/11, pending QA master r6. A 2+2 reading would create eight seats and is FAIL under the new …"
+    },
+    {
+      "source": "design_change_20261126",
+      "status": "map text",
+      "text": "User approved exactly two rows / four seats (1+1 per row), a one-row four-figure generic crowd sheet composited into the three seats other than 27A, and Khang retained in 27A. The 2-row/4-seat label means 1+1, NOT 2+2; any prompt saying 2+2 or eight seats is FAIL."
+    },
+    {
+      "source": "E036",
+      "status": "archived",
+      "text": "p3-chaos-flat was rendered top-down with horizontal seat rows, losing the narrow-body 3+3 aisle structure. Enforced cabin_geometry_contract in cabin-map.json: 3+3 seats, A=left window, front-near/tail-far, EYE-LEVEL view mandatory for all cabin plates incl. chaos/barricade. Regenerate at eye level."
+    },
+    {
+      "source": "E041",
+      "status": "archived",
+      "text": "Master aisle plate r2 measured floor teal near-target 59.95% (was 3.3%), wall bone 25.83% and seat navy 34.62%; visually warm bone walls, broad teal floor, navy seats, 3+3 oval windows, eye-level. Accept as master; all variants must now reference THIS plate and only veil the image, not recolor obje…"
+    },
+    {
+      "source": "E212",
+      "status": "accepted",
+      "text": "Route-map 3D r1 is geometry authority for the whole G01-G04 rebuild, but Hy4 description-only QA found 1+1 seats per row and only one visible window wall instead of the cabin-map invariant 3+3 (A-B-C/D-E-F, 27A left window, oval windows both sides). Recorded FAIL/PARTIAL, never use as plate ref. r2…"
+    },
+    {
+      "source": "E213",
+      "status": "accepted",
+      "text": "Route-map 3D r2 still rendered 1+1 seats and one window wall after an explicit 3+3 prompt; the wrong-count r1 placed first in refs anchored the geometry. Recorded FAIL/PARTIAL. Rule: for a derived reference, order refs by which one owns the invariant - the QA-passed flat master must be Picture 1 fo…"
+    },
+    {
+      "source": "E214",
+      "status": "accepted",
+      "text": "User clarified the shared map is a full 3D draft of every nook the protagonist walks through. Three H3 Image attempts produced 1+1, 1+1 and 2+2 seats and only one window wall; 3+3 in a 3D cutaway was not achievable. Decision: scope the 3D map to ROUTE TOPOLOGY ONLY (route, cockpit/galley door, lava…"
+    },
+    {
+      "source": "E216",
+      "status": "accepted",
+      "text": "Master r4 PASS at plate level: horror contract met (mean 52.2, 54 pct machine shadow, Hy4 70-80 pct, both window walls, tail lavatory door, one fixture, no people/props/text/red/magenta, no 3D depth). Two deviations documented: 2+2 seats (G01-G04 never specify a count; 3+3 collapsed in four H3 atte…"
+    },
+    {
+      "source": "E226",
+      "status": "proposed",
+      "text": "Master r5b FAIL/PARTIAL attempt 2/3: 3+3 seats despite 2+2 contract. Fix only prompt layer with positive per-row count; last allowed attempt r5c with new seed."
+    },
+    {
+      "source": "E227",
+      "status": "proposed",
+      "text": "Master r5c FAIL PARTIAL at attempt 3 of 3. Seats fixed to 2+2 but light contract and palette regressed: no visible emitting fixture, 44.1 percent machine shadow versus 60 to 75 contract, lavender wall and door, stray strokes near vanishing point. Retry cap reached; stop and ask user before any four…"
+    },
+    {
+      "source": "E230",
+      "status": "proposed",
+      "text": "User approved redesign: master shows exactly two rows of 2+2 seats; generic background passengers are one sheet of four distinct figures in a single row composited into the three seats other than 27A; 27A stays reserved for Khang so G03 action is unchanged. Crowd sheet is a documented waiver of one…"
+    },
+    {
+      "source": "E231",
+      "status": "proposed",
+      "text": "E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generalized seat gate to compare every N+M pair."
+    },
+    {
+      "source": "E237",
+      "status": "proposed",
+      "text": "r6 master FAIL/PARTIAL under 5-retry override (6th image): Hy4 3 rounds saw 3 rows x 4 seats (2+2)=12 and 8 oval windows, fixture far not near; machine gate PASS and prompt/map correct, root cause H3 generative drift; retry cap reached, stop and ask user with evidence."
+    }
+  ],
+  "shots": [
+    {
+      "shot": "G01",
+      "set_id": "aisle",
+      "file": "prompts\\part1-rebuilt\\G01.txt",
+      "context": "art\\env\\global-context-part1.json",
+      "spec": "art\\part1-spec.json",
+      "size": "Use <Picture 1> only to copy the exact realistic hand anatom",
+      "results": {
+        "layout_seat": {
+          "status": "PASS",
+          "detail": "Insert: no N+N cabin-count assertion in the prompt; seat-count contract is not applicable.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges …"
+            }
+          ],
+          "note": "N/A for insert"
+        },
+        "light_tier": {
+          "status": "PASS",
+          "detail": "tier=under-seat insert special; sources=flat dark-red blotches only; direction=not applicable; vignette=yes; luma band from E045/E216 is plate-level metadata only.",
+          "evidence": [
+            {
+              "field": "cabin-map.special.G01",
+              "quote": "Close insert under row 27: one blood-stained forearm in one uniform dirty dark ash-grey bone tone ending in a realistic flat human hand - one thumb, four separate fingers and near-black nai…"
+            },
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges with bold uneven black outlines. Low-key night-horror lighti…"
+            }
+          ],
+          "note": "allowed mean_luma band [39.2, 52.2] (E045 39.2 -> E216 52.2)"
+        },
+        "sightline": {
+          "status": "PASS",
+          "detail": "Insert: no cabin sightline contract applies.",
+          "evidence": [
+            {
+              "field": "prompt.camera_sentence",
+              "quote": "Use <Picture 1> only to copy the exact realistic hand anatomy - one thumb, four separate fingers and near-black nails - the uniform dirty dark bone tone, the wide near-black navy cuff as th…"
+            }
+          ],
+          "note": "N/A for insert"
+        },
+        "palette_hex": {
+          "status": "PASS",
+          "detail": "Insert palette exception is declared in cabin-map.special.G01 (dirty dark bone + dark-red blood); seat #15233B / floor #2E6E6E do not appear in this insert.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges with bold uneven black outlines. Low-key night-horror lighti…"
+            },
+            {
+              "field": "cabin-map.special.G01",
+              "quote": "Close insert under row 27: one blood-stained forearm in one uniform dirty dark ash-grey bone tone ending in a realistic flat human hand - one thumb, four separate fingers and near-black nai…"
+            }
+          ],
+          "note": "no wall visible in insert"
+        },
+        "props_state": {
+          "status": "PASS",
+          "detail": "Hand/cuff/bite state matches cabin-map.special.G01.",
+          "evidence": [
+            {
+              "field": "cabin-map.special.G01",
+              "quote": "Close insert under row 27: one blood-stained forearm in one uniform dirty dark ash-grey bone tone ending in a realistic flat human hand - one thumb, four separate fingers and near-black nai…"
+            }
+          ],
+          "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o… | no variant state in this shot"
+        },
+        "character_wardrobe": {
+          "status": "PASS",
+          "detail": "No recurring character in this insert.",
+          "evidence": [],
+          "note": "N/A"
+        },
+        "language_negation": {
+          "status": "PASS",
+          "detail": "English outside <d>; no object-deletion negation in prompt_visible.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges …"
+            }
+          ],
+          "note": ""
+        },
+        "timecode_duration": {
+          "status": "PASS",
+          "detail": "last structured beat 00:08.500 vs effective duration 10s (spec.seconds=10); beats increasing=True.",
+          "evidence": [
+            {
+              "field": "prompt.At",
+              "quote": "00:05.000 00:06.800 00:08.500"
+            },
+            {
+              "field": "composer.DURATION_OVERRIDE",
+              "quote": "-"
+            }
+          ],
+          "note": ""
+        },
+        "refs": {
+          "status": "PASS",
+          "detail": "<Picture N> labels=[1]; structured refs=1 (plate + characters + props). The feeder/context node injects refs at queue time, so an unlabelled rebuilt prompt is not a mismatch.",
+          "evidence": [
+            {
+              "field": "prompt.field1",
+              "quote": "<Picture 1>"
+            },
+            {
+              "field": "global-context.shots.G01.props",
+              "quote": "[\"art/assets/h3/refs/bloody-arm-real-r8-1024.png\"]"
+            }
+          ],
+          "note": ""
+        }
+      }
+    },
+    {
+      "shot": "G02",
+      "set_id": "aisle_flat",
+      "file": "prompts\\part1-rebuilt\\G02.txt",
+      "context": "art\\env\\global-context-part1.json",
+      "spec": "art\\part1-spec.json",
+      "size": "wide shot, camera held at one fixed scale and framing from t",
+      "results": {
+        "layout_seat": {
+          "status": "CHƯA CHỐT",
+          "detail": "Prompt asserts 1+1; map invariant_architecture[0] = 'exactly two rows (27 and 28) with four seats total, 1+1 per row'. E212-E214 accepted 3+3 invariant / E216 accepted 2+2 master; E231 (proposed) rewrote cabin-map to 1+1. No accepted event makes 1+1 authoritative, so the tool does not pick a winner.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Cabin rows hold 1+1 seats"
+            },
+            {
+              "field": "cabin-map.invariant_architecture[0]",
+              "quote": "exactly two rows (27 and 28) with four seats total, 1+1 per row"
+            },
+            {
+              "field": "E231 (proposed)",
+              "quote": "E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…"
+            }
+          ],
+          "note": "27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=True"
+        },
+        "light_tier": {
+          "status": "PASS",
+          "detail": "tier=dim_night_flight; accepted E273 flat law is in the prompt, no emitting fixture / slate-wall ramp. cabin-map.lighting_contract.prompt_visible still carries the superseded fixture wording; accepted E273 wins. vignette=yes; luma band [39.2, 52.2] is metadata, not a numeric prompt field.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…"
+            },
+            {
+              "field": "cabin-map.lighting_contract.prompt_visible",
+              "quote": "Low-key night-horror light: one small bone-white ceiling fixture visibly lit near the camera end; cool dark slate walls clearly lighter than the navy seats; 60 to 75 percent of the frame he…"
+            }
+          ],
+          "note": "set.light suppressed by composer: True; tier source=lighting_contract.tiers.dim_night_flight"
+        },
+        "sightline": {
+          "status": "FAIL",
+          "detail": "Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='standing eye level for wide/aisle plates; the aisle stays centered and continuo…'. Prompt omits: camera eye level",
+          "evidence": [
+            {
+              "field": "prompt.camera_sentence",
+              "quote": "wide shot, camera held at one fixed scale and framing from the first frame to the last frame"
+            },
+            {
+              "field": "prompt.Scene",
+              "quote": "one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…"
+            },
+            {
+              "field": "cabin-map.eye_level",
+              "quote": "standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate"
+            }
+          ],
+          "note": "27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'"
+        },
+        "palette_hex": {
+          "status": "PASS",
+          "detail": "Prompt carries the palette_lock names; seat=#15233B, floor=#2E6E6E, wall_bone=#EFEDE6 (hex is plate metadata, not prompt text).",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
+            },
+            {
+              "field": "cabin-map.palette_lock.seat_navy",
+              "quote": "#15233B"
+            },
+            {
+              "field": "cabin-map.palette_lock.floor_teal",
+              "quote": "#2E6E6E"
+            }
+          ],
+          "note": "wall base #EFEDE6 bone vs lighting_contract.wall_value 'cool dark SLATE / dimmed bone' is a source conflict; plate-level, not a prompt-text FAIL"
+        },
+        "props_state": {
+          "status": "FAIL",
+          "detail": "Props field reproduces a compositing-stage note verbatim. master_plate.compositing_note says that note is QA metadata only, never prompt text (E162 class).",
+          "evidence": [
+            {
+              "field": "prompt.Props",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A"
+            },
+            {
+              "field": "global-context.sets.aisle_flat.objects",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A"
+            },
+            {
+              "field": "composer.SCENE_OVERRIDE[G02][1]",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A"
+            },
+            {
+              "field": "cabin-map.master_plate.compositing_note",
+              "quote": "QA metadata only, never prompt text: row numbers are 27 (near) and 28 (far); Khang and three generic passengers are composited later, not drawn by H3."
+            }
+          ],
+          "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…"
+        },
+        "character_wardrobe": {
+          "status": "CHƯA CHỐT",
+          "detail": "Prompt names Khang but spec.layers and context.characters are empty; there is no structured wardrobe source to compare against.",
+          "evidence": [
+            {
+              "field": "prompt.body",
+              "quote": "wide shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far awa…"
+            },
+            {
+              "field": "spec.layers",
+              "quote": "[]"
+            },
+            {
+              "field": "global-context.shots.G02.characters",
+              "quote": "[]"
+            }
+          ],
+          "note": "no FAIL: source missing, not a proven prompt contradiction"
+        },
+        "language_negation": {
+          "status": "CHƯA CHỐT",
+          "detail": "cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "no receding extra rows"
+            },
+            {
+              "field": "cabin-map.generation_prompt_contract",
+              "quote": "Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only."
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…"
+            },
+            {
+              "field": "ALH E162 (accepted)",
+              "quote": "Xoa moi cau xoa doi tuong khoi prompt_visible: ACTION_OVERRIDE BEAT_OVERRIDE cabin-map scene objects va light. Thay bang noi dung khung khang dinh. Identity/style negations tu bible nhu Nev…"
+            }
+          ],
+          "note": "style negations (no gradient/no 3D) are allowed by the skills"
+        },
+        "timecode_duration": {
+          "status": "PASS",
+          "detail": "last structured beat 00:05.700 vs effective duration 6s (spec.seconds=10); beats increasing=True.",
+          "evidence": [
+            {
+              "field": "prompt.At",
+              "quote": "00:00.000 00:02.900 00:05.700"
+            },
+            {
+              "field": "composer.DURATION_OVERRIDE",
+              "quote": "6.0"
+            }
+          ],
+          "note": ""
+        },
+        "refs": {
+          "status": "PASS",
+          "detail": "<Picture N> labels=none; structured refs=0 (plate + characters + props). The feeder/context node injects refs at queue time, so an unlabelled rebuilt prompt is not a mismatch.",
+          "evidence": [
+            {
+              "field": "prompt.field1",
+              "quote": "no picture labels"
+            },
+            {
+              "field": "global-context.shots.G02.props",
+              "quote": "[]"
+            }
+          ],
+          "note": ""
+        }
+      }
+    },
+    {
+      "shot": "G03",
+      "set_id": "seat_27a",
+      "file": "prompts\\part1-rebuilt\\G03.txt",
+      "context": "art\\env\\global-context-part1.json",
+      "spec": "art\\part1-spec.json",
+      "size": "medium shot, camera held at one fixed scale and framing from",
+      "results": {
+        "layout_seat": {
+          "status": "CHƯA CHỐT",
+          "detail": "Prompt asserts 1+1; map invariant_architecture[0] = 'exactly two rows (27 and 28) with four seats total, 1+1 per row'. E212-E214 accepted 3+3 invariant / E216 accepted 2+2 master; E231 (proposed) rewrote cabin-map to 1+1. No accepted event makes 1+1 authoritative, so the tool does not pick a winner.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Cabin rows hold 1+1 seats"
+            },
+            {
+              "field": "cabin-map.invariant_architecture[0]",
+              "quote": "exactly two rows (27 and 28) with four seats total, 1+1 per row"
+            },
+            {
+              "field": "E231 (proposed)",
+              "quote": "E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…"
+            }
+          ],
+          "note": "27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=False"
+        },
+        "light_tier": {
+          "status": "PASS",
+          "detail": "tier=dim_night_flight; accepted E273 flat law is in the prompt, no emitting fixture / slate-wall ramp. cabin-map.lighting_contract.prompt_visible still carries the superseded fixture wording; accepted E273 wins. vignette=yes; luma band [39.2, 52.2] is metadata, not a numeric prompt field.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…"
+            },
+            {
+              "field": "cabin-map.lighting_contract.prompt_visible",
+              "quote": "Low-key night-horror light: one small bone-white ceiling fixture visibly lit near the camera end; cool dark slate walls clearly lighter than the navy seats; 60 to 75 percent of the frame he…"
+            }
+          ],
+          "note": "set.light suppressed by composer: True; tier source=lighting_contract.tiers.dim_night_flight"
+        },
+        "sightline": {
+          "status": "FAIL",
+          "detail": "Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='level with a seated passenger'. Prompt omits: camera eye level",
+          "evidence": [
+            {
+              "field": "prompt.camera_sentence",
+              "quote": "medium shot, camera held at one fixed scale and framing from the first frame to the last frame"
+            },
+            {
+              "field": "prompt.Scene",
+              "quote": "one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…"
+            },
+            {
+              "field": "cabin-map.eye_level",
+              "quote": "standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate"
+            },
+            {
+              "field": "global-context.sets.seat_27a.camera_height",
+              "quote": "level with a seated passenger"
+            }
+          ],
+          "note": "27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'"
+        },
+        "palette_hex": {
+          "status": "PASS",
+          "detail": "Prompt carries the palette_lock names; seat=#15233B, floor=#2E6E6E, wall_bone=#EFEDE6 (hex is plate metadata, not prompt text).",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
+            },
+            {
+              "field": "cabin-map.palette_lock.seat_navy",
+              "quote": "#15233B"
+            },
+            {
+              "field": "cabin-map.palette_lock.floor_teal",
+              "quote": "#2E6E6E"
+            }
+          ],
+          "note": "wall base #EFEDE6 bone vs lighting_contract.wall_value 'cool dark SLATE / dimmed bone' is a source conflict; plate-level, not a prompt-text FAIL"
+        },
+        "props_state": {
+          "status": "PASS",
+          "detail": "Props field carries the structured objects string verbatim.",
+          "evidence": [
+            {
+              "field": "prompt.Props",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; one flat phone screen resting on Khang's lap; three generic passengers seated in the…"
+            },
+            {
+              "field": "composer.SCENE_OVERRIDE[G03][1]",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; one flat phone screen resting on Khang's lap; three generic passengers seated in the…"
+            }
+          ],
+          "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…"
+        },
+        "character_wardrobe": {
+          "status": "FAIL",
+          "detail": "Spec declares character layer(s), but the prompt lacks the bible appearance + wardrobe clause: khang: label=False, wardrobe=False, scale=False",
+          "evidence": [
+            {
+              "field": "prompt.body",
+              "quote": "medium shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far a…"
+            },
+            {
+              "field": "characters.json.khang.wardrobe",
+              "quote": "Near-black navy long-sleeve shirt with a small muted teal chest pocket, muted teal trousers, and near-black low shoes with thick bone-white soles."
+            },
+            {
+              "field": "characters.json.khang.appearance",
+              "quote": "Vietnamese man, 29, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebro…"
+            }
+          ],
+          "note": "bible nose clause intentionally omitted under accepted E280 minimal-face override"
+        },
+        "language_negation": {
+          "status": "CHƯA CHỐT",
+          "detail": "cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "no receding extra rows"
+            },
+            {
+              "field": "cabin-map.generation_prompt_contract",
+              "quote": "Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only."
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…"
+            },
+            {
+              "field": "ALH E162 (accepted)",
+              "quote": "Xoa moi cau xoa doi tuong khoi prompt_visible: ACTION_OVERRIDE BEAT_OVERRIDE cabin-map scene objects va light. Thay bang noi dung khung khang dinh. Identity/style negations tu bible nhu Nev…"
+            }
+          ],
+          "note": "style negations (no gradient/no 3D) are allowed by the skills"
+        },
+        "timecode_duration": {
+          "status": "PASS",
+          "detail": "last structured beat 00:05.700 vs effective duration 6s (spec.seconds=10); beats increasing=True.",
+          "evidence": [
+            {
+              "field": "prompt.At",
+              "quote": "00:00.000 00:05.700"
+            },
+            {
+              "field": "composer.DURATION_OVERRIDE",
+              "quote": "6.0"
+            }
+          ],
+          "note": ""
+        },
+        "refs": {
+          "status": "PASS",
+          "detail": "<Picture N> labels=none; structured refs=1 (plate + characters + props). The feeder/context node injects refs at queue time, so an unlabelled rebuilt prompt is not a mismatch.",
+          "evidence": [
+            {
+              "field": "prompt.field1",
+              "quote": "no picture labels"
+            },
+            {
+              "field": "global-context.shots.G03.props",
+              "quote": "[\"art/assets/phone-video.png\"]"
+            }
+          ],
+          "note": ""
+        }
+      }
+    },
+    {
+      "shot": "G04",
+      "set_id": "phone_ins",
+      "file": "prompts\\part1-rebuilt\\G04.txt",
+      "context": "art\\env\\global-context-part1.json",
+      "spec": "art\\part1-spec.json",
+      "size": "close-up shot, camera held at one fixed scale and framing fr",
+      "results": {
+        "layout_seat": {
+          "status": "PASS",
+          "detail": "Insert: no N+N cabin-count assertion in the prompt; seat-count contract is not applicable.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges …"
+            }
+          ],
+          "note": "N/A for insert"
+        },
+        "light_tier": {
+          "status": "FAIL",
+          "detail": "tier=dim_night_flight but the prompt still uses the superseded fixture/slate-wall light text while the structured set light allows only one small lit screen/fixture as bright shape; vignette=yes; band [39.2, 52.2] is metadata.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Low-key night-horror lighting: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, and 60 to 75 percent of each frame held in flat near-black shado…"
+            },
+            {
+              "field": "global-context.sets.phone_ins.light",
+              "quote": "one small lit screen or fixture is the only bright flat shape; the rest of the close insert falls into flat near-black navy shadow with a heavy flat vignette"
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/m…"
+            }
+          ],
+          "note": "suppressed by composer: False"
+        },
+        "sightline": {
+          "status": "PASS",
+          "detail": "Insert: no cabin sightline contract applies.",
+          "evidence": [
+            {
+              "field": "prompt.camera_sentence",
+              "quote": "close-up shot, camera held at one fixed scale and framing from the first frame to the last frame"
+            }
+          ],
+          "note": "N/A for insert"
+        },
+        "palette_hex": {
+          "status": "PASS",
+          "detail": "Prompt carries the palette_lock names; seat=#15233B, floor=#2E6E6E, wall_bone=#EFEDE6 (hex is plate metadata, not prompt text).",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges with bold uneven black outlines. Low-key night-horror lighti…"
+            },
+            {
+              "field": "cabin-map.palette_lock.seat_navy",
+              "quote": "#15233B"
+            },
+            {
+              "field": "cabin-map.palette_lock.floor_teal",
+              "quote": "#2E6E6E"
+            }
+          ],
+          "note": "wall base #EFEDE6 bone vs lighting_contract.wall_value 'cool dark SLATE / dimmed bone' is a source conflict; plate-level, not a prompt-text FAIL"
+        },
+        "props_state": {
+          "status": "PASS",
+          "detail": "Phone insert content matches structured sets.phone_ins.objects (one cake + three dot-eyed faces).",
+          "evidence": [
+            {
+              "field": "prompt.body",
+              "quote": "close-up shot, camera held at one fixed scale and framing from the first frame to the last frame. Close insert: one flat bone-white smartphone fills the frame, its solid muted-teal screen h…"
+            },
+            {
+              "field": "global-context.sets.phone_ins.objects",
+              "quote": "one cake and one group photo of three simple dot-eyed faces drawn on the screen"
+            }
+          ],
+          "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o… | no variant state in this insert"
+        },
+        "character_wardrobe": {
+          "status": "PASS",
+          "detail": "No recurring character in this insert.",
+          "evidence": [],
+          "note": "N/A"
+        },
+        "language_negation": {
+          "status": "PASS",
+          "detail": "English outside <d>; no object-deletion negation in prompt_visible.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges …"
+            }
+          ],
+          "note": ""
+        },
+        "timecode_duration": {
+          "status": "PASS",
+          "detail": "last structured beat 00:00.000 vs effective duration 10s (spec.seconds=10); beats increasing=True.",
+          "evidence": [
+            {
+              "field": "prompt.At",
+              "quote": "00:00.000"
+            },
+            {
+              "field": "composer.DURATION_OVERRIDE",
+              "quote": "-"
+            }
+          ],
+          "note": ""
+        },
+        "refs": {
+          "status": "PASS",
+          "detail": "<Picture N> labels=none; structured refs=0 (plate + characters + props). The feeder/context node injects refs at queue time, so an unlabelled rebuilt prompt is not a mismatch.",
+          "evidence": [
+            {
+              "field": "prompt.field1",
+              "quote": "no picture labels"
+            },
+            {
+              "field": "global-context.shots.G04.props",
+              "quote": "[]"
+            }
+          ],
+          "note": ""
+        }
+      }
+    },
+    {
+      "shot": "G05",
+      "set_id": "seat_27a",
+      "file": "prompts\\part1-rebuilt\\G05.txt",
+      "context": "art\\env\\global-context-part1.json",
+      "spec": "art\\part1-spec.json",
+      "size": "medium shot, camera slow push-in of about 3% over the shot, ",
+      "results": {
+        "layout_seat": {
+          "status": "CHƯA CHỐT",
+          "detail": "Prompt asserts 1+1; map invariant_architecture[0] = 'exactly two rows (27 and 28) with four seats total, 1+1 per row'. E212-E214 accepted 3+3 invariant / E216 accepted 2+2 master; E231 (proposed) rewrote cabin-map to 1+1. No accepted event makes 1+1 authoritative, so the tool does not pick a winner.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Cabin rows hold 1+1 seats"
+            },
+            {
+              "field": "cabin-map.invariant_architecture[0]",
+              "quote": "exactly two rows (27 and 28) with four seats total, 1+1 per row"
+            },
+            {
+              "field": "E231 (proposed)",
+              "quote": "E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…"
+            }
+          ],
+          "note": "27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=False"
+        },
+        "light_tier": {
+          "status": "PASS",
+          "detail": "tier=dim_night_flight; accepted E273 flat law is in the prompt, no emitting fixture / slate-wall ramp. cabin-map.lighting_contract.prompt_visible still carries the superseded fixture wording; accepted E273 wins. vignette=yes; luma band [39.2, 52.2] is metadata, not a numeric prompt field.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…"
+            },
+            {
+              "field": "cabin-map.lighting_contract.prompt_visible",
+              "quote": "Low-key night-horror light: one small bone-white ceiling fixture visibly lit near the camera end; cool dark slate walls clearly lighter than the navy seats; 60 to 75 percent of the frame he…"
+            }
+          ],
+          "note": "set.light suppressed by composer: True; tier source=lighting_contract.tiers.dim_night_flight"
+        },
+        "sightline": {
+          "status": "FAIL",
+          "detail": "Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='level with a seated passenger'. Prompt omits: camera eye level",
+          "evidence": [
+            {
+              "field": "prompt.camera_sentence",
+              "quote": "medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway"
+            },
+            {
+              "field": "prompt.Scene",
+              "quote": "one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…"
+            },
+            {
+              "field": "cabin-map.eye_level",
+              "quote": "standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate"
+            },
+            {
+              "field": "global-context.sets.seat_27a.camera_height",
+              "quote": "level with a seated passenger"
+            }
+          ],
+          "note": "27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang lifts the bowed head in seat 27A and opens two dot eyes abr…'"
+        },
+        "palette_hex": {
+          "status": "PASS",
+          "detail": "Prompt carries the palette_lock names; seat=#15233B, floor=#2E6E6E, wall_bone=#EFEDE6 (hex is plate metadata, not prompt text).",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
+            },
+            {
+              "field": "cabin-map.palette_lock.seat_navy",
+              "quote": "#15233B"
+            },
+            {
+              "field": "cabin-map.palette_lock.floor_teal",
+              "quote": "#2E6E6E"
+            }
+          ],
+          "note": "wall base #EFEDE6 bone vs lighting_contract.wall_value 'cool dark SLATE / dimmed bone' is a source conflict; plate-level, not a prompt-text FAIL"
+        },
+        "props_state": {
+          "status": "PASS",
+          "detail": "Props field carries the structured objects string verbatim.",
+          "evidence": [
+            {
+              "field": "prompt.Props",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; one flat phone screen resting on Khang's lap showing the flat cake picture; three ge…"
+            },
+            {
+              "field": "composer.SCENE_OVERRIDE[G05][1]",
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; one flat phone screen resting on Khang's lap showing the flat cake picture; three ge…"
+            }
+          ],
+          "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…"
+        },
+        "character_wardrobe": {
+          "status": "PASS",
+          "detail": "Named character(s) carry bible appearance + wardrobe verbatim, including the 1:6.5-1:7 scale anchor and seated posture.",
+          "evidence": [
+            {
+              "field": "prompt.body",
+              "quote": "medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exa…"
+            },
+            {
+              "field": "characters.json.khang.wardrobe",
+              "quote": "Near-black navy long-sleeve shirt with a small muted teal chest pocket, muted teal trousers, and near-black low shoes with thick bone-white soles."
+            },
+            {
+              "field": "characters.json.khang.appearance",
+              "quote": "Vietnamese man, 29, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebro…"
+            },
+            {
+              "field": "characters.json.khang.wardrobe",
+              "quote": "Near-black navy long-sleeve shirt with a small muted teal chest pocket, muted teal trousers, and near-black low shoes with thick bone-white soles."
+            },
+            {
+              "field": "characters.json.khang.appearance",
+              "quote": "Vietnamese man, 29, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebro…"
+            }
+          ],
+          "note": "bible nose clause intentionally omitted under accepted E280 minimal-face override"
+        },
+        "language_negation": {
+          "status": "CHƯA CHỐT",
+          "detail": "cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.",
+          "evidence": [
+            {
+              "field": "prompt.contract",
+              "quote": "no receding extra rows"
+            },
+            {
+              "field": "cabin-map.generation_prompt_contract",
+              "quote": "Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only."
+            },
+            {
+              "field": "ALH E273 (accepted)",
+              "quote": "G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…"
+            },
+            {
+              "field": "ALH E162 (accepted)",
+              "quote": "Xoa moi cau xoa doi tuong khoi prompt_visible: ACTION_OVERRIDE BEAT_OVERRIDE cabin-map scene objects va light. Thay bang noi dung khung khang dinh. Identity/style negations tu bible nhu Nev…"
+            }
+          ],
+          "note": "style negations (no gradient/no 3D) are allowed by the skills"
+        },
+        "timecode_duration": {
+          "status": "PASS",
+          "detail": "last structured beat 00:07.700 vs effective duration 8s (spec.seconds=10); beats increasing=True.",
+          "evidence": [
+            {
+              "field": "prompt.At",
+              "quote": "00:00.000 00:03.900 00:07.700"
+            },
+            {
+              "field": "composer.DURATION_OVERRIDE",
+              "quote": "8.0"
+            }
+          ],
+          "note": ""
+        },
+        "refs": {
+          "status": "PASS",
+          "detail": "<Picture N> labels=none; structured refs=1 (plate + characters + props). The feeder/context node injects refs at queue time, so an unlabelled rebuilt prompt is not a mismatch.",
+          "evidence": [
+            {
+              "field": "prompt.field1",
+              "quote": "no picture labels"
+            },
+            {
+              "field": "global-context.shots.G05.props",
+              "quote": "[]"
+            }
+          ],
+          "note": ""
+        }
+      }
+    }
+  ],
+  "summary": {
+    "FAIL": 6,
+    "CHƯA CHỐT": 7,
+    "PASS": 32,
+    "verdict": "FAIL",
+    "exit_code": 1,
+    "generated_at": "2026-11-27T22:20:23+07:00"
+  }
+}
