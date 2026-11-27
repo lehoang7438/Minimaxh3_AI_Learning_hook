@@ -1,6 +1,6 @@
 # Báo cáo soát prompt GHẺ 27A — structured-source audit
 
-Verdict: **FAIL** — FAIL 6, CHƯA CHỐT 7, PASS 32. Exit 1.
+Verdict: **FAIL** — FAIL 3, CHƯA CHỐT 7, PASS 35. Exit 1.
 
 Chỉ đọc cabin-map / global-context / spec / bible / ALH / prompt. Không sửa prompt, context, spec, ALH, PLAYBOOK, GPU-LOCK; không queue GPU. **Output là đề xuất** — reviewer sẽ đọc lại bằng tay 3 shot FAIL + 3 shot PASS trước khi tin.
 
@@ -39,17 +39,17 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
 |---|---|---|---|---|---|---|---|---|---|
-| G02 | CHƯA CHỐT | PASS | FAIL | PASS | FAIL | CHƯA CHỐT | CHƯA CHỐT | PASS | PASS |
+| G02 | CHƯA CHỐT | PASS | FAIL | PASS | PASS | CHƯA CHỐT | CHƯA CHỐT | PASS | PASS |
 ### set_id: `seat_27a`
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
 |---|---|---|---|---|---|---|---|---|---|
-| G03 | CHƯA CHỐT | PASS | FAIL | PASS | PASS | FAIL | CHƯA CHỐT | PASS | PASS |
+| G03 | CHƯA CHỐT | PASS | FAIL | PASS | PASS | PASS | CHƯA CHỐT | PASS | PASS |
 ### set_id: `phone_ins`
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
 |---|---|---|---|---|---|---|---|---|---|
-| G04 | PASS | FAIL | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
+| G04 | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS | PASS |
 ### set_id: `seat_27a`
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
@@ -69,12 +69,6 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
   - `prompt.Scene`: “one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…”
   - `cabin-map.eye_level`: “standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate”
   - ghi chú: 27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'
-- **props_state: FAIL** — Props field reproduces a compositing-stage note verbatim. master_plate.compositing_note says that note is QA metadata only, never prompt text (E162 class).
-  - `prompt.Props`: “one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A”
-  - `global-context.sets.aisle_flat.objects`: “one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A”
-  - `composer.SCENE_OVERRIDE[G02][1]`: “one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A”
-  - `cabin-map.master_plate.compositing_note`: “QA metadata only, never prompt text: row numbers are 27 (near) and 28 (far); Khang and three generic passengers are composited later, not drawn by H3.”
-  - ghi chú: state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…
 - **character_wardrobe: CHƯA CHỐT** — Prompt names Khang but spec.layers and context.characters are empty; there is no structured wardrobe source to compare against.
   - `prompt.body`: “wide shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far awa…”
   - `spec.layers`: “[]”
@@ -98,25 +92,13 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
   - `prompt.Scene`: “one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…”
   - `cabin-map.eye_level`: “standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate”
   - `global-context.sets.seat_27a.camera_height`: “level with a seated passenger”
-  - ghi chú: 27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'
-- **character_wardrobe: FAIL** — Spec declares character layer(s), but the prompt lacks the bible appearance + wardrobe clause: khang: label=False, wardrobe=False, scale=False
-  - `prompt.body`: “medium shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far a…”
-  - `characters.json.khang.wardrobe`: “Near-black navy long-sleeve shirt with a small muted teal chest pocket, muted teal trousers, and near-black low shoes with thick bone-white soles.”
-  - `characters.json.khang.appearance`: “Vietnamese man, 29, bone-white oval face with two simple solid oval eyes and one short straight neutral mouth line, a small simple tapered nose visibly protruding in side profile, no eyebro…”
-  - ghi chú: bible nose clause intentionally omitted under accepted E280 minimal-face override
+  - ghi chú: 27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang is ALREADY slumped asleep in seat 27A from the first frame,…'
 - **language_negation: CHƯA CHỐT** — cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.
   - `prompt.contract`: “no receding extra rows”
   - `cabin-map.generation_prompt_contract`: “Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only.”
   - `ALH E273 (accepted)`: “G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/map/bible = art/part1-spec.json G02 (wide…”
   - `ALH E162 (accepted)`: “Xoa moi cau xoa doi tuong khoi prompt_visible: ACTION_OVERRIDE BEAT_OVERRIDE cabin-map scene objects va light. Thay bang noi dung khung khang dinh. Identity/style negations tu bible nhu Nev…”
   - ghi chú: style negations (no gradient/no 3D) are allowed by the skills
-
-### G04 — `phone_ins`
-- **light_tier: FAIL** — tier=dim_night_flight but the prompt still uses the superseded fixture/slate-wall light text while the structured set light allows only one small lit screen/fixture as bright shape; vignette=yes; band [39.2, 52.2] is metadata.
-  - `prompt.contract`: “Low-key night-horror lighting: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, and 60 to 75 percent of each frame held in flat near-black shado…”
-  - `global-context.sets.phone_ins.light`: “one small lit screen or fixture is the only bright flat shape; the rest of the close insert falls into flat near-black navy shadow with a heavy flat vignette”
-  - `ALH E273 (accepted)`: “G02 v1 (seed 20263301) FAIL with evidence-backed style-contract breach, first G02 attempt so not a recurring fail chain. E234 trace full path: spec/m…”
-  - ghi chú: suppressed by composer: False
 
 ### G05 — `seat_27a`
 - **layout_seat: CHƯA CHỐT** — Prompt asserts 1+1; map invariant_architecture[0] = 'exactly two rows (27 and 28) with four seats total, 1+1 per row'. E212-E214 accepted 3+3 invariant / E216 accepted 2+2 master; E231 (proposed) rewrote cabin-map to 1+1. No accepted event makes 1+1 authoritative, so the tool does not pick a winner.

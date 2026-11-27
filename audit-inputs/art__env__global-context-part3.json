@@ -330,7 +330,7 @@
     },
     "aisle_flat": {
       "geometry": "one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, closed overhead bins",
-      "objects": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A",
+      "objects": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor",
       "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
       "plate": null,
       "plates": {},

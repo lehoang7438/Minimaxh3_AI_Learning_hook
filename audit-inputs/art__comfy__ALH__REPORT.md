@@ -1,21 +1,21 @@
-# ALH report - 2026-11-27 22:25
+# ALH report - 2026-11-27 22:33
 
-log: `art\comfy\ALH\learning-log.jsonl`  |  total 297 event(s)
+log: `art\comfy\ALH\learning-log.jsonl`  |  total 300 event(s)
 
 ### Status
 
 | value | n | share |
 |---|---|---|
-| accepted | 138 | 46% |
-| archived | 100 | 34% |
-| proposed | 54 | 18% |
+| accepted | 140 | 47% |
+| archived | 100 | 33% |
+| proposed | 55 | 18% |
 | revoked | 5 | 2% |
 
 ### Event
 
 | value | n | share |
 |---|---|---|
-| rule_gap | 111 | 37% |
+| rule_gap | 114 | 38% |
 | asset_qa_fail | 51 | 17% |
 | verdict | 46 | 15% |
 | qa_fail | 42 | 14% |
@@ -27,21 +27,21 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 297 event(s)
 
 | value | n | share |
 |---|---|---|
-| asset-qa | 139 | 47% |
+| asset-qa | 139 | 46% |
 | comfyui-runner | 59 | 20% |
-| h3-prompt-writing | 50 | 17% |
+| h3-prompt-writing | 52 | 17% |
 | h3-visual-qa | 34 | 11% |
 | character-bible | 9 | 3% |
 | h3-storyboard | 3 | 1% |
+| h3-prompt-linter | 2 | 1% |
 | bitnet | 1 | 0% |
 | global | 1 | 0% |
-| h3-prompt-linter | 1 | 0% |
 
 ### Layer
 
 | value | n | share |
 |---|---|---|
-| prompt | 52 | 18% |
+| prompt | 53 | 18% |
 | asset | 48 | 16% |
 | workflow | 42 | 14% |
 | magenta_key | 15 | 5% |
@@ -55,13 +55,13 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 297 event(s)
 | lighting_logic | 6 | 2% |
 | injury_logic | 6 | 2% |
 | qa | 6 | 2% |
+| gate | 6 | 2% |
 | anchor | 5 | 2% |
 | qa_reviewer | 5 | 2% |
 | prop_identity | 4 | 1% |
 | identity | 4 | 1% |
 | style_eyes | 4 | 1% |
 | ref/style | 4 | 1% |
-| gate | 4 | 1% |
 | camera_composition | 3 | 1% |
 | sheet_contract | 3 | 1% |
 | pose_logic | 3 | 1% |
@@ -143,6 +143,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 297 event(s)
 - [E292] rule_gap / G03 / prompt - E293 E287 disproved by exact /history payload diff: G03 v4 Scene and Props flat-surface wording are byte-identical to approved G02 v2, so another Scene rewording cannot fix the gradient. Only wide->medium shot and the changing phone picture remain; ranked cause is H3 depth prior on oblique medium cabin surfaces primed by screen change. No prompt-only Scene pass.
 - [E293] rule_gap / ALL / gate - E293 proposed by reviewer: one style contract + one byte-identical plate block per set_id + shot-only block; linter forbids light/background wording in shot block; audit checks plate byte-identity and rendered clips (60-75pct flat shadow, palette, seat/window count). Condense accepted rules into short imperative list with supersede chains before mirroring to SKILL.md. E230/E231/E237 stay proposed -> seat layout CHUA CHOT.
 - [E297] rule_gap / G03 / prompt - E297 ranked remaining cause: static lit phone (v1/G05 v1) passes, autonomous screen-change event (v2 lights up, v3/v4 changes by itself) FAILs 3x. H3 likely reads a changing screen as a light event and ramps oblique cabin surfaces; v4 front-near/tail-far wording may sustain it. E287 Scene edit also created the v4 hands-on-phone/head-lift regression. Needs user-chosen composition/anchor change or one controlled render; no GPU while status qa_hold.
+- [E300] rule_gap / G03 / prompt - E299 reviewer proposed (not chosen): explain G03 gradient with a third declared brighter shape (the phone), a real timecode for the screen change, removal of no-hand-touches-it negation, and removal of four-windows wording from G03/G05. Also pending: accept E231 and supersede E212/E213/E216 / revoke E230/E237; decide whether E273 supersedes E209 for aisle_flat; decide agent accept rights; refresh stale spec durations/actions. No prompt or GPU change from this proposal.
 
 ### Accepted but not promoted to SKILL.md/GLOBAL-RULES.md
 
@@ -255,6 +256,8 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 297 event(s)
 - [E294] h3-prompt-writing / ALL / gate - E294 numbering correction: E292 = gradient payload diff / E293 = reviewer 3-layer architecture. Ignore the E293 label inside E292 rule text.
 - [E295] h3-visual-qa / G01-G05 / gate - E295 Big Pickle audit hand-checked: 3 sampled FAIL (G02 composited-later leakage, G03 missing khang wardrobe clause, G04 superseded fixture/slate light) and 3 sampled PASS (G01 clean insert, G03 phone props, G05 khang wardrobe clause) all confirmed. Extra miss: G04 still says 2+2 seats while cabin-map/G02/G03/G05 say 1+1. Cheap-model PASS is not evidence; sample by hand before acting.
 - [E296] h3-prompt-writing / G03 / prompt - E296 exact /history payload trace eliminates three G03 gradient hypotheses: E287 Scene wording (v4 byte-identical to approved G02 v2 yet still FAIL), E283 lit/glow vocabulary (G03 v1 and G05 v1 had glowing phones with no recorded gradient FAIL), medium framing and phone presence (both in v1/G05); seed-only cannot be isolated without a render. Fifth Scene rewrite or glow-word swap is not a valid fix.
+- [E298] h3-prompt-writing / G01-G05 / gate - E298 reviewer correction + no-wait fixes: 3-layer architecture is useful for cheap audit but does NOT explain the gradient (style blocks already byte-identical). Applied: remove composited-later pipeline note from global-context and rebuild source; FACE_FLAT_CONTRACT on G02 v3 so the chain shares one face law; G04 flat phone-insert contract with no 2+2/seat-window assertion; inject Khang appearance+wardrobe block into G03 prompt-side; G03/G05 block eyes changed from oval to dot to match contract. All 5 prompts rebuilt, lint PASS 0 warning.
+- [E299] h3-prompt-linter / G01-G05 / gate - E298 gate hardening: validate_prompt and lint_h3.ps1 now hard-FAIL composited/compositing-stage pipeline metadata in prompt_visible; prompt_consistency_audit now FAILs a stale N+N pair inside phone_ins instead of unconditional PASS. Re-audit: FAIL 3 / CHUA CHOT 7 / PASS 35 (was FAIL 6 / PASS 32); fixed G02 props, G03 character, G04 light+layout. Remaining FAILs are sightline/camera-height, awaiting user seat/elevation decision.
 
 ### Contradictions / superseded-but-active
 

@@ -93,23 +93,32 @@ G02_STYLE_CONTRACT = (
 )
 STYLE_OVERRIDE = {sid: CABIN_STYLE_CONTRACT for sid in ("G02", "G03", "G04")}
 STYLE_OVERRIDE["G01"] = G01_STYLE_CONTRACT
-STYLE_OVERRIDE["G02"] = G02_STYLE_CONTRACT
-# E274: G03/G05 are the same seat-27A cabin set as G02 and inherit the same
-# gradient risk from CABIN_STYLE_CONTRACT. Apply the proven flat contract before
-# their first render instead of discovering the same FAIL after a GPU job.
 # E280: Hy4 saw drawn eyebrows and a nose on the lifted faces in G05 mid/last.
 # The style contract itself primed the nose ("small tapered nose visible in side
 # profile") and the bible denial "no eyebrows, no eyelashes" did not hold with H3.
-# Keep G02's already-passed contract untouched; strip the nose clause for the two
-# shots that still need a render (G03 re-render + G05 continuation).
+# E298 (reviewer): retire the old "keep G02's passed contract untouched" exception.
+# G02 v3 is a fresh render in the same chain, so all three cabin/phone shots must
+# carry the same minimal-face law or the chain changes faces mid-shot sequence.
 FACE_FLAT_CONTRACT = G02_STYLE_CONTRACT.replace(
     "Faces show two simple solid dot eyes and one short mouth line, with a small tapered "
     "nose visible in side profile.",
     "Faces show exactly two simple solid dot eyes and one short mouth line and nothing "
     "else drawn on the face.",
 )
+STYLE_OVERRIDE["G02"] = FACE_FLAT_CONTRACT
 STYLE_OVERRIDE["G03"] = FACE_FLAT_CONTRACT
 STYLE_OVERRIDE["G05"] = FACE_FLAT_CONTRACT
+# E298: G04 is a flat phone close insert, not a cabin wide plate. The inherited
+# G02 contract still asserted four seats/four windows, and the gate skipped seat
+# checks for phone_ins, so a 2+2 stale clause survived in the chain. Strip the
+# row/window assertion; the close insert describes only the phone and its pictures.
+PHONE_INS_STYLE_CONTRACT = FACE_FLAT_CONTRACT.replace(
+    "Cabin rows hold 1+1 seats and oval windows stand on BOTH sides. This view contains "
+    "only the two rows 27 and 28: four seats and four oval windows in total, with no "
+    "receding extra rows, no repeated empty seat backs and no extra windows behind them. ",
+    "",
+)
+STYLE_OVERRIDE["G04"] = PHONE_INS_STYLE_CONTRACT
 # E273: when a shot's own contract already carries the flat light law, the global
 # context "Light:" line would repeat the old "walls clearly lighter / emitting
 # fixtures" wording and re-prime H3 to paint a gradient.
@@ -141,6 +150,12 @@ SCENE_OVERRIDE = {
         "picture; three generic passengers seated in the other seats",
     ),
 }
+
+# E298: G03 runs as pure T2V (assets=[]) and its context entry has an empty
+# characters list, so H3 invented Khang while G05 got the bible block from context.
+# The spec already declares the khang-navy-longsleeve layer; inject the same
+# appearance + wardrobe sentence prompt-side only, without attaching a new ref asset.
+CAST_OVERRIDE = {"G03": ["khang"]}
 
 # Positive composition lock for shots whose wide set plate previously tempted H3 to
 # invent a crowd and drop the hero prop. Never deny an object or a colour here.
@@ -725,12 +740,15 @@ def text_allowance(allowed) -> str:
 
 
 def build_prompt(shot: dict, ctx: dict, part: str) -> str:
+    sid = str(shot.get("id", ""))
     s = ctx["shots"][shot["id"]]
     scene = ctx["sets"].get(s.get("scene"), {})
-    characters = [(cid, ctx["characters"][cid]) for cid in s.get("characters", [])
-                  if cid in ctx["characters"]]
+    char_ids = [cid for cid in s.get("characters", []) if cid in ctx["characters"]]
+    for cid in CAST_OVERRIDE.get(sid, []):
+        if cid in ctx["characters"] and cid not in char_ids:
+            char_ids.append(cid)
+    characters = [(cid, ctx["characters"][cid]) for cid in char_ids]
     size = shot_size(shot, s)
-    sid = str(shot.get("id", ""))
     on_screen = bool(characters)
     beat_size = size if size == "ui" else ("object" if not on_screen else size)
     # Name every character in the wardrobe clause; orphan clothing fragments do not
@@ -742,16 +760,18 @@ def build_prompt(shot: dict, ctx: dict, part: str) -> str:
                 "relaxed asymmetrical standing pose with one hip a little lower, weight on one leg and elbows softly bent",
                 "relaxed seated posture in the airline seat, shoulders squared to the aisle, one hand resting on the lap",
             )
-        if sid == "G05":
+        if sid in ("G03", "G05"):
             # E280: Hy4 saw drawn eyebrows and a nose on the lifted faces in
             # mid/last. The bible sentence itself primes both features, and
             # "no eyebrows, no eyelashes" is a denial that H3 ignored. State
-            # the minimal flat face positively instead.
+            # the minimal flat face positively instead. E298: the same fix now
+            # covers G03's injected Khang block (medium shot), and the eye
+            # clause matches the contract's dot eyes instead of bible oval eyes.
             text = text.replace(
                 "two simple solid oval eyes and one short straight neutral mouth line, "
                 "a small simple tapered nose visibly protruding in side profile, "
                 "no eyebrows, no eyelashes",
-                "exactly two simple solid oval eyes and one short straight neutral mouth "
+                "exactly two simple solid dot eyes and one short straight neutral mouth "
                 "line and nothing else drawn on the face",
             )
         return text

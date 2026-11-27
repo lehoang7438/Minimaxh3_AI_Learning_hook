@@ -241,6 +241,11 @@ def validate_prompt(text: str, *, kind: str = "asset", red_allowed: bool = False
             hard.append(f"stale seat pair {m.group(0)}; canonical is {left}+{right} (E216)")
     if STALE_SEAT_RE.search(t):
         hard.append(f"stale row/seat wording; canonical is {left}+{right} (E216)")
+    # E298: cabin-map.compositing_note is QA metadata only. "composited later"
+    # leaked from global-context into the G02 queued prompt and the gate only
+    # warned afterwards. Fail at generation time, not after a GPU job.
+    if re.search(r"\bcomposited\b|\bcompositing stage\b", t, re.I):
+        hard.append("pipeline/compositing metadata in prompt_visible (E298)")
     # E162: object-deletion negations.
     if DELETION_RE.search(t):
         bad = DELETION_RE.search(t).group(0)

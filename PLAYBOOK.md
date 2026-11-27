@@ -6,9 +6,9 @@
 → skill (SKILL.md) → ALH (`learning-log.jsonl` / `REPORT.md`) → QA (máy + Hy4 + agent chốt).
 `global-context*.json` là **output**, không bao giờ làm nguồn prompt.
 
-> **Trạng thái ALH (REPORT.md 27/11 22:25):** 297 event — 138 accepted / 100 archived / 54 proposed / 5 revoked.
+> **Trạng thái ALH (REPORT.md 27/11):** 300 event — 140 accepted / 100 archived / 55 proposed / 5 revoked.
 > Accepted = **đang áp dụng**, nhưng **rule chỉ thành hard gate sau khi mirror vào SKILL.md / GLOBAL-RULES.md**;
-> **109 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
+> **111 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
 > **không promote** rule nào — nó chỉ trỏ tới rule đã có bằng chứng.
 
 ---
@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E297 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E300 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -93,7 +93,10 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E294** | Sửa nhãn: E292 là phát hiện gradient payload-diff (text bên trong tự gọi nhầm là E293); E293 là kiến trúc 3 lớp. | ALH bookkeeping | A |
 | **E295** | Audit Big Pickle đã đọc lại tay 3 FAIL + 3 PASS: đúng hết, nhưng sót G04 vẫn nói `2+2 seats` dù map/G02/G03/G05 dùng 1+1. PASS của model rẻ không phải bằng chứng. | `prompt-consistency-report.md` + đối chiếu file | A |
 | **E296** | Payload `/history` loại thêm 3 giả thuyết gradient: Scene (v4 byte-identical G02 v2 vẫn FAIL), từ `lit/glowing` (G03 v1 và G05 v1 có mà không FAIL), medium/điện thoại (có ở v1/G05). Seed không tách được khi chưa render. Cấm viết lại Scene lần 5 hoặc đổi chữ sáng. | `g03-gradient-rootcause.md` | A |
-| **E297** | Giả thuyết còn lại (**P**): phone **tĩnh** (v1/G05) ổn, phone **tự đổi/lên sáng** (v2 `lights up`, v3/v4 `changes by itself`) FAIL 3 lần → H3 đọc sự kiện đổi sàng làm ánh sáng, tràn ramp lên trần/sàn xiên. E287 cũng gây regression tay bám máy/ngẩng đầu ở v4. Chờ user chọn đổi anchor/composition theo E271; GPU vẫn `qa_hold`. | đề xuất, chưa render | **P** |
+| **E297** | Giả thuyết còn lại (**P**): phone **tĩnh** (v1/G05) ổn, phone **tự đổi/lên sáng** (v2 `lights up`, v3/v4 `changes by itself`) FAIL 3 lần → H3 đọc sự kiện đổi màn hình làm ánh sáng, tràn ramp lên trần/sàn xiên. E287 cũng gây regression tay bám máy/ngẩng đầu ở v4. Chờ user chọn đổi anchor/composition theo E271; GPU vẫn `qa_hold`. | đề xuất, chưa render | **P** |
+| **E298** | Reviewer đính chính: kiến trúc 3 lớp tốt cho audit rẻ nhưng **không giải thích gradient** (block style đã byte-identical). Áp ngay các sửa không cần chờ: bỏ `composited later` khỏi global-context + rebuild source; `FACE_FLAT_CONTRACT` cho G02 v3; G04 dùng contract phẳng phone-ins bỏ 2+2/cửa sổ; chèn khối Khang vào G03; mắt trong khối G03/G05 đổi `oval`→`dot`. 5 prompt rebuild, lint PASS 0 warning. | reviewer + `rebuild_prompts.py` | A |
+| **E299** | Cứng gate: `validate_prompt` + `lint_h3.ps1` hard-FAIL `composited`/`compositing stage`; audit FAIL cặp N+N trong `phone_ins` thay vì PASS vô điều kiện. Audit lại: FAIL 3 / CHƯA CHỐT 7 / PASS 35 (trước FAIL 6 / PASS 32). Còn FAIL sightline/camera-height, chờ quyết định ghế/độ cao. | gate + audit report | A |
+| **E300** | Reviewer đề xuất (**P**, chưa áp): khai báo điện thoại là shape sáng thứ ba, đặt timecode đổi màn hình, bỏ `no hand touches it`, bỏ câu bốn cửa sổ khỏi G03/G05. Cùng chờ chốt: E231 vs E212/E213/E216/E230/E237; E273 có supersede E209 không; quyền accept của agent; spec 10s/action cũ. GPU vẫn `qa_hold`. | đề xuất, chờ user | **P** |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),

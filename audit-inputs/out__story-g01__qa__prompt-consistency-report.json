@@ -335,24 +335,16 @@
           "note": "wall base #EFEDE6 bone vs lighting_contract.wall_value 'cool dark SLATE / dimmed bone' is a source conflict; plate-level, not a prompt-text FAIL"
         },
         "props_state": {
-          "status": "FAIL",
-          "detail": "Props field reproduces a compositing-stage note verbatim. master_plate.compositing_note says that note is QA metadata only, never prompt text (E162 class).",
+          "status": "PASS",
+          "detail": "Props field carries the structured objects string verbatim.",
           "evidence": [
             {
               "field": "prompt.Props",
-              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A"
-            },
-            {
-              "field": "global-context.sets.aisle_flat.objects",
-              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A"
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor"
             },
             {
               "field": "composer.SCENE_OVERRIDE[G02][1]",
-              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor; three generic passengers are composited later into the seats other than 27A"
-            },
-            {
-              "field": "cabin-map.master_plate.compositing_note",
-              "quote": "QA metadata only, never prompt text: row numbers are 27 (near) and 28 (far); Khang and three generic passengers are composited later, not drawn by H3."
+              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor"
             }
           ],
           "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…"
@@ -498,7 +490,7 @@
               "quote": "level with a seated passenger"
             }
           ],
-          "note": "27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'"
+          "note": "27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang is ALREADY slumped asleep in seat 27A from the first frame,…'"
         },
         "palette_hex": {
           "status": "PASS",
@@ -535,8 +527,8 @@
           "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…"
         },
         "character_wardrobe": {
-          "status": "FAIL",
-          "detail": "Spec declares character layer(s), but the prompt lacks the bible appearance + wardrobe clause: khang: label=False, wardrobe=False, scale=False",
+          "status": "PASS",
+          "detail": "Named character(s) carry bible appearance + wardrobe verbatim, including the 1:6.5-1:7 scale anchor and seated posture.",
           "evidence": [
             {
               "field": "prompt.body",
@@ -622,18 +614,18 @@
           "evidence": [
             {
               "field": "prompt.contract",
-              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges …"
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bo…"
             }
           ],
           "note": "N/A for insert"
         },
         "light_tier": {
-          "status": "FAIL",
-          "detail": "tier=dim_night_flight but the prompt still uses the superseded fixture/slate-wall light text while the structured set light allows only one small lit screen/fixture as bright shape; vignette=yes; band [39.2, 52.2] is metadata.",
+          "status": "PASS",
+          "detail": "Light wording agrees with the structured set light.",
           "evidence": [
             {
               "field": "prompt.contract",
-              "quote": "Low-key night-horror lighting: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, and 60 to 75 percent of each frame held in flat near-black shado…"
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
             },
             {
               "field": "global-context.sets.phone_ins.light",
@@ -663,7 +655,7 @@
           "evidence": [
             {
               "field": "prompt.contract",
-              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges with bold uneven black outlines. Low-key night-horror lighti…"
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines. Night-horror lighting is FLAT soli…"
             },
             {
               "field": "cabin-map.palette_lock.seat_navy",
@@ -703,7 +695,7 @@
           "evidence": [
             {
               "field": "prompt.contract",
-              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges …"
+              "quote": "Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bo…"
             }
           ],
           "note": ""
@@ -927,11 +919,11 @@
     }
   ],
   "summary": {
-    "FAIL": 6,
+    "FAIL": 3,
     "CHƯA CHỐT": 7,
-    "PASS": 32,
+    "PASS": 35,
     "verdict": "FAIL",
     "exit_code": 1,
-    "generated_at": "2026-11-27T22:20:23+07:00"
+    "generated_at": "2026-11-27T22:33:37+07:00"
   }
 }

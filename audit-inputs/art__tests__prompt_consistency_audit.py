@@ -231,10 +231,24 @@ def audit_shot(sid: str, cmap: dict, events: dict, const: dict, bible: dict,
     pairs = sorted(set(re.findall(r"\b(\d)\+(\d)\b", pf["contract"])))
     pair_text = "/".join(a + "+" + b for a, b in pairs)
     if sid == "G01" or set_id == "phone_ins":
-        res["layout_seat"] = result(
-            "PASS", "Insert: no N+N cabin-count assertion in the prompt; seat-count "
-            "contract is not applicable.",
-            [("prompt.contract", excerpt(pf["contract"], 130))], "N/A for insert")
+        # E298: inserts are exempt from the cabin-count assertion, but a stale
+        # N+N clause must not survive inside their style contract. The old gate
+        # returned PASS unconditionally and missed G04's "2+2 seats".
+        insert_pairs = re.findall(r"\b(\d)\+(\d)\b", pf["contract"])
+        if insert_pairs:
+            res["layout_seat"] = result(
+                "FAIL", "Insert still asserts a seat pair " +
+                "/".join(a + "+" + b for a, b in insert_pairs) + "; cabin-map forbids "
+                "2+2 and an insert should assert no row count at all.",
+                [("prompt.contract", re.search(r"Cabin rows hold \d\+\d seats",
+                  pf["contract"]).group(0) if re.search(r"Cabin rows hold \d\+\d seats",
+                  pf["contract"]) else "/".join(a + "+" + b for a, b in insert_pairs))],
+                "N/A for insert count, but stale pair is a visible contradiction")
+        else:
+            res["layout_seat"] = result(
+                "PASS", "Insert: no N+N cabin-count assertion in the prompt; seat-count "
+                "contract is not applicable.",
+                [("prompt.contract", excerpt(pf["contract"], 130))], "N/A for insert")
     else:
         res["layout_seat"] = result(
             UND,
