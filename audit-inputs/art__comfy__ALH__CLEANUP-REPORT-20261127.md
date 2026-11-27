@@ -3,6 +3,8 @@
 Status: **completed conservatively — 0 files/directories deleted by the subagent, 0 bytes reclaimed, 0 errors.**
 Parent-session addendum: after the scan, the parent removed exactly 4 `__pycache__` directories (`art/comfy/ALH`, `art/comfy/scripts`, `art/tests`, `learning_system`) as an explicitly allowed, regenerable cleanup. No other candidate below was touched.
 No GPU work, no pipeline commands, no prompt/context/spec/workflow edits, no git writes.
+Follow-up (same day): the actual MiniMax H3 / FreeVideo install was cleaned separately —
+see `CLEANUP-REPORT-FREEVIDEO-20261127.md` (5 removals, 2.40 GiB reclaimed).
 
 ## Scan scope (light pass)
 

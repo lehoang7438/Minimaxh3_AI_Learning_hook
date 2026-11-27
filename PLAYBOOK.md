@@ -6,9 +6,9 @@
 → skill (SKILL.md) → ALH (`learning-log.jsonl` / `REPORT.md`) → QA (máy + Hy4 + agent chốt).
 `global-context*.json` là **output**, không bao giờ làm nguồn prompt.
 
-> **Trạng thái ALH (REPORT.md 27/11):** 300 event — 140 accepted / 100 archived / 55 proposed / 5 revoked.
+> **Trạng thái ALH (REPORT.md 27/11):** 301 event — 141 accepted / 100 archived / 55 proposed / 5 revoked.
 > Accepted = **đang áp dụng**, nhưng **rule chỉ thành hard gate sau khi mirror vào SKILL.md / GLOBAL-RULES.md**;
-> **111 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
+> **112 accepted chưa mirror** (liệt kê mục "Accepted but not promoted" trong REPORT.md). Playbook này
 > **không promote** rule nào — nó chỉ trỏ tới rule đã có bằng chứng.
 
 ---
@@ -59,7 +59,7 @@ là cổng cứng trước mỗi job). Mọi file/script mới phải trả lờ
 
 ---
 
-## 4. Rule prompt đang active — E267–E300 (có bằng chứng ALH)
+## 4. Rule prompt đang active — E267–E301 (có bằng chứng ALH)
 
 Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng = chưa mirror SKILL.md. E278/E279 là bẫy, đọc kỹ.
 
@@ -97,6 +97,7 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E298** | Reviewer đính chính: kiến trúc 3 lớp tốt cho audit rẻ nhưng **không giải thích gradient** (block style đã byte-identical). Áp ngay các sửa không cần chờ: bỏ `composited later` khỏi global-context + rebuild source; `FACE_FLAT_CONTRACT` cho G02 v3; G04 dùng contract phẳng phone-ins bỏ 2+2/cửa sổ; chèn khối Khang vào G03; mắt trong khối G03/G05 đổi `oval`→`dot`. 5 prompt rebuild, lint PASS 0 warning. | reviewer + `rebuild_prompts.py` | A |
 | **E299** | Cứng gate: `validate_prompt` + `lint_h3.ps1` hard-FAIL `composited`/`compositing stage`; audit FAIL cặp N+N trong `phone_ins` thay vì PASS vô điều kiện. Audit lại: FAIL 3 / CHƯA CHỐT 7 / PASS 35 (trước FAIL 6 / PASS 32). Còn FAIL sightline/camera-height, chờ quyết định ghế/độ cao. | gate + audit report | A |
 | **E300** | Reviewer đề xuất (**P**, chưa áp): khai báo điện thoại là shape sáng thứ ba, đặt timecode đổi màn hình, bỏ `no hand touches it`, bỏ câu bốn cửa sổ khỏi G03/G05. Cùng chờ chốt: E231 vs E212/E213/E216/E230/E237; E273 có supersede E209 không; quyền accept của agent; spec 10s/action cũ. GPU vẫn `qa_hold`. | đề xuất, chờ user | **P** |
+| **E301** | Dọn rác FreeVideo/MiniMax H3: xoá đúng 5 mục install-time (test-runs cũ, temp clone `FreeVideo-main` + zip, installer MinGit zip, uv temp) = 2,578,665,597 bytes ≈ 2.40 GiB. Giữ CHƯA CHỐT: prepared int8-convrot 21.87 GiB, torch-wheels/uv-cache (bootstrap.py), kernel/input/continuations caches, setup-runs (script chọn run mới nhất), `Downloads\FreeVideo-main` (4 script còn trỏ). Engine/models/envs/ComfyUI/agent-token nguyên vẹn; xem `CLEANUP-REPORT-FREEVIDEO-20261127.md`. | cleanup report | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),

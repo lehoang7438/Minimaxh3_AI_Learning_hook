@@ -1,12 +1,12 @@
-# ALH report - 2026-11-27 22:33
+# ALH report - 2026-11-27 22:49
 
-log: `art\comfy\ALH\learning-log.jsonl`  |  total 300 event(s)
+log: `art\comfy\ALH\learning-log.jsonl`  |  total 302 event(s)
 
 ### Status
 
 | value | n | share |
 |---|---|---|
-| accepted | 140 | 47% |
+| accepted | 142 | 47% |
 | archived | 100 | 33% |
 | proposed | 55 | 18% |
 | revoked | 5 | 2% |
@@ -15,7 +15,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 300 event(s)
 
 | value | n | share |
 |---|---|---|
-| rule_gap | 114 | 38% |
+| rule_gap | 116 | 38% |
 | asset_qa_fail | 51 | 17% |
 | verdict | 46 | 15% |
 | qa_fail | 42 | 14% |
@@ -33,9 +33,10 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 300 event(s)
 | h3-visual-qa | 34 | 11% |
 | character-bible | 9 | 3% |
 | h3-storyboard | 3 | 1% |
+| global | 2 | 1% |
 | h3-prompt-linter | 2 | 1% |
 | bitnet | 1 | 0% |
-| global | 1 | 0% |
+| freevideo-runner | 1 | 0% |
 
 ### Layer
 
@@ -50,12 +51,12 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 300 event(s)
 | clip | 9 | 3% |
 | mitten_anatomy | 8 | 3% |
 | visual | 8 | 3% |
+| gate | 8 | 3% |
 | set_geometry | 6 | 2% |
 | palette_lock | 6 | 2% |
 | lighting_logic | 6 | 2% |
 | injury_logic | 6 | 2% |
 | qa | 6 | 2% |
-| gate | 6 | 2% |
 | anchor | 5 | 2% |
 | qa_reviewer | 5 | 2% |
 | prop_identity | 4 | 1% |
@@ -257,14 +258,11 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 300 event(s)
 - [E295] h3-visual-qa / G01-G05 / gate - E295 Big Pickle audit hand-checked: 3 sampled FAIL (G02 composited-later leakage, G03 missing khang wardrobe clause, G04 superseded fixture/slate light) and 3 sampled PASS (G01 clean insert, G03 phone props, G05 khang wardrobe clause) all confirmed. Extra miss: G04 still says 2+2 seats while cabin-map/G02/G03/G05 say 1+1. Cheap-model PASS is not evidence; sample by hand before acting.
 - [E296] h3-prompt-writing / G03 / prompt - E296 exact /history payload trace eliminates three G03 gradient hypotheses: E287 Scene wording (v4 byte-identical to approved G02 v2 yet still FAIL), E283 lit/glow vocabulary (G03 v1 and G05 v1 had glowing phones with no recorded gradient FAIL), medium framing and phone presence (both in v1/G05); seed-only cannot be isolated without a render. Fifth Scene rewrite or glow-word swap is not a valid fix.
 - [E298] h3-prompt-writing / G01-G05 / gate - E298 reviewer correction + no-wait fixes: 3-layer architecture is useful for cheap audit but does NOT explain the gradient (style blocks already byte-identical). Applied: remove composited-later pipeline note from global-context and rebuild source; FACE_FLAT_CONTRACT on G02 v3 so the chain shares one face law; G04 flat phone-insert contract with no 2+2/seat-window assertion; inject Khang appearance+wardrobe block into G03 prompt-side; G03/G05 block eyes changed from oval to dot to match contract. All 5 prompts rebuilt, lint PASS 0 warning.
-- [E299] h3-prompt-linter / G01-G05 / gate - E298 gate hardening: validate_prompt and lint_h3.ps1 now hard-FAIL composited/compositing-stage pipeline metadata in prompt_visible; prompt_consistency_audit now FAILs a stale N+N pair inside phone_ins instead of unconditional PASS. Re-audit: FAIL 3 / CHUA CHOT 7 / PASS 35 (was FAIL 6 / PASS 32); fixed G02 props, G03 character, G04 light+layout. Remaining FAILs are sightline/camera-height, awaiting user seat/elevation decision.
+- [E299] h3-prompt-linter / G01-G05 / gate - E299 gate hardening: validate_prompt and lint_h3.ps1 now hard-FAIL composited/compositing-stage pipeline metadata in prompt_visible; prompt_consistency_audit now FAILs a stale N+N pair inside phone_ins instead of unconditional PASS. Re-audit: FAIL 3 / CHUA CHOT 7 / PASS 35 (was FAIL 6 / PASS 32); fixed G02 props, G03 character, G04 light+layout. Remaining FAILs are sightline/camera-height, awaiting user seat/elevation decision.
+- [E301] freevideo-runner / G01-G05 / gate - E301 cleanup scope: delete only install-time junk in the MiniMax H3/FreeVideo install - old test-runs, temp FreeVideo-main clone+zip, one-off MinGit installer zip, empty uv temp (5 items, 2,578,665,597 bytes = 2.40 GiB). KEEP CHUA CHOT the 21.87 GiB prepared int8-convrot model cache (active reuse path), torch-wheels + uv-cache install caches (referenced by bootstrap.py for repair), kernel/input/continuations caches, setup-runs (render-ready.ps1/finish-setup.ps1 pick newest), and the stale Downloads\FreeVideo-main (four project scripts still reference it). Engine/models/envs/ComfyUI/agent-token untouched; no GPU work.
 
 ### Contradictions / superseded-but-active
 
 - G01 / asset
 - G02 / clip
 - G03 / prompt
-
-### Skills with no learning events
-
-- freevideo-runner

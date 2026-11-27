@@ -1,0 +1,173 @@
+[
+  {
+    "id": "eff4fd77-eaaa-41ec-ba15-077bf59e3bae",
+    "seed": "20262214",
+    "seconds": "5.0",
+    "continue": "C:\\Users\\Admin\\FreeVideo\\ComfyUI\\output\\chain4\\seg3.mp4",
+    "assets": "[]",
+    "chars": 2765,
+    "status": "success"
+  },
+  {
+    "id": "9dd14078-776b-447a-a8d7-f74c6aa765df",
+    "seed": "20262211",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 2734,
+    "status": "success"
+  },
+  {
+    "id": "b899e329-5251-4fcb-9ffa-fc39aa7ed332",
+    "seed": "20262301",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 2932,
+    "status": "success"
+  },
+  {
+    "id": "b4d1e363-dae5-46cb-8b38-595e54b848fa",
+    "seed": "20262401",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 2669,
+    "status": "success"
+  },
+  {
+    "id": "c400196e-874d-413e-8030-b1c2d8a4e7dc",
+    "seed": "20262501",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 2919,
+    "status": "success"
+  },
+  {
+    "id": "71b4db2a-8be6-43e8-adda-167b1df7a7bb",
+    "seed": "20262601",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-mitten-r5-1024.png\", \"role\": \"reference\"}]",
+    "chars": 3229,
+    "status": "success"
+  },
+  {
+    "id": "ba660544-0cae-4e25-b33e-cb7b6d6af5f8",
+    "seed": "20262701",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-real-r6-1024.png\", \"role\": \"reference\"}]",
+    "chars": 3416,
+    "status": "success"
+  },
+  {
+    "id": "c1a94180-6760-4c66-ac30-bfc1dc400845",
+    "seed": "20262801",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-real-r7-1024.png\", \"role\": \"reference\"}]",
+    "chars": 3812,
+    "status": "success"
+  },
+  {
+    "id": "18fc2512-b353-4aeb-a6e5-b6b959e87874",
+    "seed": "20262901",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-real-r8-1024.png\", \"role\": \"reference\"}]",
+    "chars": 4105,
+    "status": "success"
+  },
+  {
+    "id": "0b690759-14f6-4876-8e8c-9421a9d6d112",
+    "seed": "20263001",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-real-r8-1024.png\", \"role\": \"reference\"}]",
+    "chars": 4268,
+    "status": "success"
+  },
+  {
+    "id": "393f490a-3919-4738-844c-ab9c3c8b43ab",
+    "seed": "20263101",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-real-r8-1024.png\", \"role\": \"reference\"}]",
+    "chars": 4542,
+    "status": "success"
+  },
+  {
+    "id": "f83dd5b3-fbe0-4721-949b-d50a4652248b",
+    "seed": "20263201",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[{\"file\": \"ref_chain4_bloody-arm-real-r8-1024.png\", \"role\": \"reference\"}]",
+    "chars": 4688,
+    "status": "success"
+  },
+  {
+    "id": "fb5817cb-e1a9-4cec-85a3-4428d781ed15",
+    "seed": "20263301",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 3248,
+    "status": "success"
+  },
+  {
+    "id": "1005c5e3-6dd0-461b-a373-b46eea6105f1",
+    "seed": "20263401",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 3426,
+    "status": "success"
+  },
+  {
+    "id": "eb839233-4120-40a1-af29-36c7e8711b34",
+    "seed": "20263501",
+    "seconds": "10.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 2879,
+    "status": "success"
+  },
+  {
+    "id": "21989dcd-d9a9-4a7b-b0b5-3a7543bb19ff",
+    "seed": "20263602",
+    "seconds": "10.0",
+    "continue": "C:\\Users\\Admin\\FreeVideo\\ComfyUI\\output\\story-g01\\G03.mp4",
+    "assets": "[]",
+    "chars": 4239,
+    "status": "success"
+  },
+  {
+    "id": "d64c47c3-0a0e-434c-a786-b1520d9f92a4",
+    "seed": "20263701",
+    "seconds": "6.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 3325,
+    "status": "success"
+  },
+  {
+    "id": "48004c76-289b-4a90-8bbe-2f650d4e0979",
+    "seed": "20263901",
+    "seconds": "6.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 3469,
+    "status": "success"
+  },
+  {
+    "id": "fc194b2d-a725-47a3-b2ba-0136ba2a9245",
+    "seed": "20264101",
+    "seconds": "6.0",
+    "continue": "",
+    "assets": "[]",
+    "chars": 3595,
+    "status": "success"
+  }
+]

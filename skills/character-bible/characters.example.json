@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "project": "example-series",
+  "label_policy": "H3 labels are positional: <Picture 1> is the first picture uploaded with the request. Keep this file's order equal to the upload order.",
+  "characters": [
+    {
+      "id": "lan",
+      "display_name": "Lan",
+      "subject_label": "<Subject 1>",
+      "appearance": "Vietnamese woman in her late twenties, oval face, straight black hair to the shoulder blades, dark brown eyes, small scar above the left eyebrow, slim build, 1.62 m.",
+      "wardrobe": "Faded olive bomber jacket over a white tee, dark straight jeans, scuffed white sneakers.",
+      "wardrobe_by_shot": {
+        "shot-07": "Same outfit plus a grey raincoat, hood down."
+      },
+      "voice": {
+        "timbre": "low, slightly breathy",
+        "pace": "measured, short sentences",
+        "accent": "southern Vietnamese",
+        "language": "Vietnamese"
+      },
+      "refs": [
+        { "label": "<Picture 1>", "path": "refs/lan_face.png", "use": "face and hair" },
+        { "label": "<Picture 2>", "path": "refs/lan_outfit.png", "use": "wardrobe" },
+        { "label": "<Audio 1>", "path": "refs/lan_voice.wav", "use": "voice timbre" }
+      ],
+      "must_keep": ["oval face", "shoulder-length black hair", "scar above left eyebrow"],
+      "may_change": ["lighting", "pose", "camera side"],
+      "notes": "Never smiling in wide shots; reserved expression."
+    }
+  ]
+}
