@@ -80,6 +80,7 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E281** | **Duration fit action**: `DURATION_OVERRIDE={'G03':6.0,'G05':8.0}`; beat G03 dùng `{tc}` để không timecode nào vượt clip ngắn. G01 (7 snap) & G02 giữ 10 s. | `DURATION_OVERRIDE` (~462), `{tc}` trong beat (~272) | A |
 | **E282** | Lỗi tải file mp4 bị app khác giữ → đọc `/history/<job_id>`, tải `/view` sang tên `-v2`, measure + copy handoff; **không queue lại GPU** (job đã success). | quy trình queue/download | proposed |
 | **E283** | G03 v2 gradient trần/sàn nặng hơn baseline G02 v2 đã duyệt (tái phạm E273). Trigger = cụm "lights up / lit phone" kích H3 vẽ ánh sáng lan. Sửa 1 lớp prompt: "screen changes by itself from a plain pale rectangle to one flat picture", "cabin keeps its same one-tone surfaces". | `ACTION_OVERRIDE['G03']`, `BEAT_OVERRIDE['G03']` | A |
+| **E284** | G02 hand re-review: tay rút xuống dưới 27A đúng kịch bản, biến mất từ 4.5 s, anatomy đúng. Cổ tay bị ghế đen che nên tay đọc như rời ("lòi lòi") — deviation chấp nhận, không render lại. | verdict, không đổi code | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -143,7 +144,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File art\comfy\ALH\learn_hook.ps1
 | Shot | Trạng thái |
 |---|---|
 | **G01 v11** | PASS (E272, auto-chot theo E271). Cuff navy đọc ash-grey = **deviation đã chấp nhận** từ v10, không blocker. |
-| **G02 v2** | PASS (E274, auto-chot). 2 deviation nhẹ: ghế/cửa sổ lùi xa, tỉ lệ vùng sáng phẳng. |
+| **G02 v2** | PASS (E274, auto-chot). 3 deviation nhẹ: ghế/cửa sổ lùi xa, tỉ lệ vùng sáng phẳng, tay nối G01 đọc như tay rời do cổ tay bị ghế che (E284, review lại theo yêu cầu user). |
 | **G03 v2** | Held-state đúng (ngủ từ f1, tay không chạm máy, 4 người, mặt phẳng, bánh+ảnh nhóm), nhưng Hy4 so với baseline G02 v2 thấy gradient trần/sàn nặng hơn → tái phạm E273. E283 sửa prompt, backup `video-v2-gradient-fail.mp4`. **Seed 20263901, 6 s đang render nền — chờ QA, chưa có verdict.** |
 | **G05 v1** | FAIL: eyebrows + mũi ở mid/last. Prompt đã face-flat (E280) + 8 s (E281). **Chưa queue — đợi G03 v3 QA PASS rồi mới render 8 s `continue_from` last-frame G03 mới.** |
 
