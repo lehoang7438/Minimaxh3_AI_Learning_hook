@@ -85,6 +85,7 @@ Ghi chú trạng thái: **A** = accepted & đang áp dụng; chữ in nghiêng =
 | **E286** | Triển khai E285 đúng 1 lớp prompt: bỏ "bone-white hand", thêm "dirty dark-bone forearm / near-black nails / wide near-black navy cuff", "thin sliver ... peeks a little ... eases back", "nobody turns, looks down or reacts"; beat dùng `{tc}` (00:00.000/00:02.900/00:05.700). Rebuild 4175 chars, lint 6 s PASS 0 warning. G02 v2 bị supersede, chờ GPU rảnh để render lại. | `rebuild_prompts.py` G02 action/beats + duration | A |
 | **E287** | G03 v3 gradient vẫn nặng hơn baseline dù đã bỏ "lights up" (so v2↔v3: nhẹ hơn nhưng cấu trúc không đổi). Trigger thật = dòng `Scene`: G02 phẳng có "plain solid oval windows + thin solid bone-white ceiling strip + flat muted-teal floor runner", G03 `seat_27a` chỉ có "dark night cabin + thin ceiling strip". Sửa 1 lớp prompt: `SCENE_OVERRIDE['G03']` mượn geometry/objects đã duyệt của G02 + điện thoại phẳng trên đùi. Rebuild 3591 chars, lint 6 s PASS. | `SCENE_OVERRIDE` (~117), `build_prompt` (~750) | A |
 | **E288** | Pre-fix G05 theo E275: cùng plate 27A nên kế thừa `SCENE_OVERRIDE` phẳng và bỏ hẳn "lit phone / glows / still lit" trước render đầu. Rebuild 4559 chars, lint 8 s PASS 0 warning (00:00/00:03.900/00:07.700). | `SCENE_OVERRIDE['G05']`, `ACTION/BEAT_OVERRIDE['G05']` | A |
+| **E289** | G01 v11 FAIL E270 theo user + Hy4: khung đứng yên, chỉ tay giật; "short lateral slide" bị H3 bỏ qua. Sửa 1 lớp prompt: 3 chỗ đều nói "one clear short sideways pan" + parallax "fixed jagged seat edge and dark floor gap travel visibly ... hand keeps its size", vẫn 7 nhịp jerk, không dolly. Rebuild 5097 chars, lint 10 s PASS 0 warning. E272 chỉ đúng phần jerk/blood, **verdict lia camera bị E289 thay thế**. | `G01_STYLE_CONTRACT`, `UNDER_SEAT_PAN`, `ACTION_OVERRIDE['G01']`, `JERK_AMBIENCE` | A |
 
 Gợi ý chung vẫn sống trong SKILL.md: field 1 theo thứ tự *style → cỡ cảnh/camera → nhân vật+wardrobe → hành động+mặt đỡ → mood*;
 cấm slug, cấm câu phủ định xoá vật/màu (E162/E200), `red_allowed=false` không nhắc đỏ, không path `.png` trong text (E226),
@@ -152,7 +153,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File art\comfy\ALH\learn_hook.ps1
 
 | Shot | Trạng thái |
 |---|---|
-| **G01 v11** | PASS (E272, auto-chot theo E271). Cuff navy đọc ash-grey = **deviation đã chấp nhận** từ v10, không blocker. |
+| **G01 v11** | E272 PASS chỉ cho jerk/blood; **phần lia camera bị user + Hy4 bác (E289)**: khung đứng yên. Prompt đã sửa (5097 chars, lint 10 s PASS), **chưa render v12 — đợi G03 v4 xong rồi queue seed mới kèm r8**. |
 | **G02 v2** | Bị user phủ nhận (E285): đúng chữ nhưng sai logic kinh dị — bàn tay trắng nổi bật, không phải cánh tay ma G01 ló nhẹ dưới gầm. E284 đã revoked. Prompt đã sửa (E286), 6 s, **chưa render lại — đợi GPU rảnh**. |
 | **G03 v2** | Held-state đúng nhưng gradient trần/sàn nặng hơn baseline G02 → tái phạm E273 (E283). Backup `video-v2-gradient-fail.mp4`. |
 | **G03 v3** | Seed 20263901, 6 s: held-state sạch nhưng trần/sàn vẫn gradient nặng hơn G02 → E273 tái phạm lần 2; E287 sửa dòng Scene. |
