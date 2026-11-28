@@ -43,6 +43,7 @@ _Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. **Only `Acc
 - [E325] ALH:E325 — E325 accepted (agent, supersedes E319): chain4_run.py now has --seed for an EXACT one-segment seed and validates that only one segment runs; --seed-base remains documented as segment-offset. Long jobs require a shell timeout >=7200000 ms. v6 uses --seed 20264501.  [supersedes E319]
 - [E326] ALH:E326 — E326 accepted (agent, supersedes E314 for G02): align the G02 truth layers with E308/E309/E316 - spec seconds 6 + rear viewpoint metadata, cabin-map shot_overrides.G02, global-context VIEWPOINT_OVERRIDE/STATE_OVERRIDE, and audit report scope PRE-RENDER only with an E324 arm regression gate. Scope is G02 only; cabin-map remains authoritative for G03/G05.  [supersedes E314]
 - [E327] ALH:E327 — E327 accepted (user): queue exactly one G02 v6 retry after the fixes, on the single chain4 workflow, 6 s, continue_from story-g02-v6/G01.mp4, r8 arm reference, EXACT seed 20264501 via --seed. Doctor GO and preflight are gates; no G01/G03/G05 queue and no verdict before clip QA + Hy4 flash-free + Big Pickle hand-check 3 FAIL / 3 PASS.  [supersedes E320,E321]
+- [E337] ALH:E337 — Step 0 before every task: load comfyui-runner. Agent creates the best H3 inputs (prompt/refs/assets/context/route/anchor/audio) and a QA + root-cause process placed into the H3 workflow, never a driver or code patch. Workflow means the H3 MiniMax graph.
 
 ### Accepted run records (evidence, not rules)
 

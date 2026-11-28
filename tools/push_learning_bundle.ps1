@@ -60,13 +60,15 @@ Reset-BundleDir $toolsDest
 foreach ($f in @(
   'rebuild_prompts.py', 'h3_prompt_rules.py', 'prompt_consistency_audit.py',
   'chain4_run.py', 'chain4_prepare.py', 'chain4_qa.py', 'chain4_recover.py',
-  'workflow_state.py'
+  'workflow_state.py', 'build_single_node_ui.py',
+  'h3_route_rules.py', 'h3_route_validate.py'
 )) {
   Copy-IfExists (Join-Path $Src (Join-Path 'art\tests' $f)) (Join-Path $toolsDest $f)
 }
 Copy-IfExists $srcChain (Join-Path $toolsDest 'h3-chain4.json')
 Copy-IfExists (Join-Path $Src 'art\comfy\h3-master.json') (Join-Path $toolsDest 'h3-master.json')
 Copy-IfExists (Join-Path $Src 'art\comfy\h3-single-node-ui.json') (Join-Path $toolsDest 'h3-single-node-ui.json')
+Copy-IfExists 'C:\Users\Admin\FreeVideo\ComfyUI\custom_nodes\FreeVideoGhe27AContext\__init__.py' (Join-Path $toolsDest 'FreeVideoGhe27AContext__init__.py')
 Copy-IfExists (Join-Path $Repo 'docs\project-tools-README.md') (Join-Path $toolsDest 'README.md')
 
 # 4. audit-inputs/ (frozen reviewer snapshot) ---------------------------------
@@ -82,6 +84,9 @@ $snapshot = @(
   'art\tests\rebuild_prompts.py',
   'art\tests\h3_prompt_rules.py',
   'art\tests\chain4_run.py',
+  'art\tests\build_single_node_ui.py',
+  'art\tests\h3_route_rules.py',
+  'art\tests\h3_route_validate.py',
   'art\comfy\chain4\h3-chain4.json',
   'art\comfy\h3-master.json',
   'art\comfy\h3-single-node-ui.json',
@@ -113,6 +118,7 @@ foreach ($f in $snapshot) {
     Write-Output "MISSING $f"
   }
 }
+Copy-IfExists 'C:\Users\Admin\FreeVideo\ComfyUI\custom_nodes\FreeVideoGhe27AContext\__init__.py' (Join-Path $auditDest 'FreeVideoGhe27AContext__init__.py')
 if (Test-Path -LiteralPath $HistoryDir) {
   $payloadDest = Join-Path $auditDest 'queued-payloads'
   New-Item -ItemType Directory -Force -Path $payloadDest | Out-Null
@@ -137,7 +143,9 @@ foreach ($f in @(
   'PLAYBOOK.md', 'alh\learning-log.jsonl', 'alh\REPORT.md',
   'alh\CONDENSED-RULES-DRAFT.md', 'skills\h3-prompt-writing\SKILL.md',
   'skills\comfyui-runner\SKILL.md', 'project-tools\h3-chain4.json',
-  'project-tools\h3-master.json', 'project-tools\h3-single-node-ui.json'
+  'project-tools\h3-master.json', 'project-tools\h3-single-node-ui.json',
+  'project-tools\h3_route_rules.py', 'project-tools\h3_route_validate.py',
+  'project-tools\FreeVideoGhe27AContext__init__.py', 'docs\ROUTE-WORKFLOW.md'
 )) {
   $p = Join-Path $Repo $f
   if (Test-Path -LiteralPath $p) {

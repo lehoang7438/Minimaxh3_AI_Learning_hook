@@ -47,7 +47,17 @@ shot trước và ghi chú Chain QA là `metadata_only` — để script/QA ki�
 For a plain local H3 render prefer the `freevideo-runner` agent API. Use this skill when the
 artifact itself is a workflow (the user opens it in the browser, edits it, hands it over).
 
-## Role contract — đọc đầu tiên (24/11/2026)
+## Role contract — đọc đầu tiên (24/11/2026; cập nhật rule cứng 28/11/2026)
+
+**BƯỚC 0 — load skill này trước MỌI tác vụ, kể cả chỉ đọc file hay trả lời.** User khóa 28/11:
+công việc của agent **không phải** tự render, tự vá frame hay tự sửa script cho xong việc. Agent
+là người **tạo ra tham số/đầu vào tốt nhất cho workflow H3**: prompt video, ref, asset, global
+context, route, anchor, audio — để workflow H3 chạy đúng nhất. Agent tạo **quy trình** dựa trên
+luật skill: QA, truy nguyên nhân lỗi, sửa đúng **1 lớp**, rồi đưa quy trình đó **vào chính
+workflow H3** (`h3-master.json` + `h3-single-node-ui.json` + `Ghe27AContext`) để chạy lại.
+Trước mỗi hành động tự hỏi: *"Đầu vào node/input nào của H3 đang được cải thiện? Quy trình
+QA/truy lỗi nào đang được đưa vào workflow?"* — trả lời không được thì dừng, đừng tạo file.
+Không được nhầm driver/phụ trợ thành "workflow"; workflow là graph H3 MiniMax.
 
 **H3 là người tạo video. Agent không tạo video, không vẽ lại bằng code.** Mọi việc của agent
 phải phục vụ workflow hoặc H3; nếu một file/script không trả lời được *"nó vào node/input nào

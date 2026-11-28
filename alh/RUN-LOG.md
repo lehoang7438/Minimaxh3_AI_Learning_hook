@@ -520,3 +520,19 @@ documented as an alias of `continue_media` (same images, same audio) rather than
 Re-validation after the fix (GPU-free): all 6 routes pass `validate_route()` and
 `preflight_workflow.py`; `audio_use` is `reference` in all six generated graphs; py_compile
 OK. No GPU job was queued. Status: proposed only; needs user review before promotion.
+- E337 accepted/promoted/comfyui-runner /part1/G03/workflow — User hardened the core role rule on 28/11/2026 after repeated drift (including mistaking the
+chain4 driver graph for the H3 MiniMax workflow).
+
+Doctrine (now accepted, not merely proposed): the agent's job is NOT to render by itself, patch
+frames, or edit scripts just to finish a task. The agent's job is to produce the best possible
+parameters and inputs for the H3 workflow — video prompt, refs, assets, global context, route,
+anchor, audio — so that the H3 workflow runs correctly. The agent builds a process based on skill
+rules: QA, root-cause tracing, fix exactly one layer, then put that process back into the H3
+workflow (`h3-master.json` + `h3-single-node-ui.json` + `Ghe27AContext`) and re-run it.
+
+Enforcement: `AGENTS.md` now has a "TƯ DUY CỐT LÕI" section and step 0 in the mandatory skill list:
+before reading a file, editing code, writing a prompt, queueing or even answering, the agent must
+call `skill` with id `comfyui-runner`, then ask which H3 node/input it is improving and which
+QA/root-cause process is being put into the workflow. If it cannot answer, stop. The
+`comfyui-runner/SKILL.md` Role contract carries the same text. "Workflow" always means the H3
+MiniMax graph, never a driver or helper script.

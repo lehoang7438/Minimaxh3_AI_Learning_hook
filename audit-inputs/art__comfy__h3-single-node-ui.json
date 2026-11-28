@@ -2,7 +2,7 @@
   "id": "6a04945d-870e-5667-bc52-bbb846306c79",
   "revision": 4,
   "last_node_id": 7,
-  "last_link_id": 8,
+  "last_link_id": 15,
   "nodes": [
     {
       "id": 1,
@@ -24,7 +24,7 @@
         "Node name for S&R": "Note"
       },
       "widgets_values": [
-        "GHẾ 27A · H3 single chain\n\nGhe27AContext -> FreeVideoMedia -> FreeVideoGenerate -> SaveVideo\n                                  \\-> PreviewAny (context report)\n\nChange `shot_id` (G01..G50) and press Queue Prompt. Assets, prompt, first frame, voice come\nfrom art/env/global-context.json. `context_path` is relative to the project root; point it at\nglobal-context-part2.json / -part3.json for shots G21+ of those parts (the node also\nre-points itself and says so in the report if the shot lives elsewhere).\n\nDURATION AND CANVAS ARE WIDGETS IN THIS FILE: 704 x 1280, 8.0 s. This session still runs\nthe context-node build from before 25/11 (5 outputs), so linking seconds/width/height would\nbreak the queue. Restart ComfyUI once, then re-run `python art/tests/build_single_node_ui.py`\n(auto mode wires the three outputs) to make shot_id drive duration and canvas.\n\nSampling: two-pass acceleration, 8 first-pass steps + 3 second-pass steps (defaults).\nSeed: FIXED — a take can be reproduced; set it back to `randomize` only when hunting.\nOutput: SaveVideo -> output/ghe27a/<shot>_h3_*.mp4 (e.g. G01_h3_00001.mp4). The prefix is\nstamped for the shot this file was built for: re-run the builder (or edit the prefix) when\nyou change shot_id, otherwise every take lands under the same name.\nResolution: upscale_factor `2` is the engine's \"no upscale\" sentinel (it returns no option),\nso the file stays at the canvas above — it does NOT render 1408x2560.\n\nThe report outputs are wired to PreviewAny: the context report prints shot, part, refs,\nfirst-frame origin, voice file, canvas, seconds and prompt length; H3's own report prints what\nthe sampler actually received. Read them when a shot looks wrong.\n"
+        "GHẾ 27A · H3 single chain\n\nGhe27AContext -> FreeVideoMedia -> FreeVideoGenerate -> SaveVideo\n                                  \\-> PreviewAny (context report)\n\nChange `shot_id` (G01..G50) and press Queue Prompt. Assets, prompt, first frame, voice,\nduration and canvas all come from art/env/global-context.json. `context_path` points at art/env/global-context.json (absolute until the 25/11 node is loaded,\nthen the builder writes it relative); point it at global-context-part2.json / -part3.json for shots G21+ of those\nparts (the node also re-points itself and says so in the report if the shot lives elsewhere).\n\nseconds / width / height ARE wired from the context node: changing shot_id changes clip\nlength (shots[].seconds) and canvas (render.width/height) with no other edit.\n\nSampling: two-pass acceleration, 8 first-pass steps + 3 second-pass steps (defaults).\nSeed: FIXED — a take can be reproduced; set it back to `randomize` only when hunting.\nOutput: SaveVideo -> output/ghe27a/<shot>_h3_*.mp4 (e.g. G01_h3_00001.mp4). The prefix is\nstamped for the shot this file was built for: re-run the builder (or edit the prefix) when\nyou change shot_id, otherwise every take lands under the same name.\nResolution: upscale_factor `2` is the engine's \"no upscale\" sentinel (it returns no option),\nso the file stays at the canvas above — it does NOT render 1408x2560.\n\nThe report outputs are wired to PreviewAny: the context report prints shot, part, refs,\nfirst-frame origin, voice file, canvas, seconds and prompt length; H3's own report prints what\nthe sampler actually received. Read them when a shot looks wrong.\n\nROUTES (context node widgets): auto | fresh | fresh_audio | continue_voice |\ncontinue_anchor | continue_media | continue_media_plain. `route_media` is a JSON\narray of up to three {\"kind\":\"image\",\"path\":\"...\"} rows; `route_audio` defaults to\nG01's timbre sample art/env/voice-narrator.wav for fresh_audio; `route_continue_from`\nis the previous clip for continue_* routes; `route_anchor` is the single anchor image.\nHard conflicts (checked in the node before the GPU): continue_anchor + route_media,\nroute_audio + any continue_* route, four or more images, and continue_anchor +\nfirst_frame_reference. Every route writes audio_use='reference'.\n\nThe route outputs need the rebuilt Ghe27AContext node. After editing the node,\nRESTART ComfyUI, then re-run `python art/tests/build_single_node_ui.py` so the\nroute links are wired; before that restart this file stays queueable without them.\n"
       ],
       "title": "How to use"
     },
@@ -87,20 +87,64 @@
         {
           "name": "seconds",
           "type": "FLOAT",
-          "links": [],
+          "links": [
+            9
+          ],
           "slot_index": 5
         },
         {
           "name": "width",
           "type": "INT",
-          "links": [],
+          "links": [
+            10
+          ],
           "slot_index": 6
         },
         {
           "name": "height",
           "type": "INT",
-          "links": [],
+          "links": [
+            11
+          ],
           "slot_index": 7
+        },
+        {
+          "name": "continue_from",
+          "type": "STRING",
+          "links": [
+            13
+          ],
+          "slot_index": 8
+        },
+        {
+          "name": "first_frame_reference",
+          "type": "BOOLEAN",
+          "links": [
+            14
+          ],
+          "slot_index": 9
+        },
+        {
+          "name": "voice_reference",
+          "type": "BOOLEAN",
+          "links": [
+            15
+          ],
+          "slot_index": 10
+        },
+        {
+          "name": "audio_use",
+          "type": "STRING",
+          "links": [
+            12
+          ],
+          "slot_index": 11
+        },
+        {
+          "name": "route_report",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 12
         }
       ],
       "properties": {
@@ -110,7 +154,12 @@
         "G01",
         "C:\\Users\\Admin\\Documents\\Default Project\\art\\env\\global-context.json",
         true,
-        true
+        true,
+        "auto",
+        "[]",
+        "",
+        "",
+        ""
       ],
       "title": "Ghe27A · CONTEXT — change shot_id here"
     },
@@ -195,7 +244,7 @@
         {
           "name": "audio_use",
           "type": "COMBO",
-          "link": null,
+          "link": 12,
           "widget": {
             "name": "audio_use"
           }
@@ -246,7 +295,7 @@
         {
           "name": "width",
           "type": "INT",
-          "link": null,
+          "link": 10,
           "widget": {
             "name": "width"
           }
@@ -254,7 +303,7 @@
         {
           "name": "height",
           "type": "INT",
-          "link": null,
+          "link": 11,
           "widget": {
             "name": "height"
           }
@@ -262,7 +311,7 @@
         {
           "name": "seconds",
           "type": "FLOAT",
-          "link": null,
+          "link": 9,
           "widget": {
             "name": "seconds"
           }
@@ -306,6 +355,21 @@
           "link": 6
         },
         {
+          "name": "continue_from",
+          "type": "STRING",
+          "link": 13
+        },
+        {
+          "name": "first_frame_reference",
+          "type": "BOOLEAN",
+          "link": 14
+        },
+        {
+          "name": "voice_reference",
+          "type": "BOOLEAN",
+          "link": 15
+        },
+        {
           "name": "two_pass",
           "type": "BOOLEAN",
           "link": null,
@@ -336,10 +400,10 @@
         "Node name for S&R": "FreeVideoGenerate"
       },
       "widgets_values": [
-        "integrated_multimodal_description: Vertical 9:16 flat 2D storytime horror. Solid flat fills only, extra thick uneven black ink contour, near-black navy / bone white / one muted teal. Red only for blood, infected eyes and the recording dot. Faces: two dot eyes, one short mouth line, no eyebrows, no nose, no lashes. Hands are mittens, no fingers. No gradient, no shading, no texture, no 3D, no realism, no text except the on-screen timer 00:00. [Shot 1] ui shot, camera slow push-in of about 3% over the shot. Flat solid fill. Black screen: a bone-white waveform travels across the lower third of a flat near-black navy field, a small red recording dot pulses above it, a bone-white timer in the top corner reads 00:00. At 00:00.000, the graphic is already in motion: the waveform travels and the recording dot pulses. At 00:00.600, The narrator says in an off-screen voiceover: <d>[Vietnamese] Nếu bạn nghe được đoạn ghi âm này... tên tôi là Khang.</d> At 00:03.500, the waveform amplitude changes and the dot keeps pulsing. At 00:07.700, the graphic settles without freezing, the dot still blinking. The recording dot keeps pulsing and the waveform keeps travelling across the black field, so no frame is frozen. Mood: u ám.\n\noverall_soundscape: A low aircraft engine hum and soft cabin ventilation continue underneath.\n\nnon_diegetic_music: N/A",
+        "integrated_multimodal_description: Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most two tone values per surface, clean edges with bold uneven black outlines. Low-key night-horror lighting: irregular flat dark-red blood blotches are the only brighter shape and scatter across the hand, wrist and forearm; the wide torn navy cuff, the near-black nails and the uniformly dirty bone skin stay flat dark fills with no light edge, and 65 to 75 percent of the frame is held in flat near-black shadow shapes with a heavy flat vignette; the corners fall to near-black. Palette in this insert: near-black navy, one uniform dirty dark ash-grey bone tone and flat dark-red blood only; the cuff and nails are the darkest navy fills, darker than the skin, and every wound uses that same dark red with no second wound colour. The camera makes one clear short sideways pan low inside the same recess at one constant scale, so the hand keeps the same size while the fixed jagged seat edge and the dark floor gap travel visibly across the frame; the wrist and fingers snap between frozen holds. This is one tight insert under a navy airline seat: the visible surfaces are the seat underside, a flat navy floor gap and one bitten forearm; every other shape is flat near-black navy shadow. Hands are a realistic flat human hand with one thumb, four separate gently curved fingers, small gaps between them and near-black nails on every fingertip; the skin is one uniform dirty dark bone tone. The bite is ragged and chewed, several uneven chunks torn out of the hand edge with flat dark-red blood blotches of assorted sizes inside every notch, plus separate ragged spots and short streaks across the palm and wrist. Depth comes only from flat overlap; no gradient, no shading, no soft shadow, no blur, no 3D, no texture, not photoreal. [Shot 1] Use <Picture 1> only to copy the exact realistic hand anatomy - one thumb, four separate fingers and near-black nails - the uniform dirty dark bone tone, the wide near-black navy cuff as the darkest fill, and the irregular dark-red blood blotches inside every notch; keep the flat dark under-seat lighting and the low sideways framing. close-up shot, camera makes one clear short sideways pan low inside the under-seat recess at one constant scale, with the camera staying at seat-underside level: the fixed jagged seat-underside edge and the dark floor-gap shapes visibly travel sideways across the frame while the hand keeps its size. Close insert already inside the dark gap under row 27: from the first frame the frame holds one blood-stained forearm in one uniform dirty dark bone tone and one realistic flat human hand with one thumb, four separate fingers and near-black nails lying palm up under the navy seat, the whole arm inside the recess. A WIDE torn solid near-black navy cuff at the top of the arm is the darkest fill in the frame. The bitten hand is deformed: several uneven ragged chunks are chewed out of its edge, the broken outline bending at a wrong angle, a second raw bite wound opens on the forearm, and irregular flat dark-red blood blotches of assorted sizes with ragged edges, separate spots and short streaks cover every notch and scatter across the hand, wrist and navy cuff; blood is the only brighter shape and reads clearly against the dark fills. The wrist and fingers move in discrete jerks: each snap changes the pose once, then the whole hand freezes in a held pose before the next snap; the thumb and separate fingers flick open and shut on the beats while the arm stays wholly inside the under-seat gap. The camera makes one clear short sideways pan along the same recess from the low under-seat angle, keeping one scale and staying at underside level: the fixed jagged seat edge and the dark floor gap travel visibly across the frame behind the hand. The layered near-black underside of the seat and a flat navy floor gap fill the rest of the frame. At 00:00.000, the wrist is already mid-snap: it kicks upward once and the fingers flick open, then the whole pose freezes. At 00:01.200, the wrist drops sharply and the four fingers clamp around the bite; the new pose freezes. At 00:02.400, the wrist snaps upward again in a shorter uneven kick and two fingers flick apart; the pose freezes. At 00:03.700, the wrist jerks down and the thumb twitches sideways; the pose freezes. At 00:05.000, the wrist gives two rapid unequal jerks in place while the fingers flick open then shut; the pose freezes. At 00:06.800, the wrist twists sharply and the bitten fingers spread once more; the pose freezes. At 00:08.500, the wrist settles with one final spasm, the fingers half open, and the dark-red blotches hold their colour. Between each listed snap the wrist and fingers hold a frozen pose; the camera pans sideways low inside the under-seat recess, sliding the fixed jagged seat edge and floor-gap shapes across the frame while every foreground shape keeps its size. Mood: tense dread.\n\noverall_soundscape: A low aircraft engine hum and soft ventilation continue underneath.\n\nnon_diegetic_music: N/A",
         704,
         1280,
-        8.0,
+        10.0,
         2026112501,
         "fixed",
         true
@@ -519,6 +583,62 @@
       7,
       0,
       "STRING"
+    ],
+    [
+      9,
+      2,
+      5,
+      4,
+      3,
+      "FLOAT"
+    ],
+    [
+      10,
+      2,
+      6,
+      4,
+      1,
+      "INT"
+    ],
+    [
+      11,
+      2,
+      7,
+      4,
+      2,
+      "INT"
+    ],
+    [
+      12,
+      2,
+      11,
+      3,
+      12,
+      "STRING"
+    ],
+    [
+      13,
+      2,
+      8,
+      4,
+      11,
+      "STRING"
+    ],
+    [
+      14,
+      2,
+      9,
+      4,
+      12,
+      "BOOLEAN"
+    ],
+    [
+      15,
+      2,
+      10,
+      4,
+      13,
+      "BOOLEAN"
     ]
   ],
   "groups": [

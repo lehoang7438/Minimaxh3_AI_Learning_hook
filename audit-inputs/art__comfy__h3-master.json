@@ -5,7 +5,12 @@
       "shot_id": "{{SHOT}}",
       "context_path": "{{CONTEXT}}",
       "include_voice": true,
-      "include_first": true
+      "include_first": true,
+      "route": "{{ROUTE}}",
+      "route_media": "{{ROUTE_MEDIA}}",
+      "route_audio": "{{ROUTE_AUDIO}}",
+      "route_continue_from": "{{CONTINUE_FROM}}",
+      "route_anchor": "{{ANCHOR}}"
     }
   },
   "2": {
@@ -14,16 +19,16 @@
       "assets": ["1", 0],
       "first": ["1", 2],
       "reference_audio": ["1", 3],
-      "audio_use": "reference"
+      "audio_use": ["1", 11]
     }
   },
   "3": {
     "class_type": "FreeVideoGenerate",
     "inputs": {
-      "text": "{{PROMPT}}",
-      "width": 704,
-      "height": 1280,
-      "seconds": "{{SECONDS}}",
+      "text": ["1", 1],
+      "width": ["1", 6],
+      "height": ["1", 7],
+      "seconds": ["1", 5],
       "seed": "{{SEED}}",
       "two_pass": true,
       "base_steps": 8,
@@ -31,10 +36,10 @@
       "force_regenerate": true,
       "preview": false,
       "refine_from": "",
-      "continue_from": "",
+      "continue_from": ["1", 8],
       "frames": 0,
-      "first_frame_reference": true,
-      "voice_reference": true,
+      "first_frame_reference": ["1", 9],
+      "voice_reference": ["1", 10],
       "hide_tail": false,
       "step_cache": "none",
       "upscale_factor": "2",
@@ -42,6 +47,12 @@
       "upscale_from": "",
       "upscale_to": "",
       "media": ["2", 0]
+    }
+  },
+  "4": {
+    "class_type": "PreviewAny",
+    "inputs": {
+      "source": ["1", 12]
     }
   }
 }
