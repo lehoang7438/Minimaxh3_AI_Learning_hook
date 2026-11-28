@@ -11,10 +11,10 @@ workflow riêng cho từng shot. Omit `--route` = legacy (`auto`) giữ nguyên 
 | `auto` | Chạy chain4 cũ, `--ref-asset` như trước | `[]` hoặc 1 `--ref-asset` | segment trước (legacy) | giữ nguyên graph (`True`/`False`) | giữ nguyên graph (`reference`) |
 | `fresh` | Cú cắt T2V, không ref, không audio | `[]` | `''` | `False` / `False` | `reference` |
 | `fresh_audio` | Cú cắt nhưng cần **timbre giọng G01** | `[]` + `LoadAudio` → `reference_audio` | `''` | `False` / `False` (chỉ metadata trên fresh) | `reference` |
-| `continue_voice` | Nối clip trước, giữ giọng thoại của đoạn mở đầu | `[]` | clip trước | `True` / `False` | `original` |
+| `continue_voice` | Nối clip trước, giữ giọng thoại của đoạn mở đầu | `[]` | clip trước | `True` / `False` | `reference` |
 | `continue_anchor` | Nối clip trước nhưng ép 1 ảnh anchor do user chọn | đúng 1 ảnh `--continue-anchor` | clip trước | `False` / `False` | `reference` |
 | `continue_media` | Nối clip trước kèm 1–3 ảnh tham chiếu | 1–3 ảnh `--media` | clip trước | `False` / `False` | `reference` |
-| `continue_media_plain` | Như `continue_media` nhưng audio để dạng "as is" theo route map | 1–3 ảnh `--media` | clip trước | `False` / `False` | `original` |
+| `continue_media_plain` | Alias của `continue_media`: ảnh tham chiếu, không audio ref riêng (xem caveat) | 1–3 ảnh `--media` | clip trước | `False` / `False` | `reference` |
 
 G01 audio ref = `art/env/voice-narrator.wav` (4.16 s). Đây là **timbre** (màu giọng),
 KHÔNG phải driving audio; `fresh_audio` tự dùng file này khi không truyền `--audio`.
@@ -40,10 +40,14 @@ vào `C:/Users/Admin/FreeVideo/ComfyUI/input`. Ở agent API (`fv.ps1` / `POST /
 khi có `continue_from` chỉ cho phép `media.references`; trường audio `use:'original'`
 có segmentation tồn tại ở flow nâng cao nhưng **không được hỗ trợ ở đây**.
 
-> Caveat chưa test GPU: `comfy_assets.connect_assets()` từ chối `audio_use='original'`
-> khi không có `reference_audio` được nối. Vì luật cấm `--audio` trên route tiếp nối,
-> `continue_voice` / `continue_media_plain` mới chỉ được chứng minh **queueable về mặt
-> graph** (preflight PASS), chưa chạy thật; cần quyết định riêng trước khi đốt GPU.
+> **Đã vá runtime:** `comfy_assets.connect_assets()` từ chối `audio_use='original'`
+> khi không có `reference_audio` (`original_audio.fields` trả dict truthy,
+> `comfy_assets.py:259-261`). Driver giờ luôn ghi `audio_use='reference'`; giọng của
+> đoạn tiếp nối đi qua `continue_from` + `voice_reference`, không qua cờ audio này.
+> Vì luật cấm `--audio` trên route `continue_*`, `continue_media_plain` hiện là alias
+> của `continue_media` (cùng ảnh, cùng audio) — khác biệt chỉ là tên route để giữ
+> đúng bảng yêu cầu; không có cơ chế audio "as is" riêng được hỗ trợ ở đây.
+> Chưa route nào được chạy GPU thật; preflight PASS mới chỉ chứng minh queueable.
 
 ## Lệnh mẫu (copy-paste; thay seed bằng seed đã duyệt)
 

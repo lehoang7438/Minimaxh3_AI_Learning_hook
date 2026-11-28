@@ -500,3 +500,23 @@ Both are logged as proposed only, pending user review. Do not promote into SKILL
 Status: proposed only. It is a user-granted option, not a promoted rule and not an instruction to generate a new asset. Preconditions before it may be used: the crop must come from a QA-accepted G02 v11 frame, be checked for vignette/grain and flat-fill fidelity (asset-qa), then registered as a QA'd set/reference plate before any shot consumes it. It does not override the E334 rule that reused background details must be copied verbatim; it is an alternative way to satisfy it.
 
 The multi-mechanism workflow requested in the same breath (routes fresh / fresh_audio / continue_voice / continue_anchor / continue_media / continue_media_plain, G01-style audio ref, max 3 image refs written as {kind,path}, conflicts --continue-anchor vs --media and --audio vs continue_from) was investigated against the engine source but NOT implemented before the user pivoted to packaging. Engine facts confirmed: continuation.PICTURES_MAX = 3; continuation.validate_route() governs anchor/sound/original_audio; anchor_media() refuses any other media; CLI generate exposes --media/--audio/--continue-from/--continue-anchor; G01 audio ref = art/env/voice-narrator.wav (4.16 s, timbre only). Nothing was queued or changed in the workflow.
+- E336 proposed/rule_gap/comfyui-runner /part1/G03/workflow — Runtime caveat found after the multi-route chain4 driver was mirrored (28/11/2026).
+
+The subagent's first implementation set `audio_use='original'` for `continue_voice` and
+`continue_media_plain`. Graph preflight passed, but engine source shows this would fail at
+queue time: `original_audio.fields()` returns a truthy dict for `use='original'`, and
+`comfy_assets.connect_assets()` (build 2026.11.25.61107, line ~259) rejects that use when no
+`reference_audio` input is connected. Connecting an external audio on a continuing route is
+forbidden by the user's hard rule (`--audio` conflicts with `continue_from`), so there is no
+valid way to supply the missing input on those routes.
+
+Fix applied: `art/tests/chain4_run.py` now always writes `audio_use='reference'` for every
+route. Voice continuity on `continue_voice` comes from `continue_from` + `voice_reference`;
+it does not come from the `audio_use` flag. `art/t2v/ROUTE-WORKFLOW.md` was corrected in the
+same pass: both continuing routes list `reference`, and `continue_media_plain` is honestly
+documented as an alias of `continue_media` (same images, same audio) rather than a separate
+"as is" audio mechanism that this workflow does not support.
+
+Re-validation after the fix (GPU-free): all 6 routes pass `validate_route()` and
+`preflight_workflow.py`; `audio_use` is `reference` in all six generated graphs; py_compile
+OK. No GPU job was queued. Status: proposed only; needs user review before promotion.

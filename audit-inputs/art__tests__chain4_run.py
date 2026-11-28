@@ -122,8 +122,12 @@ def validate_route(*, route: str = 'auto', media=None, audio=None, continue_anch
     if continue_anchor is not None and Path(continue_anchor).suffix.lower() not in IMAGE_SUFFIXES:
         route_fail(f'--continue-anchor must be an image, got {continue_anchor}')
 
-    audio_use = ('original' if route in ('continue_voice', 'continue_media_plain')
-                 else 'reference')
+    # connect_assets() rejects use='original' without a connected reference_audio
+    # (original_audio.fields -> truthy, comfy_assets.py:259-261). The user's hard
+    # rule forbids --audio on continue_* routes, so no route connects an audio
+    # node with 'original'; leave the default 'reference' on every route. Voice
+    # continuity on continue_voice comes from continue_from + voice_reference.
+    audio_use = 'reference'
     return {
         'route': route,
         'media': rows,
