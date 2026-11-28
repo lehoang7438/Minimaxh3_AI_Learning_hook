@@ -1,8 +1,8 @@
 ﻿# MANIFEST - GHE 27A learning bundle
 
-synced: 2026-11-28T14:48:23+07:00
+synced: 2026-11-28T14:52:31+07:00
 source: C:\Users\Admin\Documents\Default Project
-files: 113
+files: 117
 
 | path | sha256 |
 |---|---|
@@ -13,5 +13,7 @@ files: 113
 | skills\h3-prompt-writing\SKILL.md | 14CCB4781A4B4483E1C5F8C6F8EF0F06058C639AE6F86E17D06B5D57C99EAA59 |
 | skills\comfyui-runner\SKILL.md | 0F1E273C0A508434417592F82DD4CFD4AF9A0129825E358629315F434172698F |
 | project-tools\h3-chain4.json | 6C1A4451018CCE3F94000A09BBD7E904C6F08A12EAA5BEAA83B0E545548C164E |
+| project-tools\h3-master.json | 33CB9991AB012177099ACA83578EB4620238FBBBE3368538179CAC070CC974A5 |
+| project-tools\h3-single-node-ui.json | 5A64F00582F6A567B2A4AA6B17E0013893C5670264272DC7F13C0EBF75A969B3 |
 
 Rule: repo is a one-way snapshot; local ALH log is the source of truth.

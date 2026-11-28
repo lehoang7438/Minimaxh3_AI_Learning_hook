@@ -1,0 +1,550 @@
+{
+  "id": "6a04945d-870e-5667-bc52-bbb846306c79",
+  "revision": 4,
+  "last_node_id": 7,
+  "last_link_id": 8,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "Note",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        960,
+        320
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "Note"
+      },
+      "widgets_values": [
+        "GHẾ 27A · H3 single chain\n\nGhe27AContext -> FreeVideoMedia -> FreeVideoGenerate -> SaveVideo\n                                  \\-> PreviewAny (context report)\n\nChange `shot_id` (G01..G50) and press Queue Prompt. Assets, prompt, first frame, voice come\nfrom art/env/global-context.json. `context_path` is relative to the project root; point it at\nglobal-context-part2.json / -part3.json for shots G21+ of those parts (the node also\nre-points itself and says so in the report if the shot lives elsewhere).\n\nDURATION AND CANVAS ARE WIDGETS IN THIS FILE: 704 x 1280, 8.0 s. This session still runs\nthe context-node build from before 25/11 (5 outputs), so linking seconds/width/height would\nbreak the queue. Restart ComfyUI once, then re-run `python art/tests/build_single_node_ui.py`\n(auto mode wires the three outputs) to make shot_id drive duration and canvas.\n\nSampling: two-pass acceleration, 8 first-pass steps + 3 second-pass steps (defaults).\nSeed: FIXED — a take can be reproduced; set it back to `randomize` only when hunting.\nOutput: SaveVideo -> output/ghe27a/<shot>_h3_*.mp4 (e.g. G01_h3_00001.mp4). The prefix is\nstamped for the shot this file was built for: re-run the builder (or edit the prefix) when\nyou change shot_id, otherwise every take lands under the same name.\nResolution: upscale_factor `2` is the engine's \"no upscale\" sentinel (it returns no option),\nso the file stays at the canvas above — it does NOT render 1408x2560.\n\nThe report outputs are wired to PreviewAny: the context report prints shot, part, refs,\nfirst-frame origin, voice file, canvas, seconds and prompt length; H3's own report prints what\nthe sampler actually received. Read them when a shot looks wrong.\n"
+      ],
+      "title": "How to use"
+    },
+    {
+      "id": 2,
+      "type": "FreeVideoGhe27AContext",
+      "pos": [
+        40,
+        420
+      ],
+      "size": [
+        380,
+        280
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "assets",
+          "type": "STRING",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            2
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "first_frame",
+          "type": "IMAGE",
+          "links": [
+            3
+          ],
+          "slot_index": 2
+        },
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "links": [
+            4
+          ],
+          "slot_index": 3
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            5
+          ],
+          "slot_index": 4
+        },
+        {
+          "name": "seconds",
+          "type": "FLOAT",
+          "links": [],
+          "slot_index": 5
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [],
+          "slot_index": 6
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [],
+          "slot_index": 7
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FreeVideoGhe27AContext"
+      },
+      "widgets_values": [
+        "G01",
+        "C:\\Users\\Admin\\Documents\\Default Project\\art\\env\\global-context.json",
+        true,
+        true
+      ],
+      "title": "Ghe27A · CONTEXT — change shot_id here"
+    },
+    {
+      "id": 3,
+      "type": "FreeVideoMedia",
+      "pos": [
+        520,
+        420
+      ],
+      "size": [
+        420,
+        700
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "assets",
+          "type": "STRING",
+          "link": 1,
+          "widget": {
+            "name": "assets"
+          }
+        },
+        {
+          "name": "first",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "name": "last",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_2",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_3",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_4",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_5",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_6",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_7",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_8",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 4
+        },
+        {
+          "name": "audio_use",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "audio_use"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "media",
+          "type": "FREEVIDEO_MEDIA",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FreeVideoMedia"
+      },
+      "widgets_values": [
+        "[]",
+        "reference"
+      ],
+      "title": "H3 · media (plate + cast + voice)"
+    },
+    {
+      "id": 4,
+      "type": "FreeVideoGenerate",
+      "pos": [
+        1000,
+        420
+      ],
+      "size": [
+        660,
+        980
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 2,
+          "widget": {
+            "name": "text"
+          }
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "height"
+          }
+        },
+        {
+          "name": "seconds",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "seconds"
+          }
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "first",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "last",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "references",
+          "type": "FREEVIDEO_REFERENCES",
+          "link": null
+        },
+        {
+          "name": "loras",
+          "type": "FREEVIDEO_LORAS",
+          "link": null
+        },
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": null
+        },
+        {
+          "name": "media",
+          "type": "FREEVIDEO_MEDIA",
+          "link": 6
+        },
+        {
+          "name": "two_pass",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "two_pass"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            7
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [
+            8
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FreeVideoGenerate"
+      },
+      "widgets_values": [
+        "integrated_multimodal_description: Vertical 9:16 flat 2D storytime horror. Solid flat fills only, extra thick uneven black ink contour, near-black navy / bone white / one muted teal. Red only for blood, infected eyes and the recording dot. Faces: two dot eyes, one short mouth line, no eyebrows, no nose, no lashes. Hands are mittens, no fingers. No gradient, no shading, no texture, no 3D, no realism, no text except the on-screen timer 00:00. [Shot 1] ui shot, camera slow push-in of about 3% over the shot. Flat solid fill. Black screen: a bone-white waveform travels across the lower third of a flat near-black navy field, a small red recording dot pulses above it, a bone-white timer in the top corner reads 00:00. At 00:00.000, the graphic is already in motion: the waveform travels and the recording dot pulses. At 00:00.600, The narrator says in an off-screen voiceover: <d>[Vietnamese] Nếu bạn nghe được đoạn ghi âm này... tên tôi là Khang.</d> At 00:03.500, the waveform amplitude changes and the dot keeps pulsing. At 00:07.700, the graphic settles without freezing, the dot still blinking. The recording dot keeps pulsing and the waveform keeps travelling across the black field, so no frame is frozen. Mood: u ám.\n\noverall_soundscape: A low aircraft engine hum and soft cabin ventilation continue underneath.\n\nnon_diegetic_music: N/A",
+        704,
+        1280,
+        8.0,
+        2026112501,
+        "fixed",
+        true
+      ],
+      "title": "H3 · generate (704x1280, 9:16)"
+    },
+    {
+      "id": 5,
+      "type": "SaveVideo",
+      "pos": [
+        1720,
+        420
+      ],
+      "size": [
+        380,
+        280
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "ghe27a/G01_h3",
+        "mp4"
+      ],
+      "title": "H3 · save"
+    },
+    {
+      "id": 6,
+      "type": "PreviewAny",
+      "pos": [
+        40,
+        780
+      ],
+      "size": [
+        380,
+        320
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": [],
+      "title": "Ghe27A · context report (check this)"
+    },
+    {
+      "id": 7,
+      "type": "PreviewAny",
+      "pos": [
+        1720,
+        760
+      ],
+      "size": [
+        380,
+        300
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": [],
+      "title": "H3 · generate report"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      2,
+      1,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      3,
+      2,
+      2,
+      3,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      2,
+      3,
+      3,
+      11,
+      "AUDIO"
+    ],
+    [
+      5,
+      2,
+      4,
+      6,
+      0,
+      "STRING"
+    ],
+    [
+      6,
+      3,
+      0,
+      4,
+      10,
+      "FREEVIDEO_MEDIA"
+    ],
+    [
+      7,
+      4,
+      0,
+      5,
+      0,
+      "VIDEO"
+    ],
+    [
+      8,
+      4,
+      1,
+      7,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "H3 · context -> media -> generate -> save",
+      "bounding": [
+        20,
+        380,
+        2120,
+        1100
+      ],
+      "color": "#3f789e",
+      "font_size": 30,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.75,
+      "offset": [
+        40,
+        40
+      ]
+    },
+    "freevideo_studio": true
+  },
+  "version": 0.4
+}
