@@ -67,6 +67,7 @@ _Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. **Only `Acc
 - E297 proposed: rule_gap / G03 / prompt (detail in RUN-LOG.md)
 - E300 proposed: rule_gap / G03 / prompt (detail in RUN-LOG.md)
 - E330 proposed: rule_gap / G02 / prompt (detail in RUN-LOG.md)
+- E333 proposed: rule_gap / G03 / prompt (detail in RUN-LOG.md)
 
 ### Revoked (do NOT apply - kept for history)
 

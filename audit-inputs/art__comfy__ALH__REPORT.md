@@ -1,6 +1,6 @@
-# ALH report - 2026-11-28 13:38
+# ALH report - 2026-11-28 14:10
 
-log: `art\comfy\ALH\learning-log.jsonl`  |  total 332 event(s)
+log: `art\comfy\ALH\learning-log.jsonl`  |  total 333 event(s)
 
 ### Status
 
@@ -8,14 +8,14 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 332 event(s)
 |---|---|---|
 | accepted | 166 | 50% |
 | archived | 100 | 30% |
-| proposed | 61 | 18% |
+| proposed | 62 | 19% |
 | revoked | 5 | 2% |
 
 ### Event
 
 | value | n | share |
 |---|---|---|
-| rule_gap | 131 | 39% |
+| rule_gap | 132 | 40% |
 | verdict | 55 | 17% |
 | asset_qa_fail | 51 | 15% |
 | qa_fail | 45 | 14% |
@@ -29,7 +29,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 332 event(s)
 |---|---|---|
 | asset-qa | 139 | 42% |
 | comfyui-runner | 71 | 21% |
-| h3-prompt-writing | 58 | 17% |
+| h3-prompt-writing | 59 | 18% |
 | h3-visual-qa | 43 | 13% |
 | character-bible | 9 | 3% |
 | h3-storyboard | 3 | 1% |
@@ -42,7 +42,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 332 event(s)
 
 | value | n | share |
 |---|---|---|
-| prompt | 63 | 19% |
+| prompt | 64 | 19% |
 | workflow | 53 | 16% |
 | asset | 48 | 14% |
 | magenta_key | 15 | 5% |
@@ -152,6 +152,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 332 event(s)
 - [E330] rule_gap / G02 / prompt - State required dark surfaces as one positive flat fill; do not negate denied object names (E162).
 - [E331] rule_gap / G02 / gate - An audit FAIL caused by an accepted per-shot override needs a documented one-job waiver, not a prompt lie or an ALH edit.
 - [E332] verdict / G02 / visual - Temporary user acceptance applies only to the named layer; other layers stay NOT_CLOSED and are never PASS_WITH_WARN.
+- [E333] rule_gap / G03 / prompt - G03 prompt structure: style contract with background reuse limited to ceiling/walls/windows, fixed front-facing camera, exact seat inventory, dedicated Khang block, three At-prefixed timecodes, positive screen-event beat.
 
 ### Accepted but not promoted to SKILL.md/GLOBAL-RULES.md
 
