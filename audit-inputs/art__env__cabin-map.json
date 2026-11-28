@@ -39,6 +39,17 @@
     "restaurant_exception": "restaurant flashback keeps a flat warm amber tint on furniture only, no light beam or glow, still darker at the edges",
     "forbid": "navy walls matching the seats, uniform bright bone walls, bright teal full floor, glowing surface with no fixture, gradient beams, pink/purple rim light, any frame that reads as daytime"
   },
+  "shot_overrides": {
+    "G02": {
+      "viewpoint": "behind the rear face of seat 27A; that seat back is the near foreground, the other three seats and their passengers sit beyond it, all seen strictly from behind",
+      "camera_height": "standing eye level behind seat 27A",
+      "light": "78 to 85 percent flat near-black; one thin bone-white ceiling edge and one narrow muted-teal floor runner only; no fixture and no ramp",
+      "arm_continuity": "one readable flat bone-tone forearm strip with a wide near-black navy cuff from G01, sliding back under 27A; no separated fingers",
+      "supersedes": "E304,E210,E273,E285,E307,E310",
+      "status_by": "user:E308/E309/E324",
+      "scope": "G02 only; the master front-near axis and the 60-75 percent dim_night_flight light tier stay authoritative for G03/G05 and every other plate"
+    }
+  },
   "state_chain": {
     "rule": "Variants of one set must inherit BOTH color (palette_lock) AND object form/state from the master plate and the previous state. Passing only a color reference is NOT enough: it causes design drift (same color, wrong shape) and prop discontinuity (objects vanish or mutate between states).",
     "order": "Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the previous qa_passed state and changes ONLY the declared state_delta.",

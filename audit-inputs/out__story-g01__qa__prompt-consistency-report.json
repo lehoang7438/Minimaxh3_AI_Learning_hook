@@ -275,7 +275,7 @@
               "quote": "E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…"
             }
           ],
-          "note": "27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=True"
+          "note": "27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=False"
         },
         "light_tier": {
           "status": "PASS",
@@ -297,23 +297,27 @@
           "note": "set.light suppressed by composer: True; tier source=lighting_contract.tiers.dim_night_flight"
         },
         "sightline": {
-          "status": "FAIL",
-          "detail": "Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='standing eye level for wide/aisle plates; the aisle stays centered and continuo…'. Prompt omits: camera eye level",
+          "status": "PASS",
+          "detail": "E308 accepted user override: rear seat-back viewpoint, centered aisle and eye level are stated.",
           "evidence": [
             {
               "field": "prompt.camera_sentence",
-              "quote": "wide shot, camera held at one fixed scale and framing from the first frame to the last frame"
+              "quote": "wide shot, camera held at one fixed scale and framing from the first frame to the last frame, from behind the back of seat 27A at eye level behind the seat"
             },
             {
               "field": "prompt.Scene",
-              "quote": "one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…"
+              "quote": "one continuous narrow-body passenger cabin aisle seen from behind the back of seat 27A, the rear seat back is the near foreground and the other three seats and their passengers sit beyond i…"
             },
             {
               "field": "cabin-map.eye_level",
               "quote": "standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate"
+            },
+            {
+              "field": "ALH E308 (accepted)",
+              "quote": "User chose to change the whole G02 wide shot, not only G01"
             }
           ],
-          "note": "27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'"
+          "note": "27A description in prompt = 'wide shot, camera held at one fixed scale and framing from the first frame to the last frame, from behind the…'"
         },
         "palette_hex": {
           "status": "PASS",
@@ -340,33 +344,20 @@
           "evidence": [
             {
               "field": "prompt.Props",
-              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor"
+              "quote": "one thin solid bone-white ceiling edge and one narrow flat muted-teal floor runner resting on the cabin floor; three generic passengers seated in the other seats and seen from behind beyond…"
             },
             {
               "field": "composer.SCENE_OVERRIDE[G02][1]",
-              "quote": "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on the cabin floor"
+              "quote": "one thin solid bone-white ceiling edge and one narrow flat muted-teal floor runner resting on the cabin floor; three generic passengers seated in the other seats and seen from behind beyond…"
             }
           ],
           "note": "state_chain.order: Atomic character/prop refs (qa_passed) -> Master plate p1-aisle-bg.png (qa_passed) -> variants in time order: CCTV -> chaos -> barricade. Each variant references the pre… | chaos keeps cups/scraps/bags + red stains; barricade keeps the SAME bags piled into overturned carts: the SAME seats; the SAME bags from chaos now piled into overturned carts blocking the aisle; one black shoe o…"
         },
         "character_wardrobe": {
-          "status": "CHƯA CHỐT",
-          "detail": "Prompt names Khang but spec.layers and context.characters are empty; there is no structured wardrobe source to compare against.",
-          "evidence": [
-            {
-              "field": "prompt.body",
-              "quote": "wide shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far awa…"
-            },
-            {
-              "field": "spec.layers",
-              "quote": "[]"
-            },
-            {
-              "field": "global-context.shots.G02.characters",
-              "quote": "[]"
-            }
-          ],
-          "note": "no FAIL: source missing, not a proven prompt contradiction"
+          "status": "PASS",
+          "detail": "No recurring character in this insert.",
+          "evidence": [],
+          "note": "N/A"
         },
         "language_negation": {
           "status": "CHƯA CHỐT",
@@ -470,12 +461,12 @@
           "note": "set.light suppressed by composer: True; tier source=lighting_contract.tiers.dim_night_flight"
         },
         "sightline": {
-          "status": "FAIL",
-          "detail": "Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='level with a seated passenger'. Prompt omits: camera eye level",
+          "status": "PASS",
+          "detail": "Axis, centered aisle and camera height are stated.",
           "evidence": [
             {
               "field": "prompt.camera_sentence",
-              "quote": "medium shot, camera held at one fixed scale and framing from the first frame to the last frame"
+              "quote": "medium shot, camera held at one fixed scale and framing from the first frame to the last frame, at the eye level of a seated passenger"
             },
             {
               "field": "prompt.Scene",
@@ -488,6 +479,10 @@
             {
               "field": "global-context.sets.seat_27a.camera_height",
               "quote": "level with a seated passenger"
+            },
+            {
+              "field": "ALH E308 (accepted)",
+              "quote": "-"
             }
           ],
           "note": "27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang is ALREADY slumped asleep in seat 27A from the first frame,…'"
@@ -532,7 +527,7 @@
           "evidence": [
             {
               "field": "prompt.body",
-              "quote": "medium shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far a…"
+              "quote": "medium shot, camera held at one fixed scale and framing from the first frame to the last frame, at the eye level of a seated passenger. Scene: one continuous narrow-body passenger cabin ais…"
             },
             {
               "field": "characters.json.khang.wardrobe",
@@ -779,12 +774,12 @@
           "note": "set.light suppressed by composer: True; tier source=lighting_contract.tiers.dim_night_flight"
         },
         "sightline": {
-          "status": "FAIL",
-          "detail": "Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='level with a seated passenger'. Prompt omits: camera eye level",
+          "status": "PASS",
+          "detail": "Axis, centered aisle and camera height are stated.",
           "evidence": [
             {
               "field": "prompt.camera_sentence",
-              "quote": "medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway"
+              "quote": "medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway, at the eye level of a seated passenger"
             },
             {
               "field": "prompt.Scene",
@@ -797,6 +792,10 @@
             {
               "field": "global-context.sets.seat_27a.camera_height",
               "quote": "level with a seated passenger"
+            },
+            {
+              "field": "ALH E308 (accepted)",
+              "quote": "-"
             }
           ],
           "note": "27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang lifts the bowed head in seat 27A and opens two dot eyes abr…'"
@@ -841,7 +840,7 @@
           "evidence": [
             {
               "field": "prompt.body",
-              "quote": "medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exa…"
+              "quote": "medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway, at the eye level of a seated passenger. Scene: one continuous narrow-body passenger cabin aisle, fron…"
             },
             {
               "field": "characters.json.khang.wardrobe",
@@ -919,11 +918,11 @@
     }
   ],
   "summary": {
-    "FAIL": 3,
-    "CHƯA CHỐT": 7,
-    "PASS": 35,
-    "verdict": "FAIL",
-    "exit_code": 1,
-    "generated_at": "2026-11-27T22:33:37+07:00"
+    "FAIL": 0,
+    "CHƯA CHỐT": 6,
+    "PASS": 39,
+    "verdict": "PASS",
+    "exit_code": 0,
+    "generated_at": "2026-11-27T23:32:37+07:00"
   }
 }

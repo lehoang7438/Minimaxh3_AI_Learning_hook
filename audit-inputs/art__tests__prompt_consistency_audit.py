@@ -45,8 +45,12 @@ DIMENSIONS = (
 )
 SEAT_EVENT_IDS = ("E036", "E041", "E212", "E213", "E214", "E216",
                   "E226", "E227", "E230", "E231", "E237")
+# E308: user-accepted local override. G02's aftermath is seen from behind seat
+# 27A; cabin-map's front-near axis remains authoritative for every other plate.
+REAR_VIEW_SHOT = "G02"
 CONSTANT_NAMES = ("SCENE_OVERRIDE", "LIGHT_SUPPRESS", "DURATION_OVERRIDE",
-                  "G01_STYLE_CONTRACT", "G02_STYLE_CONTRACT")
+                  "G01_STYLE_CONTRACT", "G02_STYLE_CONTRACT",
+                  "G02_REAR_DARK_CONTRACT")
 LUMA = {"E045": 39.2, "E216": 52.2}   # dim_night_flight allowed band, not a hard value
 
 
@@ -312,28 +316,47 @@ def audit_shot(sid: str, cmap: dict, events: dict, const: dict, bible: dict,
             "PASS", "Insert: no cabin sightline contract applies.",
             [("prompt.camera_sentence", pf["camera_sentence"])], "N/A for insert")
     else:
-        axis = present("front near the camera and tail far away", pf["scene_field"])
-        centered = "aisle" in pf["scene_field"].lower()
         eye_required = str(dotted(cmap, "cabin_geometry_contract.eye_level", ""))
         set_eye = str(set_obj.get("camera_height")
                       or dotted(cmap, "sets." + set_id + ".camera_height", ""))
-        eye = ("eye level" in f1.lower() or "underside level" in f1.lower()
-               or "seated passenger" in f1.lower())
-        missing = [n for n, ok in (("front-near / tail-far axis", axis),
+        centered = "aisle" in pf["scene_field"].lower()
+        if sid == REAR_VIEW_SHOT:
+            # E308 is an accepted user override for this shot only: the G02
+            # aftermath is seen from behind seat 27A, superseding E304's
+            # standing front-near axis and the E210 rear-seat rejection.
+            axis = (present("from behind the back of seat 27A", pf["body"])
+                    or present("behind the rear face of seat 27A", pf["body"]))
+            eye = "eye level" in f1.lower()
+            axis_label = "rear-of-27A viewpoint"
+            ok_detail = ("E308 accepted user override: rear seat-back viewpoint, "
+                         "centered aisle and eye level are stated.")
+            fail_detail = ("E308 requires a rear-of-27A viewpoint (not the E304 "
+                           "front-near axis): " + ", ".join([]))
+        else:
+            axis = present("front near the camera and tail far away", pf["scene_field"])
+            eye = ("eye level" in f1.lower() or "underside level" in f1.lower()
+                   or "seated passenger" in f1.lower())
+            axis_label = "front-near / tail-far axis"
+            ok_detail = "Axis, centered aisle and camera height are stated."
+            fail_detail = (
+                "Map requires: aisle_direction='"
+                + excerpt(dotted(cmap, "cabin_geometry_contract.aisle_direction", ""), 110)
+                + "', eye_level='" + excerpt(eye_required, 110)
+                + "', set.camera_height='" + excerpt(set_eye or eye_required, 80)
+                + "'.")
+        missing = [n for n, ok in ((axis_label, axis),
                                    ("centered aisle", centered),
                                    ("camera eye level", eye)) if not ok]
         res["sightline"] = result(
             "FAIL" if missing else "PASS",
-            ("Map requires: aisle_direction='"
-             + excerpt(dotted(cmap, "cabin_geometry_contract.aisle_direction", ""), 110)
-             + "', eye_level='" + excerpt(eye_required, 110)
-             + "', set.camera_height='" + excerpt(set_eye or eye_required, 80)
-             + "'. Prompt omits: " + ", ".join(missing)
-             if missing else "Axis, centered aisle and camera height are stated."),
+            (fail_detail + " Prompt omits: " + ", ".join(missing)
+             if missing else ok_detail),
             [("prompt.camera_sentence", pf["camera_sentence"]),
              ("prompt.Scene", pf["scene_field"]),
              ("cabin-map.eye_level", eye_required),
-             ("global-context.sets." + set_id + ".camera_height", set_eye)],
+             ("global-context.sets." + set_id + ".camera_height", set_eye),
+             ("ALH E308 (accepted)", excerpt(events.get("E308", {}).get("detail"), 150)
+              if sid == REAR_VIEW_SHOT else "-")],
             f"27A description in prompt = '{excerpt(
                 re.search(r'[^.]*27A[^.]*', pf['body']).group(0)
                 if re.search(r'[^.]*27A[^.]*', pf['body']) else '-', 110)}'")
@@ -479,25 +502,77 @@ def audit_shot(sid: str, cmap: dict, events: dict, const: dict, bible: dict,
     last = pf["beats"][-1] if pf["beats"] else None
     last_s = (int(last.split(":")[0]) * 60 + float(last.split(":")[1])) if last else 0.0
     inc = all(pf["beats"][i] <= pf["beats"][i + 1] for i in range(len(pf["beats"]) - 1))
+    timecode_fail = last_s > duration + 1e-6 or not inc
+    chain_note = ""
+    if sid == "G02":
+        # E316: continue_from trims 22 overlap frames (00:00.917), so the cut must
+        # be later than that on the generation timeline and the flick/snap beats
+        # must be adjacent; otherwise H3 interpolates a full hand again (E307).
+        beats_s = [int(t.split(":")[0]) * 60 + float(t.split(":")[1])
+                   for t in pf["beats"]]
+        overlap_s = 22 / 24.0
+        cut_ok = len(beats_s) >= 4 and beats_s[1] > overlap_s
+        snap_gap = abs(beats_s[3] - beats_s[2]) if len(beats_s) >= 4 else 99
+        snap_ok = 0 < snap_gap <= 0.5
+        chain_note = (
+            f" E316 chain timing: cut {pf['beats'][1] if len(pf['beats']) > 1 else '-'} "
+            f"after the 22-frame overlap ({overlap_s:.3f}s)={cut_ok}; flick/snap gap "
+            f"{snap_gap:.3f}s={snap_ok}.")
+        timecode_fail = timecode_fail or not (cut_ok and snap_ok)
     res["timecode_duration"] = result(
-        "FAIL" if (last_s > duration + 1e-6 or not inc) else "PASS",
+        "FAIL" if timecode_fail else "PASS",
         f"last structured beat {last or '-'} vs effective duration {duration:g}s "
-        f"(spec.seconds={sshot.get('seconds')}); beats increasing={inc}.",
-        [("prompt.At", " ".join(pf["beats"][-3:])),
-         ("composer.DURATION_OVERRIDE", str(const.get("DURATION_OVERRIDE", {}).get(sid, "-")))])
+        f"(spec.seconds={sshot.get('seconds')}); beats increasing={inc}.{chain_note}",
+        [("prompt.At", " ".join(pf["beats"][-4:])),
+         ("composer.DURATION_OVERRIDE", str(const.get("DURATION_OVERRIDE", {}).get(sid, "-"))),
+         ("ALH E316 (accepted)", excerpt(events.get("E316", {}).get("detail"), 170)
+          if sid == "G02" else "-")])
 
     # 9. refs --------------------------------------------------------------- #
     plate = cshot.get("bg") or set_obj.get("plate")
     expected_refs = (1 if plate else 0) + len(ctx_chars) + len(cshot.get("props") or [])
     labels = pf["picture_labels"]
-    over = bool(labels) and max(labels) > expected_refs
-    res["refs"] = result(
-        "FAIL" if over else "PASS",
-        f"<Picture N> labels={labels or 'none'}; structured refs={expected_refs} "
-        "(plate + characters + props). The feeder/context node injects refs at queue "
-        "time, so an unlabelled rebuilt prompt is not a mismatch.",
-        [("prompt.field1", " ".join(f"<Picture {n}>" for n in labels) or "no picture labels"),
-         ("global-context.shots." + sid + ".props", json.dumps(cshot.get("props", []), ensure_ascii=False))])
+    if sid == "G02" and str(events.get("E316", {}).get("status", "")) == "accepted":
+        # E316 injected the r8 arm as <Picture 1> at queue time through chain4's
+        # --ref-asset. It is intentionally outside global-context, so the generic
+        # plate+cast+props count must not flag it as an extra label.
+        arm = ROOT / "art/assets/h3/refs/bloody-arm-real-r8-1024.png"
+        ok = labels == [1] and arm.is_file()
+        res["refs"] = result(
+            "PASS" if ok else "FAIL",
+            f"E316 accepted override: <Picture N> labels={labels}; expected exactly [1] "
+            "from chain4 --ref-asset r8 identity reference (not global-context plate/"
+            "cast/props). r8 file present=" + str(arm.is_file()) + ".",
+            [("prompt.field1", " ".join(f"<Picture {n}>" for n in labels) or "no picture labels"),
+             ("ALH E316 (accepted)", excerpt(events.get("E316", {}).get("detail"), 190)),
+             ("art/assets/h3/refs/bloody-arm-real-r8-1024.png", str(arm))],
+            "generic structured refs=" + str(expected_refs) + " are intentionally bypassed")
+    else:
+        over = bool(labels) and max(labels) > expected_refs
+        res["refs"] = result(
+            "FAIL" if over else "PASS",
+            f"<Picture N> labels={labels or 'none'}; structured refs={expected_refs} "
+            "(plate + characters + props). The feeder/context node injects refs at queue "
+            "time, so an unlabelled rebuilt prompt is not a mismatch.",
+            [("prompt.field1", " ".join(f"<Picture {n}>" for n in labels) or "no picture labels"),
+             ("global-context.shots." + sid + ".props", json.dumps(cshot.get("props", []), ensure_ascii=False))])
+
+    # E324: the arm must be READABLE. Earlier accepted wording made it a 1-2 cm
+    # almost-unnoticeable sliver, which survived every string gate and was still
+    # invisible in the rendered frames. Keep this regression gate string-based,
+    # but never let any PASS here stand in for visual render evidence.
+    if sid == "G02":
+        stale = [p for p in ("one-to-two-centimetre", "almost unnoticeable",
+                             "narrow flat bone-tone strip") if p in f1]
+        if stale:
+            res["refs"] = result(
+                "FAIL", "G02 arm wording regressed to an invisible sliver: " + ", ".join(stale),
+                [("prompt.field1", excerpt(f1, 190))],
+                "E324 supersedes the E285/E307/E310 visibility clause")
+        elif "clearly readable flat bone-tone strip" not in f1:
+            res["refs"] = result(
+                UND, "G02 arm fragment is not asserted as readable; verify by eye after render.",
+                [("prompt.field1", excerpt(f1, 190))], "E324 visibility rule")
 
     return {"shot": sid, "set_id": set_id, "file": pf["file"],
             "context": str(ctx_path.relative_to(ROOT)) if ctx_path else None,
@@ -520,6 +595,10 @@ def render_md(payload: dict) -> str:
         "Chỉ đọc cabin-map / global-context / spec / bible / ALH / prompt. Không sửa prompt, "
         "context, spec, ALH, PLAYBOOK, GPU-LOCK; không queue GPU. **Output là đề xuất** — "
         "reviewer sẽ đọc lại bằng tay 3 shot FAIL + 3 shot PASS trước khi tin.",
+        "",
+        "**Scope (E323/E324): PASS ở đây là bằng chứng CHUỖI TRƯỚC RENDER, không phải bằng "
+        "chứng H3 đã vẽ đúng.** Sau render bắt buộc clip QA + Hy4 flash-free + Big Pickle "
+        "hand-check mới được chốt verdict.",
         "",
         "## 1. cabin-map tự mâu thuẫn về bố cục ghế",
         "",
@@ -599,6 +678,8 @@ def main(argv: list[str]) -> int:
                "generated_at": datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")}
     payload = {
         "tool": "prompt_consistency_audit", "mode": "structured-source-only / read-only",
+        "scope": "PRE-RENDER prompt/string evidence only; a PASS here is NOT render evidence",
+        "render_evidence_required": True,
         "authority": ["art/env/cabin-map.json", "art/env/global-context-part1.json",
                       "art/part1-spec.json", "characters.json",
                       "art/comfy/ALH/learning-log.jsonl", "prompts/part1-rebuilt/*.txt"],

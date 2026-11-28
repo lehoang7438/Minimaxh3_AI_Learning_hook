@@ -9,6 +9,13 @@ continuous action sets continue_from. No frame is edited or quantized by hand.
     python art/tests/chain4_run.py --shots 4
     python art/tests/chain4_run.py --shot-ids G01,G02,G03,G05 --seconds 10 \
         --chain-name story-g01 --outdir out/story-g01 --prompts prompts/part1-rebuilt
+
+Seed rule (E319): --seed-base is OFFSET BY THE SEGMENT NUMBER, so segment 2 with
+base 20264401 renders with seed 20264403, not 20264402. Use --seed for a single
+approved retry: it is the EXACT seed sent to FreeVideoGenerate and no longer
+depends on --start/--shots. Long jobs must be launched with a shell timeout of
+at least 7200000 ms; a 120 s timeout SIGTERMs the driver while the GPU job lives
+on and forces an ad-hoc /history recovery (E244/E319).
 """
 from __future__ import annotations
 
@@ -133,7 +140,10 @@ def main() -> None:
     parser.add_argument('--prompts', type=Path, default=DEFAULT_PROMPTS)
     parser.add_argument('--outdir', type=Path, default=ROOT / 'out/chain4')
     parser.add_argument('--comfy-output', type=Path, default=DEFAULT_COMFY_OUTPUT)
-    parser.add_argument('--seed-base', type=int, default=20262210)
+    parser.add_argument('--seed-base', type=int, default=20262210,
+                        help='offset by segment number; prefer --seed for one approved retry')
+    parser.add_argument('--seed', type=int, default=None,
+                        help='EXACT seed for a single-shot retry; overrides --seed-base entirely')
     parser.add_argument('--shot-ids', default='',
                         help='comma list, e.g. G01,G02,G03,G05; default seg1..segN')
     parser.add_argument('--seconds', type=float, default=5.0,
@@ -143,6 +153,12 @@ def main() -> None:
     parser.add_argument('--ref-asset', type=Path, default=None,
                         help='one QA-passed picture reference for <Picture 1>; resets to [] when omitted')
     args = parser.parse_args()
+    segments_to_run = args.shots - args.start + 1
+    if segments_to_run < 1:
+        raise SystemExit('--start is past --shots; nothing to render')
+    if args.seed is not None and segments_to_run != 1:
+        raise SystemExit('--seed is exact and only valid when ONE segment is rendered; '
+                         'use --seed-base for multi-segment chains')
     if args.ref_asset is not None and not args.ref_asset.is_file():
         raise SystemExit(f'ref asset not found: {args.ref_asset}')
 
@@ -165,7 +181,8 @@ def main() -> None:
         if previous and not previous.is_file():
             raise SystemExit(f'previous clip not found: {previous}')
         print(f'\n===== {sid} ({segment}/{args.shots}) =====', flush=True)
-        set_shot(args.workflow, previous, args.seed_base + segment, args.seconds, args.ref_asset)
+        seed = args.seed if args.seed is not None else args.seed_base + segment
+        set_shot(args.workflow, previous, seed, args.seconds, args.ref_asset)
         doctor()
         preflight(args.workflow)
         dest = args.outdir / sid

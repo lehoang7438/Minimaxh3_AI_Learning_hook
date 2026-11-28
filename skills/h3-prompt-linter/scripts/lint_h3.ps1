@@ -2,7 +2,11 @@ param(
     [Parameter(Mandatory = $true)][string]$Path,
     [double]$Seconds = 0,
     [int]$Frames = 0,
-    [ValidateSet('auto', 'base', 'ref')][string]$Mode = 'auto'
+    [ValidateSet('auto', 'base', 'ref')][string]$Mode = 'auto',
+    # The old gate said "PASS, 0 warning" but only the exit code was checked and
+    # PASS ignored warnings, so a warning sailed into the render. Callers that
+    # mean it (run_master, diagnose) pass this switch.
+    [switch]$FailOnWarn
 )
 
 $ErrorActionPreference = 'Stop'
@@ -117,6 +121,14 @@ if ($desc -match '(?i)\b(visible\s+)?text\s+allowed\s+only\b') {
     Add-Err "text allowance contradicts the contract: merge it as 'no text except <what>' instead of 'Visible text allowed only'"
 }
 
+# ---------- E298: pipeline metadata must not reach prompt_visible ----------
+# cabin-map.compositing_note is QA metadata only. The G02 queued prompt still
+# said "three generic passengers are composited later"; catch it here and in
+# h3_prompt_rules.validate_prompt before the next render.
+if ($desc -match '(?i)\bcomposited\b|\bcompositing stage\b') {
+    Add-Err 'pipeline/compositing metadata in prompt_visible; keep it in cabin-map QA notes only (E298)'
+}
+
 # ---------- shots ----------
 $shotMatches = [regex]::Matches($desc, '\[Shot\s+([0-9]+)\]')
 if ($shotMatches.Count -eq 0) {
@@ -146,6 +158,16 @@ else {
 if ($desc -match '(?i)\b(camera\s+static|static\s+camera)\b' -and
     $desc -notmatch '(?i)\bdrift\b|\bsway\b|\bhandheld\b|\bpush-in\b') {
     Add-Warn 'static camera without drift: add a slow push-in/handheld sway plus environment motion'
+}
+
+# ---------- E268: jerk-mode contradiction ----------
+# Discrete wrist/finger snaps were smoothed into a dolly by a trailing "continue evenly"
+# line. Requiring BOTH wrist and fingers keeps a normal head "snaps up" legal.
+if ($desc -match '(?i)\bwrist\b' -and
+    $desc -match '(?i)\bfingers\b' -and
+    $desc -match '(?i)\b(snap|snaps|jerk|jerks|flick|flicks|spasm|spasms)\b' -and
+    $desc -match '(?i)\b(continue evenly|continues evenly|slides slowly|slow pan|smoothly|eases closer|keeps drifting)\b') {
+    Add-Err 'motion contradiction: wrist/finger snaps must not be paired with even/slow/smooth camera drift (E268)'
 }
 
 # ---------- timecodes ----------
@@ -224,9 +246,13 @@ Write-Host ''
 foreach ($w in $warns) { Write-Host "WARN  $w" -ForegroundColor Yellow }
 foreach ($e in $errors) { Write-Host "ERROR $e" -ForegroundColor Red }
 Write-Host ''
-if ($errors.Count -eq 0) {
+if ($errors.Count -eq 0 -and -not ($FailOnWarn -and $warns.Count -gt 0)) {
     Write-Host ("PASS  ({0} warning(s))" -f $warns.Count) -ForegroundColor Green
     exit 0
+}
+if ($errors.Count -eq 0) {
+    Write-Host ("FAIL  {0} warning(s) treated as errors by -FailOnWarn" -f $warns.Count) -ForegroundColor Red
+    exit 1
 }
 Write-Host ("FAIL  {0} error(s), {1} warning(s)" -f $errors.Count, $warns.Count) -ForegroundColor Red
 exit 1

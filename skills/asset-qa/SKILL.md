@@ -7,6 +7,19 @@ description: Kiểm tra tính logic và đúng đắn của asset mới gen (sau
 
 Dùng sau **mỗi lượt gen asset** bằng MiniMax H3 Image. Mục tiêu: bắt asset sai **trước khi** nó lan vào keyframe/phim.
 
+Sau khi xong bước này → mở `WORKFLOW-INDEX.md` để nhắc bước kế + ALH. Không chốt verdict khi chưa có `visible_check: seen`.
+
+## Story → asset: prompt chỉ được sinh từ bảng yếu tố (bắt buộc 26/11/2026)
+
+Không viết prompt asset từ trí nhớ. Chạy `art/tests/story_to_asset_prompts.py --report` để tách story thành
+10 yếu tố (story, map, environment, character, wardrobe, prop, light, style, camera_composition, qa),
+rồi `--element <id>` để sinh **đúng 1 job** theo `art/env/asset-contract.json`. Trước `gen_image.py`
+phải chạy `art/tests/check_asset_prompt.py <job>` và chỉ gen khi **PASS**. Mọi field nằm theo thứ tự:
+header → reference (có role) → geometry → objects+caption → light → flatness → identity/wardrobe → palette.
+Style contract dùng chung với prompt video qua `art/tests/h3_prompt_rules.py` — ảnh và video không được
+khác nhau về số ghế/trục/ánh sáng. Cấm: phủ định xoá vật (E162), nhắc màu đỏ khi `red_allowed=false`
+(E200), đưa route map 3D vào plate phẳng (E215), prompt cabin variant không có `<Picture 1>` master (E202).
+
 **Mở rộng cổng (Tầng 2):** `qa_passed` + `color_count` áp dụng cho ** cả 3 loại ref** — character,
 **set plate** và **prop** — không chỉ character. Ngoài màu/tay/wardrobe phải soi thêm **chữ rác,
 chi tiết nhiễu, nền magenta dính viền**. Set/prop painterly cũng bị chặn trước khi vào
@@ -14,7 +27,15 @@ chi tiết nhiễu, nền magenta dính viền**. Set/prop painterly cũng bị 
 
 **Sync text↔ref:** nếu bible đổi tóc/trang phục, ref cũ không còn hợp lệ — gen lại bằng H3 Image với
 prompt mô tả **đúng câu mới**, QA xong mới thay `refs[].path`. Không giữ ref tóc xù khi bible đã ghi
-tóc gọn; không chấp nhận ref có ngón tay dù prompt nói mitten (phải sửa prompt/gen lại tối đa 2 lần).
+tóc gọn; không chấp nhận ref có ngón tay dù prompt nói mitten (sửa prompt rồi gen lại theo
+trần retry trong `art/env/asset-contract.json`; chạm trần thì dừng + ALH + hỏi user).
+
+**Script fidelity — promoted from ALH E126, user approved 26/11/2026:** Asset QA phải đối chiếu
+**script/spec của shot**, không chỉ `characters.json`. Bible định nghĩa nhận diện (mitten, palette,
+wardrobe); script định nghĩa **trạng thái cốt truyện** (vd G01: bàn tay dính máu hoặc bị cắn sứt mẻ,
+máu loang lổ — không phải vệt máu nhỏ ở cổ tay). Asset đúng bible nhưng sai yêu cầu kịch bản thì
+**FAIL**, không được chấm `PASS_WITH_WARN`. Khi giao QA cho agent khác, rubric phải kèm yêu cầu
+kịch bản của shot và bắt trả `script_fidelity: MET|PARTIAL|MISSING` trước khi xét verdict.
 
 **Cổng vào `global-context.json` (sửa sau ca G02).** Mọi ref — kể cả ref vừa gen lại bằng H3 — phải
 qua Asset QA **trước khi** đăng ký làm canon. Không dùng **scene crop** làm canon character ref nếu
@@ -27,7 +48,7 @@ Kiểm tra định lượng + định tính:
 |---|---|
 | Canon flat ref | `qa_passed: true` là cổng chung. Ngưỡng màu **theo loại ref**: character WARN >150 / FAIL >200; set plate WARN >300 / FAIL >450 (nền phòng được phép vài sắc đèn nhưng vẫn flat fill); prop WARN >250 / FAIL >400. Dùng chung 1 ngưỡng gắt dễ chặn nhầm set sạch — mục tiêu là chặn ảnh crop painterly 300–450+ màu |
 | Kích thước | sprite 1024×1024 sau downscale (H3 trả 2048²), nền 704×1280 |
-| Nền key (character ref) | Phải **phẳng, đồng nhất, key-site chắc chắn**, band ≥95 %. H3 Image trên build này **không tạo nổi `#FF00FF` chính xác** (đã thử 2 lần: `#c61c79` raspberry rồi `(255,10,247)` near-magenta). User duyệt **near-magenta** cho character ref: chấp nhận corner `R≥240, G≤40, B≥230` sau downscale 1024², đo uniform ≥95 % và keyer corner-sampled cắt sạch. Key hồng **chỉ là nền tạm của ref nhận diện**; nền thật trong video lấy từ set plate QA, không lấy từ key này. Raspberry cũ (`B≈100–137`) vẫn **FAIL** — phải gen lại. Vẫn giữ cụm `exact FF00FF` trong prompt để kéo màu sát nhất |
+| Nền key (character ref) | Phải **phẳng, đồng nhất, key-site chắc chắn**, band ≥95 %. H3 Image trên build này **không tạo nổi `#FF00FF` chính xác** (đã thử 2 lần: `#c61c79` raspberry rồi `(255,10,247)` near-magenta). User duyệt **near-magenta** cho character ref: chấp nhận corner `R≥240, G≤40, B≥200` sau downscale 1024², đo uniform ≥95 % và keyer corner-sampled cắt sạch. (Cụm `B≥230` từng ghi quá gắt và đã bị thu hồi — `ALH:E082` revoked; `ALH:E132` đặt `B≥200`, `ALH:E205` cấm thêm số kênh RGB. Canon r1 đo `B=222`, keyer `compose_keyframe.py:18-37` lấy median 4 góc rồi key theo khoảng cách màu, không dùng ngưỡng tuyệt đối; raspberry cũ `B≈100–137` vẫn FAIL.) Key hồng **chỉ là nền tạm của ref nhận diện**; nền thật trong video lấy từ set plate QA, không lấy từ key này. Raspberry cũ (`B≈100–137`) vẫn **FAIL** — phải gen lại. Vẫn giữ cụm `exact FF00FF` trong prompt để kéo màu sát nhất |
 | Bằng mắt | đúng flat fill, đúng wardrobe từ bible, tay **mitten** (không ngón), không eyebrow/mũi, không gradient |
 | Gắn cờ | chỉ ghi `qa_passed: true` + `color_count` vào `refs[]` của `characters.json` **sau khi** qua hết các mục trên |
 
@@ -46,7 +67,8 @@ hay không. Chỉ gọi H3 Image khi workflow cần resource mà chưa có; FAIL
 
 ```
 gen 1 asset → QA ngay asset đó → PASS? → gen asset tiếp theo
-                              → FAIL? → sửa prompt → gen LẠI asset đó (tối đa 2 lần) → mới tiếp tục
+                              → FAIL? → truy ngược (E234) → sửa prompt → gen LẠI asset đó
+                                        theo trần retry trong asset-contract.json → chạm trần thì dừng + hỏi user
 ```
 
 Sau khi cả lô xong mới làm bước tổng hợp (contact sheet + soi lại toàn bộ).
@@ -54,7 +76,7 @@ Sau khi cả lô xong mới làm bước tổng hợp (contact sheet + soi lại
 ### QA ngay sau từng asset (bắt buộc)
 1. Kiểm tra kích thước: sprite `1024×1024`, nền `704×1280` (H3 luôn upscale ≥2048² → phải downscale).
 2. `read` ảnh đó để nhìn trực tiếp — không dựng contact sheet cho bước này.
-3. Đối chiếu ngay với `characters.json` + prompt vừa dùng (đúng nhân vật, đúng đồ, đúng nền magenta).
+3. Đối chiếu ngay với **script/spec shot** + `characters.json` + prompt vừa dùng (đúng trạng thái cốt truyện, đúng nhân vật, đúng đồ, đúng nền magenta).
 4. Nếu FAIL: ghi lỗi cụ thể, sửa đúng 1 điểm (thêm reference hoặc nhắc lại style), gen lại **asset đó**, rồi mới sang asset sau. Không để lỗi chạy tiếp sang asset khác.
 
 ### Logic nền — bố cục, ánh sáng, đồ vật (mới 24/11/2026)

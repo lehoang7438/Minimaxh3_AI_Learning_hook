@@ -1,62 +1,62 @@
-# ALH report - 2026-11-27 22:51
+# ALH report - 2026-11-28 13:38
 
-log: `art\comfy\ALH\learning-log.jsonl`  |  total 303 event(s)
+log: `art\comfy\ALH\learning-log.jsonl`  |  total 332 event(s)
 
 ### Status
 
 | value | n | share |
 |---|---|---|
-| accepted | 143 | 47% |
-| archived | 100 | 33% |
-| proposed | 55 | 18% |
+| accepted | 166 | 50% |
+| archived | 100 | 30% |
+| proposed | 61 | 18% |
 | revoked | 5 | 2% |
 
 ### Event
 
 | value | n | share |
 |---|---|---|
-| rule_gap | 117 | 39% |
-| asset_qa_fail | 51 | 17% |
-| verdict | 46 | 15% |
-| qa_fail | 42 | 14% |
-| warn_accepted | 41 | 14% |
-| node_error | 4 | 1% |
+| rule_gap | 131 | 39% |
+| verdict | 55 | 17% |
+| asset_qa_fail | 51 | 15% |
+| qa_fail | 45 | 14% |
+| warn_accepted | 42 | 13% |
+| node_error | 6 | 2% |
 | promoted | 2 | 1% |
 
 ### Skill
 
 | value | n | share |
 |---|---|---|
-| asset-qa | 139 | 46% |
-| comfyui-runner | 59 | 19% |
-| h3-prompt-writing | 52 | 17% |
-| h3-visual-qa | 34 | 11% |
+| asset-qa | 139 | 42% |
+| comfyui-runner | 71 | 21% |
+| h3-prompt-writing | 58 | 17% |
+| h3-visual-qa | 43 | 13% |
 | character-bible | 9 | 3% |
 | h3-storyboard | 3 | 1% |
 | global | 3 | 1% |
-| h3-prompt-linter | 2 | 1% |
+| h3-prompt-linter | 3 | 1% |
+| freevideo-runner | 2 | 1% |
 | bitnet | 1 | 0% |
-| freevideo-runner | 1 | 0% |
 
 ### Layer
 
 | value | n | share |
 |---|---|---|
-| prompt | 53 | 17% |
-| asset | 48 | 16% |
-| workflow | 42 | 14% |
+| prompt | 63 | 19% |
+| workflow | 53 | 16% |
+| asset | 48 | 14% |
 | magenta_key | 15 | 5% |
 | asset_qa | 12 | 4% |
-| context | 9 | 3% |
-| clip | 9 | 3% |
-| gate | 9 | 3% |
-| mitten_anatomy | 8 | 3% |
-| visual | 8 | 3% |
+| gate | 11 | 3% |
+| context | 10 | 3% |
+| clip | 10 | 3% |
+| visual | 9 | 3% |
+| mitten_anatomy | 8 | 2% |
+| qa | 8 | 2% |
 | set_geometry | 6 | 2% |
 | palette_lock | 6 | 2% |
 | lighting_logic | 6 | 2% |
 | injury_logic | 6 | 2% |
-| qa | 6 | 2% |
 | anchor | 5 | 2% |
 | qa_reviewer | 5 | 2% |
 | prop_identity | 4 | 1% |
@@ -87,6 +87,7 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 303 event(s)
 | spec | 1 | 0% |
 | wardrobe | 1 | 0% |
 | cast | 1 | 0% |
+| reference | 1 | 0% |
 
 ### Needs a decision
 
@@ -145,6 +146,12 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 303 event(s)
 - [E293] rule_gap / ALL / gate - E293 proposed by reviewer: one style contract + one byte-identical plate block per set_id + shot-only block; linter forbids light/background wording in shot block; audit checks plate byte-identity and rendered clips (60-75pct flat shadow, palette, seat/window count). Condense accepted rules into short imperative list with supersede chains before mirroring to SKILL.md. E230/E231/E237 stay proposed -> seat layout CHUA CHOT.
 - [E297] rule_gap / G03 / prompt - E297 ranked remaining cause: static lit phone (v1/G05 v1) passes, autonomous screen-change event (v2 lights up, v3/v4 changes by itself) FAILs 3x. H3 likely reads a changing screen as a light event and ramps oblique cabin surfaces; v4 front-near/tail-far wording may sustain it. E287 Scene edit also created the v4 hands-on-phone/head-lift regression. Needs user-chosen composition/anchor change or one controlled render; no GPU while status qa_hold.
 - [E300] rule_gap / G03 / prompt - E299 reviewer proposed (not chosen): explain G03 gradient with a third declared brighter shape (the phone), a real timecode for the screen change, removal of no-hand-touches-it negation, and removal of four-windows wording from G03/G05. Also pending: accept E231 and supersede E212/E213/E216 / revoke E230/E237; decide whether E273 supersedes E209 for aisle_flat; decide agent accept rights; refresh stale spec durations/actions. No prompt or GPU change from this proposal.
+- [E304] rule_gap / G01-G05 / prompt - E304 sightline fix (proposed, applied as one camera-sentence layer only): G02 wide aisle plate now says standing eye level; G03/G05 medium seat_27a plates now say eye level of a seated passenger; G04 insert unchanged (N/A). Scene/Props/Light/Action untouched, so this is not a fifth Scene rewrite and does not alter E271 options. Backups in art/archive/prompts-pre-sightline-20261127. Rebuilt 5 prompts, lint 5/5 PASS 0 warning, audit FAIL 0 / CHUA CHOT 7 / PASS 38. No GPU queue, no verdict, GPU-LOCK stays qa_hold.
+- [E306] rule_gap / G02,G03 / workflow - E306 proposed (user idea, not applied): try G03 via continue_from from the approved G02 v3 last frame to carry first-frame colour and voice timbre (E101), then give H3 an explicit timed cut inside the clip to move to the new 27A scene. This overrides the strict hard-cut reading of E242/E174/h3-storyboard and must be treated as a controlled trial, not a settled rule. Preconditions: G02 v3 must render and pass QA first; one clip = one dominant action; cut beat must be timed and QA must check motion spike (clip_qa), flat surfaces, hands-away/head-still and no morph. No G03 queue while G02 v3 is rendering; no change to the current G03 prompt or chain4 workflow yet.
+- [E329] rule_gap / G02 / workflow - E329 proposed: after v6 FAIL, do not re-seed or queue G01/G03/G05. A next G02 job may change ONLY anchor/reference conditioning (e.g. QA flat plate anchor instead of G01 handoff, or a different arm-reference role), with an explicit user override of E316 and a new seed recorded exactly. Otherwise stop G02 at v6.
+- [E330] rule_gap / G02 / prompt - State required dark surfaces as one positive flat fill; do not negate denied object names (E162).
+- [E331] rule_gap / G02 / gate - An audit FAIL caused by an accepted per-shot override needs a documented one-job waiver, not a prompt lie or an ALH edit.
+- [E332] verdict / G02 / visual - Temporary user acceptance applies only to the named layer; other layers stay NOT_CLOSED and are never PASS_WITH_WARN.
 
 ### Accepted but not promoted to SKILL.md/GLOBAL-RULES.md
 
@@ -260,9 +267,54 @@ log: `art\comfy\ALH\learning-log.jsonl`  |  total 303 event(s)
 - [E298] h3-prompt-writing / G01-G05 / gate - E298 reviewer correction + no-wait fixes: 3-layer architecture is useful for cheap audit but does NOT explain the gradient (style blocks already byte-identical). Applied: remove composited-later pipeline note from global-context and rebuild source; FACE_FLAT_CONTRACT on G02 v3 so the chain shares one face law; G04 flat phone-insert contract with no 2+2/seat-window assertion; inject Khang appearance+wardrobe block into G03 prompt-side; G03/G05 block eyes changed from oval to dot to match contract. All 5 prompts rebuilt, lint PASS 0 warning.
 - [E299] h3-prompt-linter / G01-G05 / gate - E299 gate hardening: validate_prompt and lint_h3.ps1 now hard-FAIL composited/compositing-stage pipeline metadata in prompt_visible; prompt_consistency_audit now FAILs a stale N+N pair inside phone_ins instead of unconditional PASS. Re-audit: FAIL 3 / CHUA CHOT 7 / PASS 35 (was FAIL 6 / PASS 32); fixed G02 props, G03 character, G04 light+layout. Remaining FAILs are sightline/camera-height, awaiting user seat/elevation decision.
 - [E301] freevideo-runner / G01-G05 / gate - E301 cleanup scope: delete only install-time junk in the MiniMax H3/FreeVideo install - old test-runs, temp FreeVideo-main clone+zip, one-off MinGit installer zip, empty uv temp (5 items, 2,578,665,597 bytes = 2.40 GiB). KEEP CHUA CHOT the 21.87 GiB prepared int8-convrot model cache (active reuse path), torch-wheels + uv-cache install caches (referenced by bootstrap.py for repair), kernel/input/continuations caches, setup-runs (render-ready.ps1/finish-setup.ps1 pick newest), and the stale Downloads\FreeVideo-main (four project scripts still reference it). Engine/models/envs/ComfyUI/agent-token untouched; no GPU work.
+- [E305] comfyui-runner / G02 / workflow - E305 G02-first queue: G02 v2 visual PASS was superseded by E285 story/horror-logic rejection, so option (a) anchor G03 from an approved G02 plate is invalid until G02 v3 is rendered and QA PASS. G02 v3 (6 s, seed 20264201) queued alone via art/comfy/chain4/h3-chain4.json --shot-ids G02 after doctor GO; G03/G01/G05 stay unqueued. Re-evaluate E271 only after G02 v3 clean verdict.
+- [E307] h3-visual-qa / G02 / prompt - E307 G02 v3 FAIL (evidence-backed, not auto-PASS): under-seat continuity beat is wrong in the prompt layer. The prompt says thin sliver but also primes a whole hand with four fingers/thumb/nails/fingertips and slow easing; H3 rendered an open five-finger hand with wide navy cuff occupying about 1/8 frame width from ~0.54s to ~4.7s. Palette, flat fills, camera hold and four-passenger count PASS; top-luma/teal differences vs v2 are larger flat panel area and teal value changes, not gradient. Per E126 script mismatch = FAIL, no PASS_WITH_WARN. Stop G03/G01/G05 queue; fix one prompt layer only, then one fresh-seed G02 retry. User also clarified the under-seat angle is from the seat back, not a front view; passenger/seat layout must be behind - clarify scope before rewriting.
+- [E308] h3-prompt-writing / G02 / prompt - E308 accepted (user, local G02 override): G02 aftermath camera is from behind the rear face of seat 27A, not a front view; the near foreground is the seat back and the other three seats/passengers sit beyond it seen from behind. This supersedes E304 standing front-near camera for G02 only and locally supersedes E210 rear-seat rejection. cabin-map front-near/tail-far stays authoritative for G03/G05 and all other plates. Implemented in rebuild_prompts.py (CAMERA_LOCK_REAR, SCENE_OVERRIDE[G02], ACTION/BEAT) and prompt_consistency_audit.py REAR_VIEW_SHOT gate.
+- [E309] h3-prompt-writing / G02 / prompt - E309 accepted (user): G02 v4 uses a darker but still flat layout: 78-85 percent near-black, bone-white ceiling as a thin edge only, muted-teal runner as a narrow strip only. No emitting fixtures, no ramp, no new hue. Implemented as G02_REAR_DARK_CONTRACT; light_tier audit stays suppressed. This is a value-balance change, not a new light effect.
+- [E310] h3-prompt-writing / G02 / prompt - E310 accepted (user): keep the locked three-colour bible for G02 v4 (near-black navy, bone white, one muted teal; red reserved). The liveliness complaint is answered through stronger flat value contrast inside those three colours, not by adding an amber/fourth hue. No palette override, no bible change.
+- [E311] comfyui-runner / G02 / workflow - E311 accepted (user): after E307 FAIL and E308/E309/E310 prompt fixes, queue exactly one G02 v4 job with seed 20264301 via art/comfy/chain4/h3-chain4.json (same single graph). Gates: doctor GO, lint 6s PASS 0 warning, prompt audit FAIL 0 / CHUA CHOT 6 / PASS 39, no hand/finger/nail/ease/front-near wording. Handoff saved as story-g02-v4/G02.mp4 for a possible E306 continue-from trial. No G03/G01/G05 queue until G02 v4 visual QA verdict; no verdict before Hy4 reads frames.
+- [E312] freevideo-runner / chain / workflow - E312 accepted (user, import scope only): pulled repo commit fd9d1f92fa638af9d1a9769e985331eb36e411c5. There is NO new SKILL.md in the bundle after pull; the smart-chain consistency material is PLAYBOOK-T2VA.md section 2 row Smart chain cut plus project-tools/smart_chain.py. Imported read-only to docs/PLAYBOOK-T2VA.md and art/archive/repo-import-20261127/smart_chain.py with hash check and IMPORT-NOTE.md. Scope is the T2VA 67-shot pipeline only; this import does NOT supersede E242/E174 or E306 for chain4, does not edit freevideo-runner/SKILL.md or chain4_run.py, does not touch GPU-LOCK, and must not be promoted to a chain4 hard gate without user approval and QA evidence on this pipeline.
+- [E313] h3-visual-qa / G02 / qa - E313 accepted (user): G02 v4 verdict FAIL. User says the clip is not from behind and that layout and people changed heavily. Hy4 flash also proposed FAIL on sliver-only (full four-finger hand 0.54-4.33 s, about one quarter frame width) and palette (yellow cuff rim, brown sleeve patch, large white ceiling and windows, wide teal wedges); its Rear-view PASS is disputed and user verdict is final. Overall FAIL regardless of the two accepted PASS items (stability and flat fill). No queue until one layer is fixed and re-QA passed.
+- [E314] h3-prompt-writing / G02 / prompt - E314 accepted (agent diagnosis): G02 v4 root cause is truth-layer drift plus prompt self-contradiction, not the workflow. E308 changed only rebuild_prompts.py and the audit gate; spec, context and cabin-map still declare front-near 3P axis and standing eye level, so the single source of truth disagrees with the render prompt. The shared style contract still asks for dot eyes and mouth and no repeated empty seat backs while the camera line asks for a rear seat back foreground, and the bitten-arm-from-previous-close-insert phrase re-primes a full hand despite token-level removal. The 2.900-5.700 beat gap let H3 stretch one flick into about 3.8 s. clip_qa is blind to viewpoint, layout and faces and the edited audit gave false PASS. No queue; decision needed on rebuilding rear view with superseded spec/context versus reverting to the E304 front axis versus holding the earlier continue_from override.
+- [E315] h3-visual-qa / G02 / qa - E315 accepted (user): G02 v4 FAIL is confirmed on the rear-view/layout/person dimension. The earlier Hy4 Rear-view PASS was a thumbnail misread and is withdrawn; white blank faces and six visible seats replace the required four-seat rear-of-27A layout. The user also states the retracting forearm must reference G01, not be re-invented from words: v4 queued with assets=[] so the G01 r8 arm identity never reached H3. No queue until the prompt layer and the G01 reference path are fixed and re-gated.
+- [E316] comfyui-runner / G02 / workflow - E316 accepted (user override): G02 v5 is a controlled smart-chain trial, not a fresh T2V: continue_from G01 -> G02 on the one chain4 workflow, with an explicit timed hard cut after the 22-frame overlap, the same r8 arm picture reference attached as <Picture 1>, adjacent flick/snap beats, and a fresh seed. This supersedes the strict hard-cut reading of E242/E174 for G01->G02 and redirects E306 to this pair. It stays a single-shot trial: no G03/G01/G05 queue, doctor GO and preflight before queue, clip QA and visual QA after render.
+- [E317] comfyui-runner / G02 / workflow - E317 accepted (user): queue exactly one G02 v5 job on the single chain4 workflow with seed 20264402 (seed-base 20264401 segment 2), 6 s, continue_from story-g02-v5/G01.mp4, --ref-asset art/assets/h3/refs/bloody-arm-real-r8-1024.png. Doctor GO and workflow preflight are gates; no G01/G03/G05 job and no verdict before clip QA + enlarged Hy4 frames + Big Pickle hand-check 3 FAIL / 3 PASS.
+- [E318] comfyui-runner / G02 / workflow - E318 accepted (agent, pre-GPU driver fix): chain4_run.py must receive --prompts prompts/part1-rebuilt when rendering G01/G02 by shot id; the default art/comfy/prompts/chain4 only holds legacy seg1-seg4 and is not the delivery prompt source. A missing prompt exits before doctor and before queue, so the E317 approval is still unconsumed.
+- [E319] comfyui-runner / G02 / workflow - E319 accepted (agent, disclosed deviation): recover this render from /history/<prompt_id>, download its video, copy the handoff and run clip_qa; do NOT re-queue. The actual seed is 20264403 (off by one from the approved 20264402) and must be recorded in the verdict. Future chain4 --seed-base must account for seed_base+segment before claiming a seed.
+- [E320] h3-visual-qa / G02 / prompt - E320 accepted (user): G02 v5 is FAIL on both light contract drift and center-blocking seat/person. The rear-view geometry itself is accepted, but the scale/occlusion and bright band are not. Wait for the hy4-flash-free descriptive read (visible_check=seen, script_fidelity=MET), then trace exactly one layer; no re-queue, no verdict upgrade, no mirror.
+- [E321] h3-visual-qa / G02 / reference - E321 accepted (user): G02 v5 FAIL also includes missing G01 arm-under-seat continuity. Passing ref/timing gates in prompt_consistency_audit.py is not evidence that H3 rendered the arm; visual verification must see the r8 arm fragment in the rear-view frames. No re-queue, no verdict upgrade; root cause must be traced across the reference-to-image layer, not just prompt phrasing.
+- [E322] h3-visual-qa / G02 / prompt - E323 accepted (agent trace): G02 v5 prompt/rules are not the defect. Failures are (1) H3 synthesis drift under continue_from+reference conditioning and (2) E316 22-frame overlap trim deletes the frame-1 arm from the saved clip while the later fragment was explicitly written as a 1-2 cm almost-unnoticeable sliver. Per E322 stop: no more seeds, no more QA loops until the user changes a rule or technique.
+- [E323] h3-visual-qa / G02 / gate - E323 accepted (user, working style): before any render retry, trace the full chain end to end - spec -> global-context/cabin-map -> style rule -> shot prompt -> audit gate -> workflow node inputs -> actual submitted prompt/ref/seed -> rendered frames. Record which layer is proven correct. When prompt and rules are already correct, do not burn more GPU or loop QA; conclude the failure belongs to the model/reference layer and stop for a user decision.
+- [E324] h3-prompt-writing / G02 / prompt - E324 accepted (user, supersedes E285/E307/E310 visibility clause, status_by user): the G01 arm fragment in G02 must be READABLE - one flat bone-tone strip with a wide navy cuff sliding back under 27A - never a separated-finger hand. Palette, rear axis, 22-frame cut and four-seat count are unchanged. Implemented in rebuild_prompts.py, spec/cabin-map/context metadata and an audit regression gate.
+- [E325] comfyui-runner / G02 / workflow - E325 accepted (agent, supersedes E319): chain4_run.py now has --seed for an EXACT one-segment seed and validates that only one segment runs; --seed-base remains documented as segment-offset. Long jobs require a shell timeout >=7200000 ms. v6 uses --seed 20264501.
+- [E326] comfyui-runner / G02 / context - E326 accepted (agent, supersedes E314 for G02): align the G02 truth layers with E308/E309/E316 - spec seconds 6 + rear viewpoint metadata, cabin-map shot_overrides.G02, global-context VIEWPOINT_OVERRIDE/STATE_OVERRIDE, and audit report scope PRE-RENDER only with an E324 arm regression gate. Scope is G02 only; cabin-map remains authoritative for G03/G05.
+- [E327] comfyui-runner / G02 / workflow - E327 accepted (user): queue exactly one G02 v6 retry after the fixes, on the single chain4 workflow, 6 s, continue_from story-g02-v6/G01.mp4, r8 arm reference, EXACT seed 20264501 via --seed. Doctor GO and preflight are gates; no G01/G03/G05 queue and no verdict before clip QA + Hy4 flash-free + Big Pickle hand-check 3 FAIL / 3 PASS.
+- [E328] h3-visual-qa / G02 / clip - E328 accepted (agent): G02 v6 is FAIL, not PASS_WITH_WARN. Pre-render prompt/rule/ref/anchor/workflow were correct, so the remaining failure is H3 synthesis under continue_from + r8 arm reference (E323). Verdict recorded; GPU lock qa_fail; no frame patch and no re-queue.
+
+### Active rule superseded by a newer event
+
+- [E174] comfyui-runner / G01 / workflow - Mo hinh Flow cho G01-G04: mot bo ref co dinh gom background plate QA-passed + character/body/voice/avatar (Ghe27AContext assets/first/voice) + prop; moi hanh dong = 1 clip, G01/G02/G03/G04 moi shot co…
+- [E285] h3-prompt-writing / G02 / prompt - E285 horror logic over literal compliance: G02 is the G01 hand aftermath - the same creepy arm stays deep under 27A, only a sliver peeks then eases back into black, nobody notices, G02 wide view unchanged. E284 revoked; prompt-only fix + 6s duration fit.
+- [E307] h3-visual-qa / G02 / prompt - E307 G02 v3 FAIL (evidence-backed, not auto-PASS): under-seat continuity beat is wrong in the prompt layer. The prompt says thin sliver but also primes a whole hand with four fingers/thumb/nails/fingertips and slow easing; H3 rendered an open five-finger hand with wide navy cuff occupying about 1/8 frame width from ~0.54s to ~4.7s. Palette, flat fills, camera hold and four-passenger count PASS; top-luma/teal differences vs v2 are larger flat panel area and teal value changes, not gradient. Per E126 script mismatch = FAIL, no PASS_WITH_WARN. Stop G03/G01/G05 queue; fix one prompt layer only, then one fresh-seed G02 retry. User also clarified the under-seat angle is from the seat back, not a front view; passenger/seat layout must be behind - clarify scope before rewriting.
+- [E310] h3-prompt-writing / G02 / prompt - E310 accepted (user): keep the locked three-colour bible for G02 v4 (near-black navy, bone white, one muted teal; red reserved). The liveliness complaint is answered through stronger flat value contrast inside those three colours, not by adding an amber/fourth hue. No palette override, no bible change.
+- [E311] comfyui-runner / G02 / workflow - E311 accepted (user): after E307 FAIL and E308/E309/E310 prompt fixes, queue exactly one G02 v4 job with seed 20264301 via art/comfy/chain4/h3-chain4.json (same single graph). Gates: doctor GO, lint 6s PASS 0 warning, prompt audit FAIL 0 / CHUA CHOT 6 / PASS 39, no hand/finger/nail/ease/front-near wording. Handoff saved as story-g02-v4/G02.mp4 for a possible E306 continue-from trial. No G03/G01/G05 queue until G02 v4 visual QA verdict; no verdict before Hy4 reads frames.
+- [E314] h3-prompt-writing / G02 / prompt - E314 accepted (agent diagnosis): G02 v4 root cause is truth-layer drift plus prompt self-contradiction, not the workflow. E308 changed only rebuild_prompts.py and the audit gate; spec, context and cabin-map still declare front-near 3P axis and standing eye level, so the single source of truth disagrees with the render prompt. The shared style contract still asks for dot eyes and mouth and no repeated empty seat backs while the camera line asks for a rear seat back foreground, and the bitten-arm-from-previous-close-insert phrase re-primes a full hand despite token-level removal. The 2.900-5.700 beat gap let H3 stretch one flick into about 3.8 s. clip_qa is blind to viewpoint, layout and faces and the edited audit gave false PASS. No queue; decision needed on rebuilding rear view with superseded spec/context versus reverting to the E304 front axis versus holding the earlier continue_from override.
+- [E319] comfyui-runner / G02 / workflow - E319 accepted (agent, disclosed deviation): recover this render from /history/<prompt_id>, download its video, copy the handoff and run clip_qa; do NOT re-queue. The actual seed is 20264403 (off by one from the approved 20264402) and must be recorded in the verdict. Future chain4 --seed-base must account for seed_base+segment before claiming a seed.
+- [E320] h3-visual-qa / G02 / prompt - E320 accepted (user): G02 v5 is FAIL on both light contract drift and center-blocking seat/person. The rear-view geometry itself is accepted, but the scale/occlusion and bright band are not. Wait for the hy4-flash-free descriptive read (visible_check=seen, script_fidelity=MET), then trace exactly one layer; no re-queue, no verdict upgrade, no mirror.
+- [E321] h3-visual-qa / G02 / reference - E321 accepted (user): G02 v5 FAIL also includes missing G01 arm-under-seat continuity. Passing ref/timing gates in prompt_consistency_audit.py is not evidence that H3 rendered the arm; visual verification must see the r8 arm fragment in the rear-view frames. No re-queue, no verdict upgrade; root cause must be traced across the reference-to-image layer, not just prompt phrasing.
 
 ### Contradictions / superseded-but-active
 
 - G01 / asset
 - G02 / clip
 - G03 / prompt
+- superseded:E174 / workflow
+- superseded:E242 / workflow
+- superseded:E285 / prompt
+- superseded:E307 / prompt
+- superseded:E310 / prompt
+- superseded:E311 / workflow
+- superseded:E314 / prompt
+- superseded:E319 / workflow
+- superseded:E320 / prompt
+- superseded:E321 / reference

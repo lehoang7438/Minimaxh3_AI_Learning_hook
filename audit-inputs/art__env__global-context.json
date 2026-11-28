@@ -334,7 +334,14 @@
       "light": "low-key night-horror light: one or two small emitting fixtures, cool dim slate walls clearly lighter than the navy seats, 60 to 75 percent of the frame held in flat near-black shadow shapes and a heavy flat vignette",
       "plate": null,
       "plates": {},
-      "qa_passed": false
+      "qa_passed": false,
+      "accepted_background_v11": {
+        "status": "user_accepted_background_details_20261128",
+        "source": "G02 v11, job c44949a6-8087-4259-a3e3-93efa9025528, out/story-g02-v11/G02/qa.json — overall verdict ACCEPTED_TEMPORARILY, not a quality PASS",
+        "contract": "Dark navy ceiling with thin panel outlines and only tiny amber dots, no long bright bands; navy seats with a thin muted-teal edge; oval windows are one flat pitch-black ink-navy fill with no pale glass or reflection; empty central aisle with a narrow muted-teal runner; heavy near-black navy shadow.",
+        "scope": "Background details only (ceiling, seats, oval windows). Does NOT include the arm origin, mitten shape, withdrawal beat, camera axis or a seat-count claim — those stay per-shot and unapproved.",
+        "reuse": "May be applied to other shots only on an explicit per-shot instruction; queue one shot at a time with QA. Saving this standard does not change any shot prompt and does not queue GPU."
+      }
     },
     "lav_door_flat": {
       "geometry": "one flat closed navy lavatory door centred in a plain muted-teal corridor with solid navy walls",
@@ -469,7 +476,7 @@
     },
     "G02": {
       "scene": "aisle_flat",
-      "seconds": 10,
+      "seconds": 6,
       "start": "0:10",
       "bg": null,
       "first_frame": null,
@@ -480,11 +487,17 @@
       "camera_motion": "zoom",
       "mood": "u ám",
       "eyeline": "giữ trục 180° của chain",
-      "props_state": "lối đi cabin đêm, ba hành khách đại trà ngồi các ghế không phải 27A, một bàn tay rút xuống dưới ghế 27A",
-      "target_duration": 10.125,
+      "props_state": "lối đi cabin đêm nhìn từ sau lưng ghế 27A, ba hành khách đại trà ngồi các ghế còn lại quay lưng, một đoạn cánh tay màu xương từ G01 với cổ tay navy trượt trở lại dưới ghế 27A",
+      "target_duration": 6.583,
       "wardrobe_ids": [],
       "allow_text": [],
       "red_allowed": false,
+      "viewpoint": "behind the rear face of seat 27A; that seat back is the near foreground, the other three seats sit beyond it",
+      "camera_height": "standing eye level behind seat 27A",
+      "light_override": "78 to 85 percent flat near-black, one thin bone-white ceiling edge and one narrow muted-teal floor runner only, no fixture and no ramp",
+      "arm_continuity": "one readable flat bone-tone forearm strip with a wide navy cuff from G01, sliding back under 27A; no separated fingers",
+      "supersedes": "E304,E210,E273,E285,E307,E310",
+      "status_by": "user:E308/E309/E324",
       "chain": "story-open-cabin",
       "prev": "G01",
       "anchor_mode": "plate"

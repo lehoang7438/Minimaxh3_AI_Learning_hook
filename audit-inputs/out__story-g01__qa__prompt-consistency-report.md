@@ -1,6 +1,6 @@
 # Báo cáo soát prompt GHẺ 27A — structured-source audit
 
-Verdict: **FAIL** — FAIL 3, CHƯA CHỐT 7, PASS 35. Exit 1.
+Verdict: **PASS** — FAIL 0, CHƯA CHỐT 6, PASS 39. Exit 0.
 
 Chỉ đọc cabin-map / global-context / spec / bible / ALH / prompt. Không sửa prompt, context, spec, ALH, PLAYBOOK, GPU-LOCK; không queue GPU. **Output là đề xuất** — reviewer sẽ đọc lại bằng tay 3 shot FAIL + 3 shot PASS trước khi tin.
 
@@ -39,12 +39,12 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
 |---|---|---|---|---|---|---|---|---|---|
-| G02 | CHƯA CHỐT | PASS | FAIL | PASS | PASS | CHƯA CHỐT | CHƯA CHỐT | PASS | PASS |
+| G02 | CHƯA CHỐT | PASS | PASS | PASS | PASS | PASS | CHƯA CHỐT | PASS | PASS |
 ### set_id: `seat_27a`
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
 |---|---|---|---|---|---|---|---|---|---|
-| G03 | CHƯA CHỐT | PASS | FAIL | PASS | PASS | PASS | CHƯA CHỐT | PASS | PASS |
+| G03 | CHƯA CHỐT | PASS | PASS | PASS | PASS | PASS | CHƯA CHỐT | PASS | PASS |
 ### set_id: `phone_ins`
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
@@ -54,7 +54,7 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
 
 | Shot | layout_seat | light_tier | sightline | palette_hex | props_state | character_wardrobe | language_negation | timecode_duration | refs |
 |---|---|---|---|---|---|---|---|---|---|
-| G05 | CHƯA CHỐT | PASS | FAIL | PASS | PASS | PASS | CHƯA CHỐT | PASS | PASS |
+| G05 | CHƯA CHỐT | PASS | PASS | PASS | PASS | PASS | CHƯA CHỐT | PASS | PASS |
 
 ## 3. FAIL + CHƯA CHỐT kèm trích dòng
 
@@ -63,17 +63,7 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
   - `prompt.contract`: “Cabin rows hold 1+1 seats”
   - `cabin-map.invariant_architecture[0]`: “exactly two rows (27 and 28) with four seats total, 1+1 per row”
   - `E231 (proposed)`: “E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…”
-  - ghi chú: 27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=True
-- **sightline: FAIL** — Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='standing eye level for wide/aisle plates; the aisle stays centered and continuo…'. Prompt omits: camera eye level
-  - `prompt.camera_sentence`: “wide shot, camera held at one fixed scale and framing from the first frame to the last frame”
-  - `prompt.Scene`: “one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…”
-  - `cabin-map.eye_level`: “standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate”
-  - ghi chú: 27A description in prompt = 'Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly row…'
-- **character_wardrobe: CHƯA CHỐT** — Prompt names Khang but spec.layers and context.characters are empty; there is no structured wardrobe source to compare against.
-  - `prompt.body`: “wide shot, camera held at one fixed scale and framing from the first frame to the last frame. Scene: one continuous narrow-body passenger cabin aisle, front near the camera and tail far awa…”
-  - `spec.layers`: “[]”
-  - `global-context.shots.G02.characters`: “[]”
-  - ghi chú: no FAIL: source missing, not a proven prompt contradiction
+  - ghi chú: 27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=False
 - **language_negation: CHƯA CHỐT** — cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.
   - `prompt.contract`: “no receding extra rows”
   - `cabin-map.generation_prompt_contract`: “Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only.”
@@ -87,12 +77,6 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
   - `cabin-map.invariant_architecture[0]`: “exactly two rows (27 and 28) with four seats total, 1+1 per row”
   - `E231 (proposed)`: “E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…”
   - ghi chú: 27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=False
-- **sightline: FAIL** — Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='level with a seated passenger'. Prompt omits: camera eye level
-  - `prompt.camera_sentence`: “medium shot, camera held at one fixed scale and framing from the first frame to the last frame”
-  - `prompt.Scene`: “one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…”
-  - `cabin-map.eye_level`: “standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate”
-  - `global-context.sets.seat_27a.camera_height`: “level with a seated passenger”
-  - ghi chú: 27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang is ALREADY slumped asleep in seat 27A from the first frame,…'
 - **language_negation: CHƯA CHỐT** — cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.
   - `prompt.contract`: “no receding extra rows”
   - `cabin-map.generation_prompt_contract`: “Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only.”
@@ -106,12 +90,6 @@ Trạng thái: **CHƯA CHỐT** — E212-E214 accepted 3+3 invariant / E216 acce
   - `cabin-map.invariant_architecture[0]`: “exactly two rows (27 and 28) with four seats total, 1+1 per row”
   - `E231 (proposed)`: “E231: user label 2 rows (4 seats) means 1+1 per row, not 2+2. Corrected cabin-map master/geometry/contract before any r6 prompt was emitted; generali…”
   - ghi chú: 27A left-window source: cabin-map.cabin_geometry_contract.window_seats='the outer seat on each side touches an oval window; seat 27A is the LEFT window seat'; prompt says 'left window seat 27A'=False
-- **sightline: FAIL** — Map requires: aisle_direction='one aisle down the middle; front/galley is NEAR the camera, tail/lavatory is FAR; never flip this axis', eye_level='standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate', set.camera_height='level with a seated passenger'. Prompt omits: camera eye level
-  - `prompt.camera_sentence`: “medium shot, camera slow push-in of about 3% over the shot, with a faint handheld sway”
-  - `prompt.Scene`: “one continuous narrow-body passenger cabin aisle, front near the camera and tail far away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid oval windows, c…”
-  - `cabin-map.eye_level`: “standing eye level for wide/aisle plates; the aisle stays centered and continuous across every plate”
-  - `global-context.sets.seat_27a.camera_height`: “level with a seated passenger”
-  - ghi chú: 27A description in prompt = 'Medium view of the same two rows 27 and 28: Khang lifts the bowed head in seat 27A and opens two dot eyes abr…'
 - **language_negation: CHƯA CHỐT** — cabin-map.generation_prompt_contract forbids object-deletion negation, but accepted E273 explicitly added this row/window denial to the same shot contract. Two accepted rules conflict; the tool does not pick one.
   - `prompt.contract`: “no receding extra rows”
   - `cabin-map.generation_prompt_contract`: “Do not delete an object with a negation. Describe the intended object count and placement positively; keep forbidden facts in this map for QA only.”

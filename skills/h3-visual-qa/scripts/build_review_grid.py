@@ -34,8 +34,7 @@ def main():
     out = Path(args.out) if args.out else ROOT / 'out' / 'storyboard' / f'{args.name}-grid.png'
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    canvas = spec.get('canvas') or [spec['render']['width'], spec['render']['height']]
-    tw, th = args.tw, int(args.tw * canvas[1] / canvas[0])
+    tw, th = args.tw, int(args.tw * spec['canvas'][1] / spec['canvas'][0])
     pad, label_h = 10, 46
     cols = args.cols
     rows = (len(shots) + cols - 1) // cols
@@ -57,9 +56,7 @@ def main():
             d.rectangle([x, y + 22, x + tw, y + 22 + th], outline=(120, 40, 40), width=3)
             d.text((x + 6, y + 30), 'MISSING', font=f_small, fill=(200, 80, 80))
             missing.append(sid)
-        secs = shot.get('seconds', shot.get('duration', 0))
-        layers = shot.get('layers') or shot.get('cast') or []
-        meta = f"{shot.get('camera', '')} | {secs}s | {len(layers)} layer(s)"
+        meta = f"{shot['camera']} | {shot['seconds']}s | {len(shot.get('layers', []))} layer(s)"
         d.text((x + 2, y + 22 + th + 3), meta[:34], font=f_small, fill=(150, 165, 175))
 
     grid.save(out)

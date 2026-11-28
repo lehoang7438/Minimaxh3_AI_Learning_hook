@@ -23,6 +23,30 @@ CTX = ROOT / "art" / "env" / "global-context-part{}.json"
 SPEC = ROOT / "art" / "part{}-spec.json"
 OUT = ROOT / "prompts" / "part{}-rebuilt"
 
+# User-authored G02 detail pass (28/11). Authoritative over the generated
+# contract text below. Only two mechanical adaptations from the user's text:
+# `At ` prefixes so the linter/audit see six increasing timecodes, and the
+# audit-required `from behind the back of seat 27A` phrase (still on the aisle
+# centreline, so the centre-aisle composition is unchanged), the `Props:` label
+# with the composer's structured objects string, and the exact E324 phrase
+# `clearly readable flat bone-tone strip`. Withdrawal beat widened from
+# 00:02.900 to 00:03.000 per the user's render note; the 00:03.100 alternative
+# is kept in out/story-g02-v6/qa/ for comparison.
+G02_USER_PROMPT = """integrated_multimodal_description: Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines; no gradient, no shading, no soft shadow, no blur, no 3D, no texture, not realistic. Palette restricted strictly to near-black navy, bone white, and one muted teal. Night-horror lighting is purely flat solid colour: 78 to 85 percent of the frame is held in flat near-black shadow shapes with heavy flat near-black corners. The ceiling, closed overhead bins, side walls, plain solid oval windows (two total), and far curtain are completely unlit and blacked out in one uninterrupted flat pitch-black ink-navy fill. The entire upper half of the frame, including the ceiling, closed overhead bins and upper walls, is submerged in that same blacked-out midnight navy with zero illumination. Every oval window is one flat solid pitch-black ink-navy fill, the same darkest tone as the ceiling. The only brighter elements are the narrow muted-teal floor runner along the empty central aisle and the clearly readable flat bone-tone mitten-shaped strip of the small visible forearm fragment inside the recess under the near-left seat.
+[Shot 1] Use <Picture 1> as the identity and flat-fill reference for the G01 bitten forearm (one uniform bone tone, wide near-black navy cuff as the darkest fill, same flat fills inside the chewed notches, one solid mitten shape with no separated fingers). Scene: one single visible row of a narrow-body passenger cabin, with one seat on each side of the empty central aisle (28A left, 28C right), 1+1 layout, two seats total, plain solid pitch-black oval windows, closed overhead bins and one far curtain. The camera stands directly behind this only row, with the aisle ahead of the camera completely clear. Two relaxed adult passengers (1:6.5 to 1:7 head-to-body, continuous outer outlines, gently curved joints) sit in 28A and 28C, seen strictly from behind with solid black hair silhouettes covering the back of their heads and plain dark near-black navy or muted-teal uniform backs; the number of visible figures stays fixed and they remain motionless facing away for the whole shot.
+Props: one narrow flat muted-teal floor runner lying on the cabin floor; two generic passengers seated in seats 28A and 28C, both seen strictly from behind; the central aisle stays empty.
+Camera & Action: Starts at under-seat level for the G01 overlap, then hard-cuts to a single locked wide shot at standing eye level on the empty aisle centreline directly behind the only visible row, looking forward between the rear faces of its two seats (lower left and lower right). The open space below the left seat cushion is fully visible and unobstructed, so the under-seat recess reads clearly. After the hard cut, the camera stays locked at one fixed scale and framing until the last frame; depth comes only from flat overlap and straight perspective lines. All timecodes are on the untrimmed generation timeline (the delivered clip starts after the 22 overlap frames are removed):
+At 00:00.000: Frame 1 holds the exact G01 under-seat view from <Picture 1>, with the bitten forearm lying flat in the dark recess under the near-left seat.
+At 00:01.200: Hard cut to the locked standing eye-level wide shot on the aisle centreline directly behind the only visible row; the two seat backs sit at the lower left and lower right, the aisle between them stays empty, and the two rear-facing passengers sit beyond. Inside the black recess directly under the near-left seat, the same bone-tone mitten-shaped strip and wide near-black navy cuff edge remain clearly readable through the open gap below the seat cushion, parallel to the floor, wholly inside the seat footprint and away from the open aisle; the teal runner beside the left seat stays empty.
+At 00:02.600: The bone-tone mitten strip and navy cuff draw a short, readable distance farther inward under the left seat cushion, away from the aisle opening.
+At 00:03.000: That same strip and cuff slide fully out of sight into the black recess under the left cushion.
+At 00:04.100: The under-seat recess is completely empty; the wide rear cabin holds still with framing and scale unchanged.
+At 00:05.700: The cabin remains motionless until the end, with framing and scale unchanged.
+The two-step inward pull under the near-left seat is the only motion after the cut. Mood: eerie dread.
+overall_soundscape: A low aircraft engine hum and soft cabin ventilation continue underneath.
+non_diegetic_music: N/A
+"""
+
 # Cues from the legacy prompts that reliably make H3 hallucinate.
 BAD_CUES = {
     "ánh nến nhảy": "ánh nến là flat fill, không chùm sáng",
@@ -105,9 +129,48 @@ FACE_FLAT_CONTRACT = G02_STYLE_CONTRACT.replace(
     "Faces show exactly two simple solid dot eyes and one short mouth line and nothing "
     "else drawn on the face.",
 )
-STYLE_OVERRIDE["G02"] = FACE_FLAT_CONTRACT
 STYLE_OVERRIDE["G03"] = FACE_FLAT_CONTRACT
 STYLE_OVERRIDE["G05"] = FACE_FLAT_CONTRACT
+# E308/E309 (user 27/11): G02 is the G01 aftermath seen from behind seat 27A, and
+# the frame must be darker than v3. Keep the flat law; only lower the value
+# balance and shrink the two bright flat shapes. No fixture/wall-ramp wording.
+# E324 (user 28/11, supersedes E285/E307/E310 visibility clause, status_by user):
+# the G01 arm must be READABLE, not a 1-2 cm almost-unnoticeable sliver; never
+# a separated-finger hand. Palette, rear axis and 22-frame cut are unchanged.
+G02_REAR_DARK_CONTRACT = (
+    FACE_FLAT_CONTRACT.replace(
+        "65 to 75 percent of the frame is held in flat near-black shadow shapes with a heavy flat vignette; the corners fall to near-black.",
+        "78 to 85 percent of the frame is held in flat near-black shadow shapes with a heavy flat vignette; the corners fall to near-black. The ceiling, the closed overhead bins above the only visible row, the side walls, the two oval windows and the far curtain are completely unlit and blacked out in one uninterrupted flat pitch-black ink-navy fill; the entire upper half of the frame is submerged in that same blacked-out midnight navy with zero illumination. Each oval window is one flat solid pitch-black ink-navy fill matching the ceiling, and the narrow muted-teal floor runner lying on the floor is the only other brighter shape.",
+    )
+    .replace(
+        "Human hands show four gently curved fingers with small gaps and one separated thumb, softly rounded tips, solid fill.",
+        "The only visible fragment of the G01 bitten forearm is one clearly readable flat bone-tone mitten-shaped strip with one wide near-black navy cuff edge, already lying flat inside the open recess under the near-left seat, parallel to the floor beneath the seat cushion, wholly inside the seat footprint and away from the open aisle, with no separated fingers.",
+    )
+    # E315: v4 primed front-facing dot eyes/mouth and a repeated empty seat back
+    # while asking for a rear view. State only backs of heads and one near
+    # foreground seat back; keep the four-seat count positive for the gate.
+    .replace(
+        "Faces show exactly two simple solid dot eyes and one short mouth line and nothing else drawn on the face.",
+        "Every visible passenger is seen strictly from behind, with solid black hair covering the back of the head and a plain uniform back panel; only the backs of heads and shoulders are drawn.",
+    )
+    .replace(
+        "Cabin rows hold 1+1 seats and oval windows stand on BOTH sides. This view contains "
+        "only the two rows 27 and 28: four seats and four oval windows in total, with no "
+        "receding extra rows, no repeated empty seat backs and no extra windows behind them. ",
+        "The camera stands on the centreline of the empty aisle directly behind the only "
+        "visible row: one seat on each side of the aisle (28A left, 28C right), two seats "
+        "and two pitch-black oval windows in total. The aisle itself stays a clear vertical "
+        "strip from the bottom of the frame to the far curtain, occupied only by the empty "
+        "floor and the narrow teal runner. The rear faces of the two seats sit at the lower "
+        "left and lower right edges, with the open under-seat recess below the left cushion "
+        "fully visible and unobstructed; the two passengers are seen from behind. ",
+    )
+    .replace(
+        "Backgrounds keep layered flat depth and one-point perspective.",
+        "The single viewpoint is on the empty aisle centreline directly behind the only visible row, looking forward between its two seat backs; all depth comes from flat overlap.",
+    )
+)
+STYLE_OVERRIDE["G02"] = G02_REAR_DARK_CONTRACT
 # E298: G04 is a flat phone close insert, not a cabin wide plate. The inherited
 # G02 contract still asserted four seats/four windows, and the gate skipped seat
 # checks for phone_ins, so a 2+2 stale clause survived in the chain. Strip the
@@ -130,6 +193,20 @@ LIGHT_SUPPRESS = {"G02", "G03", "G05"}
 # Reuse the proven G02 geometry/objects wording as a prompt-only scene override;
 # no change to spec, global-context or the chain4 graph.
 SCENE_OVERRIDE = {
+    # E308: local rear-view override for the G02 aftermath. The near foreground is
+    # the rear face of seat 27A; the other three seats and passengers are beyond it
+    # and seen from behind. This supersedes E304's standing front-near camera line
+    # for this shot only, not for G03/G05.
+    "G02": (
+        "one continuous narrow-body passenger cabin aisle seen from the camera standing on the "
+        "aisle centreline directly behind the only visible row and looking forward between its "
+        "two seat backs; exactly one row with one seat on each side of the empty central aisle "
+        "(28A left, 28C right), 1+1, two seats total, plain solid pitch-black oval windows, "
+        "closed overhead bins sharing the ceiling's blacked-out flat pitch-black ink-navy fill; "
+        "the open under-seat recess under the left cushion is fully visible and unobstructed",
+        "one narrow flat muted-teal floor runner lying on the cabin floor; two generic passengers "
+        "seated in seats 28A and 28C, both seen strictly from behind; the central aisle stays empty",
+    ),
     "G03": (
         "one continuous narrow-body passenger cabin aisle, front near the camera and tail far "
         "away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid "
@@ -161,18 +238,25 @@ CAST_OVERRIDE = {"G03": ["khang"]}
 # invent a crowd and drop the hero prop. Never deny an object or a colour here.
 ACTION_OVERRIDE = {
     "G02": (
-        "Wide night cabin rows 27 and 28: exactly four seated figures hold the four 1+1 seats "
-        "from the first frame to the last - Khang in the near left window seat 27A and three "
-        "generic passengers in the other seats. The camera keeps the same wide G02 view and the "
-        "aisle stays still. Deep in the black recess under seat 27A the "
-        "same arm from the previous close insert remains almost completely hidden - one dirty "
-        "dark-bone forearm and hand with near-black nails and a wide near-black navy cuff at the "
-        "seat underside. Only a thin sliver of that hand and cuff peeks a little past the seat "
-        "edge low in the deep shadow, then eases back into the dark gap; it keeps the same dirty "
-        "dark tone as the recess and is almost unnoticeable. All four passengers hold their "
-        "seats and nobody turns, looks down or reacts: the audience alone catches the sliver. "
-        "Every seat keeps its slate headrest and the aisle keeps its single thin ceiling strip. "
-        "Only those two rows and four seats are present; no other rows repeat behind them."
+        "Wide night cabin aftermath continuing from the G01 under-seat insert: frame 1 still "
+        "holds the exact bitten forearm from <Picture 1> lying flat in the black gap under the "
+        "near-left seat, then a hard cut at the first beat places the camera on the empty aisle "
+        "centreline directly behind the only visible row. The rear faces of its two seats frame "
+        "the lower left and lower right, the aisle between them stays empty from the bottom of "
+        "the frame to the far curtain, and the open under-seat recess below the left cushion is "
+        "fully visible and unobstructed. Exactly two generic passengers occupy seats 28A and "
+        "28C, both seen strictly from behind with solid black hair and plain uniform backs. The "
+        "same forearm from G01 is already beneath the left seat: a readable flat bone-tone "
+        "mitten-shaped strip and the edge of a wide near-black navy cuff, copied in fill and "
+        "proportion from <Picture 1>, lying parallel to the floor under the seat cushion. On "
+        "two adjacent beats it slides farther inward under the left cushion and is fully gone; "
+        "the strip never crosses the seat edge into the aisle, never rests on a seat back or a "
+        "passenger's shoulder, and never becomes a separated-finger hand. Both passengers keep "
+        "their seats facing away for the whole shot. The closed overhead bins, side walls, "
+        "pitch-black oval windows and far curtain are blacked out in the ceiling's single flat "
+        "pitch-black ink-navy fill with zero illumination; only the narrow muted-teal floor "
+        "runner is lighter. The frame stays heavily near-black. Only one row with two seats is "
+        "present."
     ),
     "G03": (
         "Medium view of the same two rows 27 and 28: Khang is ALREADY slumped asleep in seat 27A "
@@ -310,18 +394,29 @@ BEAT_OVERRIDE = {
         "At {tc}, the wrist settles with one final spasm, the fingers half open, and the "
         "dark-red blotches hold their colour.",
     ),
-    # E285: aftermath of G01, not a disappearing bright hand. One almost-hidden
-    # sliver of the same dirty dark-bone arm under 27A; no character reacts.
+    # User 28/11 prompt-detail pass (no new ALH rule): the arm is already tucked
+    # under the near-left seat 27A and withdraws farther inward; it must not peek
+    # past the seat edge. The first beat is the G01 last frame inside that recess;
+    # the 22-frame trim still puts the hard cut at 00:01.200 and the two withdrawal
+    # beats stay adjacent so no long interpolation can make the strip reappear.
     "G02": (
-        "At {tc}, under seat 27A the same dirty dark-bone forearm and near-black-nail hand from "
-        "the previous close insert is already deep in the black recess, with only a thin sliver "
-        "of the wide navy cuff and the fingertips showing low at the seat edge while all four "
-        "seated figures hold their seats and nobody looks down.",
-        "At {tc}, that single sliver peeks a little further out in the low shadow for a moment, "
-        "then eases back beneath the seat; the four passengers keep their seats and the aisle "
-        "stays still with framing and scale unchanged.",
-        "At {tc}, the sliver has slipped back inside the black gap under 27A and the wide view "
-        "again shows only the four seated figures, one thin ceiling strip and the still aisle, "
+        "At {tc}, frame 1 still holds the exact G01 bitten forearm from <Picture 1> lying flat "
+        "under the near-left seat inside the dark recess; the camera is still at under-seat "
+        "level.",
+        "At {tc}, a hard cut places the camera on the empty aisle centreline directly behind "
+        "the only visible row; its two seat backs sit at the lower left and lower right, the "
+        "aisle between them is empty, and two passengers in 28A and 28C are seen strictly from "
+        "behind; the open under-seat recess below the left cushion is fully visible and the "
+        "bone-tone mitten strip and cuff are already inside it.",
+        "At {tc}, the bone-tone mitten strip and navy cuff, already under the left seat cushion, "
+        "draw a readable short distance farther inward, away from the aisle opening.",
+        "At {tc}, that same strip and cuff slide fully out of sight into the black recess "
+        "under the left cushion.",
+        "At {tc}, the recess is empty and the wide rear view holds only the empty central "
+        "aisle, the two seats and two passengers seen from behind; framing and scale stay "
+        "unchanged.",
+        "At {tc}, the rear cabin remains still with the blacked-out flat navy ceiling, overhead "
+        "bins, pitch-black oval windows and walls, and the narrow muted-teal floor runner, "
         "with framing and scale unchanged.",
     ),
     # E281 user: G03 is a held state, not an action sequence. Already asleep,
@@ -420,6 +515,11 @@ BEAT_OVERRIDE = {
     ),
 }
 
+# E315/E316: G01->G02 smart chain. Beats are placed on the untrimmed generation
+# timeline; the saved part loses the first 22 frames (00:00.917). The flick and
+# snap-back are 0.25 s apart so H3 cannot interpolate a four-second hand.
+BEAT_FRACTIONS_OVERRIDE = {"G02": (0.0, 0.21, 0.45, 0.50, 0.72, 1.0)}
+
 # POV specs mapped to "medium" in the context, which made H3 render a full third-person
 # body. Override only the shot label; the cast list is emptied in build_global_context.
 SIZE_LABEL_OVERRIDE = {
@@ -463,6 +563,20 @@ CAMERA_FALLBACK = "slow push-in with a faint handheld sway"
 # close insert is the only G01-G04 shot that locks its camera outright; the locked wording
 # is stated positively once per prompt instead of negating "no zoom".
 CAMERA_LOCK = "held at one fixed scale and framing from the first frame to the last frame"
+# E304: the consistency audit requires the cabin camera height to be stated in the
+# prompt. cabin-map.eye_level covers wide/aisle plates (standing); the seat_27a set
+# carries the specific seated height, so medium seat shots use that value. No Scene,
+# Props or Light wording changes: this is one camera-sentence layer only.
+CAMERA_LOCK_STANDING = (CAMERA_LOCK + ", at standing eye level")
+CAMERA_LOCK_SEATED = (CAMERA_LOCK + ", at the eye level of a seated passenger")
+CAMERA_LOCK_REAR = (
+    CAMERA_LOCK + ", on the empty aisle centreline just behind row 27, looking forward "
+    "between the two near seat backs at standing eye level"
+)
+CAMERA_ZOOM_SEATED = (
+    "slow push-in of about 3% over the shot, with a faint handheld sway, "
+    "at the eye level of a seated passenger"
+)
 UNDER_SEAT_PAN = (
     "makes one clear short sideways pan low inside the under-seat recess at one constant scale, "
     "with the camera staying at seat-underside level: the fixed jagged seat-underside edge and the "
@@ -477,10 +591,23 @@ CAMERA_TEXT_OVERRIDE = {
     # E270: the user wants the E248 under-seat pan back, but sideways only. No slow,
     # easing or growing-hand wording: the E268 wrist/finger snap system stays primary.
     "G01": UNDER_SEAT_PAN,
+    # E308 (user supersede): G02 is the G01 aftermath seen from behind seat 27A,
+    # no longer the standing front-near plate. G03/G05 keep the seated eye level;
+    # G04 is an insert (N/A).
+    "G02": CAMERA_LOCK_REAR,
+    "G03": CAMERA_LOCK_SEATED,
+    "G05": CAMERA_ZOOM_SEATED,
 }
 AMBIENCE = "Small subject motion and the camera move continue evenly for the whole shot."
 AMBIENCE_LOCK = "The small subject motion continues evenly while the framing and scale hold exactly as in the first frame."
 AMBIENCE_UI = "The recording dot keeps pulsing and the waveform keeps travelling across the black field."
+# E307: the G02 sliver is one quick flick, not an evenly continuing hand animation.
+AMBIENCE_SLIVER = (
+    "All timecodes are on the untrimmed generation timeline; the delivered clip starts only "
+    "after the 22 overlap frames are removed. The flick and its snap-back are two adjacent "
+    "beats and form the only under-seat motion; between the cut, the flick and the snap-back "
+    "the rear cabin holds still while framing and scale stay unchanged."
+)
 # E267/E268: a jerk shot must NOT end with the global "continues evenly" line - that
 # trailing instruction is what smoothed v6-v9 into a dolly. Positives only: the pose
 # freezes between snaps instead of denying smooth motion.
@@ -562,7 +689,8 @@ def timecode(value: float) -> str:
 
 def dialogue_text(shot: dict, seconds: float = 0.0, size: str = "wide",
                   on_screen: bool = True, beats: tuple | None = None,
-                  ambience: str | None = None) -> str:
+                  ambience: str | None = None,
+                  custom_fractions: tuple | None = None) -> str:
     """Keep the supplied Vietnamese dialogue unchanged and add local time tags.
 
     Dialogue and motion beats share ONE sorted timeline: the linter (and H3) require
@@ -587,7 +715,11 @@ def dialogue_text(shot: dict, seconds: float = 0.0, size: str = "wide",
         # E171/E172: one action per clip; E268: a jerk shot needs every discrete snap
         # on its own timecode. The old three-slot engine silently dropped beats 4-7,
         # so H3 interpolated smooth travel between the surviving beats.
-        if len(beats) == 1:
+        if custom_fractions and len(custom_fractions) == len(beats):
+            # E316: a continued shot needs a late cut after the 22-frame overlap
+            # and two adjacent beats for the under-seat flick.
+            fractions = tuple(custom_fractions)
+        elif len(beats) == 1:
             fractions = (0.0,)
         elif len(beats) == 2:
             fractions = (0.0, 1.0)
@@ -805,6 +937,8 @@ def build_prompt(shot: dict, ctx: dict, part: str) -> str:
         camera = camera.replace(", with a faint handheld sway", "")
     if MOTION_MODE.get(sid) == "jerk":
         ambience = JERK_AMBIENCE
+    elif sid == "G02":
+        ambience = AMBIENCE_SLIVER
     elif sid in CAMERA_OVERRIDE:
         ambience = AMBIENCE_LOCK
     else:
@@ -813,23 +947,36 @@ def build_prompt(shot: dict, ctx: dict, part: str) -> str:
     label = SIZE_LABEL_OVERRIDE.get(sid, f"{size} shot")
     geometry, objects = SCENE_OVERRIDE.get(
         sid, (scene.get("geometry", ""), scene.get("objects", "")))
+    # E270/E315: the QA-passed r8 prop is an identity/fill reference, never a
+    # first-frame plate. G02 needs it too: words alone re-invented the G01 arm.
+    if sid == "G01":
+        ref_line = (
+            "Use <Picture 1> only to copy the exact realistic hand anatomy - one thumb, "
+            "four separate fingers and near-black nails - the uniform dirty dark bone tone, "
+            "the wide near-black navy cuff as the darkest fill, and the irregular dark-red "
+            "blood blotches inside every notch; keep the flat dark under-seat lighting and "
+            "the low sideways framing."
+        )
+    elif sid == "G02":
+        ref_line = (
+            "Use <Picture 1> only as the identity and fill reference for the same bitten "
+            "forearm from G01: one uniform bone tone, the wide near-black navy cuff as "
+            "the darkest fill, and the same flat fills inside the chewed notches; keep "
+            "the visible fragment readable inside the recess and keep the wide rear framing."
+        )
+    else:
+        ref_line = ""
     parts = [
         contract,
-        # E270: the QA real-hand prop supplies anatomy and blood only. Every wound in
-        # r8 is dark red only, so the clip cannot copy pale teal notches. No dolly or
-        # easing wording here; the wrist/finger beats stay the primary motion.
-        ("Use <Picture 1> only to copy the exact realistic hand anatomy - one thumb, "
-         "four separate fingers and near-black nails - the uniform dirty dark bone tone, "
-         "the wide near-black navy cuff as the darkest fill, and the irregular dark-red "
-         "blood blotches inside every notch; keep the flat dark under-seat lighting and "
-         "the low sideways framing." if sid == "G01" else ""),
+        ref_line,
         f"{label}, camera {camera}.",
         "" if close else (f"Scene: {geometry}".strip() if geometry else ""),
         "" if close else (f"Props: {objects}".strip() if objects else ""),
         "" if close or sid in LIGHT_SUPPRESS else (f"Light: {scene.get('light', '')}".strip() if scene.get("light") else ""),
         wardrobe,
         action_text(shot, s, size),
-        dialogue_text(shot, seconds, beat_size, on_screen, BEAT_OVERRIDE.get(sid), ambience),
+        dialogue_text(shot, seconds, beat_size, on_screen, BEAT_OVERRIDE.get(sid),
+                      ambience, BEAT_FRACTIONS_OVERRIDE.get(sid)),
         f"Mood: {mood_text(s.get('mood'), shot)}.",
     ]
     # Style contract must be the very first thing in the field, BEFORE [Shot 1].
@@ -858,7 +1005,11 @@ def main(argv):
     for sid in wanted:
         if sid not in by_id:
             continue
-        content = build_prompt(by_id[sid], ctx, part)
+        if part == "1" and sid == "G02":
+            # User-authored detail pass is the render authority for this retry.
+            content = G02_USER_PROMPT
+        else:
+            content = build_prompt(by_id[sid], ctx, part)
         hard, warn = rules.validate_prompt(
             content, kind="video", red_allowed=bool(ctx["shots"][sid].get("red_allowed")), out="")
         for w in warn:
