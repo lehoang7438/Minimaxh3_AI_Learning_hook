@@ -71,6 +71,7 @@ _Generated from `art/comfy/ALH/learning-log.jsonl` by `alh.py sync`. **Only `Acc
 - E306 proposed: rule_gap / G02,G03 / workflow (detail in RUN-LOG.md)
 - E329 proposed: rule_gap / G02 / workflow (detail in RUN-LOG.md)
 - E331 proposed: rule_gap / G02 / gate (detail in RUN-LOG.md)
+- E335 proposed: rule_gap / G03 / workflow (detail in RUN-LOG.md)
 
 ### Archived (pre-v2 history, 17 events)
 

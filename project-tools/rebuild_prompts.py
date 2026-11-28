@@ -47,6 +47,27 @@ overall_soundscape: A low aircraft engine hum and soft cabin ventilation continu
 non_diegetic_music: N/A
 """
 
+# User-authored G03 front-facing pass (28/11, E333). Authoritative over the
+# generated contract text. Reuse from G02 v11 is limited to the approved ceiling,
+# side walls and oval windows; floor, seats/cast, props and beats are rewritten.
+# Exactly two mechanical adaptations from the user's text: `At ` prefixes on the
+# three timecodes (so linter/audit see 3 increasing beats), and positive wording
+# for the ceiling dots in place of `no glow, no light spill` (E162). The middle
+# screen-change beat is deliberately phrased without an object-deletion negation
+# so strip_object_deletions() keeps 00:02.850.
+G03_USER_PROMPT = """integrated_multimodal_description: Vertical 9:16 flat 2D storytime horror, icon-like. Solid flat colour fills with at most one tone per surface, clean edges with bold uneven black outlines; no gradient, no shading, no soft shadow, no blur, no 3D, no texture, not realistic. Palette restricted strictly to near-black navy, bone white, and one muted teal only. Night-horror lighting is purely flat solid colour: 65 to 75 percent of the frame is held in flat near-black shadow shapes with heavy flat near-black corners. The ceiling, closed overhead bins, side walls, four plain solid pitch-black ink-navy oval windows (two per side), floor, and far curtain are completely unlit and submerged in uniform flat near-black navy fill. The only brighter elements are tiny dim flat pinprick ceiling dots, each one a uniform flat bone-white dot with the surrounding ceiling held in the same flat navy fill, and the flat bone-white phone on Khang's lap.
+[Shot 1] Front-facing medium shot from the empty aisle centreline just in front of row 27, looking straight back toward row 28 at seated passenger eye level, held at one fixed scale and framing from the first frame to the last frame. Depth comes only from layered flat overlap and one-point straight perspective lines. Scene: narrow-body passenger cabin containing only rows 27 (nearest) and 28 (directly behind it) with 1+1 seating (four seats total), front near the camera and tail far away, the empty central aisle stays centred and continuous, closed off at the far end by a plain uniform near-black navy curtain, with no extra receding rows or extra windows beyond row 28. All four figures remain seated in the same seats at fixed scale for the whole shot. Three generic passengers sit in 27C, 28A, and 28C facing the camera, wearing near-black navy or muted-teal clothing, solid black hair silhouettes, two simple solid dot eyes, and one short mouth line.
+Props: one flat bone-white phone already resting on Khang's lap showing a plain pale flat rectangle; three generic passengers seated in 27C, 28A and 28C facing the camera; the floor is one uniform flat near-black navy fill.
+Khang: Vietnamese man, 29, slim adult build (1:6.5 to 1:7 head-to-body, rounded shoulders about two head widths wide, slight waist taper), smooth connected flat planes with continuous outer black ink outlines. Wardrobe: Near-black navy long-sleeve shirt with a small muted teal chest pocket, muted teal trousers, and near-black low shoes with thick bone-white soles. Bone-white oval face with short messy solid black hair silhouette, both eyes shut as two simple short closed black ink lines and one short straight neutral mouth line (nothing else drawn on the face). Natural flat bone-white hands with four gently curved fingers and one separated thumb, softly rounded tips and small gaps between fingers, no nails or knuckle lines.
+Action & Timeline: Khang is already slumped asleep in seat 27A on the camera-right side from frame 1, facing the camera with his head bowed and eyes closed. Both of his open flat hands rest motionless on his lap beside one clearly readable flat bone-white phone lying untouched on his lap (initially showing a plain pale flat rectangle). The three generic passengers remain motionless facing the camera.
+At 00:00.000: Khang is slumped asleep in seat 27A (camera-right) with head bowed and eyes closed, both hands resting openly beside the untouched bone-white phone showing a plain pale flat rectangle; the other three passengers hold their seats, framing and scale fixed.
+At 00:02.850: Only the flat content inside the phone screen switches cleanly by itself from the plain pale rectangle to a simple flat 2D icon picture of a small birthday cake surrounded by tiny simplified figures gathered around it (strictly in the same flat palette, non-realistic); Khang, his hands, the phone's position, the three other passengers, and the dark cabin remain completely still.
+At 00:05.700: The phone stays untouched on Khang's lap with the flat cake picture unchanged; Khang and the entire cabin remain motionless with framing, scale, and flat tones identical to the first frame.
+Only the screen content change occurs; all figures and the camera stay completely still. Mood: eerie dread.
+overall_soundscape: A low aircraft engine hum, soft cabin ventilation, and faint quiet breathing continue underneath.
+non_diegetic_music: N/A
+"""
+
 # Cues from the legacy prompts that reliably make H3 hallucinate.
 BAD_CUES = {
     "ánh nến nhảy": "ánh nến là flat fill, không chùm sáng",
@@ -211,9 +232,12 @@ SCENE_OVERRIDE = {
         "one continuous narrow-body passenger cabin aisle, front near the camera and tail far "
         "away, exactly rows 27 and 28 with one seat per side (1+1, four seats total), plain solid "
         "oval windows, closed overhead bins",
-        "one thin solid bone-white ceiling strip and one flat muted-teal floor runner resting on "
-        "the cabin floor; one flat phone screen resting on Khang's lap; three generic passengers "
-        "seated in the other seats",
+        # User 28/11 (E333): only the G02 v11 ceiling/walls/windows carry over. The
+        # bone-white ceiling strip and muted-teal floor runner are NOT part of this
+        # shot; the floor is one uniform flat near-black navy fill.
+        "one flat bone-white phone already resting on Khang's lap showing a plain pale flat "
+        "rectangle; three generic passengers seated in 27C, 28A and 28C facing the camera; "
+        "the floor is one uniform flat near-black navy fill",
     ),
     # E275/E287: G05 is the same 27A plate and continues G03's last frame; give it
     # the identical flat-surface anchors before its first render instead of finding
@@ -1008,6 +1032,9 @@ def main(argv):
         if part == "1" and sid == "G02":
             # User-authored detail pass is the render authority for this retry.
             content = G02_USER_PROMPT
+        elif part == "1" and sid == "G03":
+            # User-authored front-facing pass (E333) is the render authority.
+            content = G03_USER_PROMPT
         else:
             content = build_prompt(by_id[sid], ctx, part)
         hard, warn = rules.validate_prompt(

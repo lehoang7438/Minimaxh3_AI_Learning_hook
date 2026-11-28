@@ -10,6 +10,15 @@ continuous action sets continue_from. No frame is edited or quantized by hand.
     python art/tests/chain4_run.py --shot-ids G01,G02,G03,G05 --seconds 10 \
         --chain-name story-g01 --outdir out/story-g01 --prompts prompts/part1-rebuilt
 
+Routes (one shared graph, no per-shot workflow): omitting --route keeps the legacy
+behaviour byte-for-byte. An explicit --route selects fresh / fresh_audio /
+continue_voice / continue_anchor / continue_media / continue_media_plain; the
+route gate runs before doctor() and before any graph/file mutation. See
+art/t2v/ROUTE-WORKFLOW.md for the command per route and the hard conflicts.
+The ComfyUI Media panel takes {"file", "role"} rows relative to ComfyUI/input;
+--media / --continue-anchor accept the engine's {kind, path} rows and this driver
+stages the files itself. It never writes sha256/bytes into a request.
+
 Seed rule (E319): --seed-base is OFFSET BY THE SEGMENT NUMBER, so segment 2 with
 base 20264401 renders with seed 20264403, not 20264402. Use --seed for a single
 approved retry: it is the EXACT seed sent to FreeVideoGenerate and no longer
@@ -36,6 +45,110 @@ DEFAULT_WORKFLOW = ROOT / 'art/comfy/chain4/h3-chain4.json'
 DEFAULT_PROMPTS = ROOT / 'art/comfy/prompts/chain4'
 DEFAULT_COMFY_OUTPUT = Path('C:/Users/Admin/FreeVideo/ComfyUI/output')
 COMFY_INPUT = Path('C:/Users/Admin/FreeVideo/ComfyUI/input')
+DEFAULT_AUDIO = ROOT / 'art/env/voice-narrator.wav'
+ROUTES = ('auto', 'fresh', 'fresh_audio', 'continue_voice', 'continue_anchor',
+          'continue_media', 'continue_media_plain')
+CONTINUE_ROUTES = frozenset(name for name in ROUTES if name.startswith('continue_'))
+FRESH_ROUTES = frozenset(name for name in ROUTES if name.startswith('fresh'))
+IMAGE_SUFFIXES = frozenset(('.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tif', '.tiff'))
+AUDIO_ID = '3'  # only LoadAudio node added by a route; no other node is created
+
+
+def route_fail(reason: str) -> None:
+    print(f'ROUTE FAIL: {reason}', flush=True)
+    raise SystemExit(2)
+
+
+def media_rows(media) -> list[dict]:
+    """Normalize --media to engine-shaped {kind, path} rows; reject dirty rows early."""
+    rows = []
+    for index, item in enumerate(media or ()):
+        if isinstance(item, (str, Path)):
+            item = {'kind': 'image', 'path': str(item)}
+        if not isinstance(item, dict):
+            route_fail(f'--media[{index}] must be an image path or a {{kind, path}} row')
+        if 'sha256' in item or 'bytes' in item:
+            route_fail(f'--media[{index}] includes sha256/bytes; the engine computes both itself')
+        if set(item) != {'kind', 'path'}:
+            route_fail(f'--media[{index}] may only contain keys kind and path, got {sorted(item)}')
+        if item['kind'] != 'image':
+            route_fail(f'--media[{index}].kind must be "image", got {item["kind"]!r}')
+        rows.append({'kind': 'image', 'path': str(item['path'])})
+    return rows
+
+
+def validate_route(*, route: str = 'auto', media=None, audio=None, continue_anchor=None,
+                   ref_asset=None, previous=None, continue_from=None,
+                   first_frame_reference: bool = False) -> dict:
+    """Pure preflight: no files are staged and no graph is touched.
+
+    Returns the validated plan used by apply_route. Failure prints one reason and
+    exits non-zero, before doctor() or any mutation.
+    """
+    if route not in ROUTES:
+        route_fail(f'unknown route {route!r}; choose one of {", ".join(ROUTES)}')
+    rows = media_rows(media)
+    if len(rows) > 3:
+        route_fail(f'{len(rows)} images supplied; continuation.PICTURES_MAX is 3')
+    target = previous or continue_from
+
+    if route == 'auto':
+        if rows or audio is not None or continue_anchor is not None:
+            route_fail('legacy auto route cannot take --media/--audio/--continue-anchor; pass an explicit --route')
+    if continue_anchor is not None and rows:
+        route_fail('--continue-anchor conflicts with --media (anchor_media refuses other media conditioning)')
+    if continue_anchor is not None and first_frame_reference:
+        route_fail('--continue-anchor conflicts with --first-frame-reference (engine generate.py:579-581)')
+    if audio is not None and route in CONTINUE_ROUTES:
+        route_fail('--audio conflicts with continue_from; use the engine voice/sound of the continued part')
+    if audio is not None and route == 'fresh':
+        route_fail('explicit --audio requires --route fresh_audio')
+    if route in CONTINUE_ROUTES and target is None:
+        route_fail(f'{route} requires a previous clip (--start > 1 or a verified handoff MP4)')
+    if route in FRESH_ROUTES and target is not None:
+        route_fail(f'{route} must not set continue_from; got {target}')
+    if route == 'continue_anchor' and continue_anchor is None:
+        route_fail('continue_anchor requires --continue-anchor IMAGE')
+    if route in ('continue_media', 'continue_media_plain') and not rows:
+        route_fail(f'{route} requires 1..3 --media images')
+
+    for index, row in enumerate(rows):
+        if not Path(row['path']).is_file():
+            route_fail(f'--media[{index}] not found: {row["path"]}')
+    for label, value in (('audio', audio), ('continue-anchor', continue_anchor),
+                         ('ref asset', ref_asset), ('previous clip', target)):
+        if value is not None and not Path(value).is_file():
+            route_fail(f'{label} not found: {value}')
+    if continue_anchor is not None and Path(continue_anchor).suffix.lower() not in IMAGE_SUFFIXES:
+        route_fail(f'--continue-anchor must be an image, got {continue_anchor}')
+
+    audio_use = ('original' if route in ('continue_voice', 'continue_media_plain')
+                 else 'reference')
+    return {
+        'route': route,
+        'media': rows,
+        'audio': str(audio) if audio is not None else None,
+        'continue_anchor': str(continue_anchor) if continue_anchor is not None else None,
+        'target': str(target) if target is not None else None,
+        'audio_use': audio_use,
+        # On a fresh cut voice_reference/first_frame_reference are metadata-only
+        # (comfy_nodes.py:412-414): fresh_audio carries its G01 timbre through
+        # FreeVideoMedia.reference_audio instead.
+        'voice_reference': route == 'continue_voice',
+        # An explicit anchor is the only picture conditioning on that route; the
+        # engine's first-frame note would add another picture on top of it.
+        'first_frame_reference': False,
+    }
+
+
+def stage_input(source: str | Path, prefix: str) -> str:
+    """Copy a route input into ComfyUI/input and return the relative filename."""
+    source = Path(source)
+    COMFY_INPUT.mkdir(parents=True, exist_ok=True)
+    stem = ''.join(ch if ch.isalnum() or ch in '-_' else '_' for ch in source.stem)
+    name = f'{prefix}_{stem}{source.suffix.lower()}'
+    shutil.copy2(source, COMFY_INPUT / name)
+    return name
 
 
 def ps(script: Path, *args: str) -> list[str]:
@@ -56,27 +169,70 @@ def load_workflow(path: Path) -> dict:
 
 
 def set_shot(path: Path, previous: Path | None, seed: int, seconds: float,
-             ref_asset: Path | None = None) -> None:
+             ref_asset: Path | None = None, *, plan: dict | None = None,
+             sid: str = 'shot') -> None:
     wf = load_workflow(path)
     node = wf['2']['inputs']
-    node['continue_from'] = '' if previous is None else str(previous)
-    node['seed'] = seed
-    node['seconds'] = float(seconds)
-    # One shared workflow: the picture slot changes at queue time only. Omitting
-    # --ref-asset resets it, so later cut shots cannot inherit the G01 prop.
     media = wf['1']['inputs']
-    if ref_asset is None:
-        media['assets'] = '[]'
+
+    if plan is None or plan['route'] == 'auto':
+        # Legacy path: unchanged, including the exact ref-asset staging name.
+        node['continue_from'] = '' if previous is None else str(previous)
+        node['seed'] = seed
+        node['seconds'] = float(seconds)
+        # One shared workflow: the picture slot changes at queue time only. Omitting
+        # --ref-asset resets it, so later cut shots cannot inherit the G01 prop.
+        if ref_asset is None:
+            media['assets'] = '[]'
+        else:
+            COMFY_INPUT.mkdir(parents=True, exist_ok=True)
+            name = f'ref_chain4_{ref_asset.stem}.png'
+            shutil.copy2(ref_asset, COMFY_INPUT / name)
+            media['assets'] = json.dumps([{'file': name, 'role': 'reference'}],
+                                         ensure_ascii=False)
     else:
-        COMFY_INPUT.mkdir(parents=True, exist_ok=True)
-        name = f'ref_chain4_{ref_asset.stem}.png'
-        shutil.copy2(ref_asset, COMFY_INPUT / name)
-        media['assets'] = json.dumps([{'file': name, 'role': 'reference'}],
-                                     ensure_ascii=False)
+        route = plan['route']
+        continuing = route in CONTINUE_ROUTES
+        node['continue_from'] = str(plan['target']) if continuing else ''
+        node['seed'] = seed
+        node['seconds'] = float(seconds)
+        node['voice_reference'] = bool(plan['voice_reference'])
+        node['first_frame_reference'] = bool(plan['first_frame_reference'])
+
+        # FreeVideoMedia's boundary is {"file", "role"} relative to ComfyUI/input;
+        # --media rows stay {kind, path} in the route config only.
+        assets = []
+        for index, row in enumerate(plan['media']):
+            staged = stage_input(row['path'], f'{sid}_{route}_media{index}')
+            assets.append({'file': staged, 'role': 'reference'})
+        if plan['continue_anchor'] is not None:
+            staged = stage_input(plan['continue_anchor'], f'{sid}_continue_anchor')
+            assets.append({'file': staged, 'role': 'reference'})
+        media['assets'] = json.dumps(assets, ensure_ascii=False)
+        media['audio_use'] = plan['audio_use']
+
+        # Only an external audio reference gets a LoadAudio node. On a continued
+        # part the user forbids --audio, so the link is removed.
+        for node_id, existing in list(wf.items()):
+            if existing.get('class_type') == 'LoadAudio':
+                wf.pop(node_id)
+        media.pop('reference_audio', None)
+        if plan['audio'] is not None:
+            staged_audio = stage_input(plan['audio'], f'{sid}_{route}_audio')
+            wf[AUDIO_ID] = {'class_type': 'LoadAudio', 'inputs': {'audio': staged_audio}}
+            media['reference_audio'] = [AUDIO_ID, 0]
+
     path.write_text(json.dumps(wf, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     target = node['continue_from'] or '(T2V seed)'
-    print(f'workflow set: continue_from={target}  seed={seed}  seconds={seconds}  '
-          f'refs={media["assets"]}', flush=True)
+    if plan is None or plan['route'] == 'auto':
+        print(f'workflow set: continue_from={target}  seed={seed}  seconds={seconds}  '
+              f'refs={media["assets"]}', flush=True)
+    else:
+        print(f'workflow set: route={plan["route"]} continue_from={target}  '
+              f'seed={seed}  seconds={seconds}  audio_use={media["audio_use"]}  '
+              f'voice_reference={node["voice_reference"]}  '
+              f'first_frame_reference={node["first_frame_reference"]}  '
+              f'refs={media["assets"]}', flush=True)
 
 
 def preflight(path: Path) -> None:
@@ -134,6 +290,14 @@ def measure(video: Path, qa_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--route', choices=ROUTES, default='auto',
+                        help='auto = legacy behaviour; explicit routes use the same one-workflow graph')
+    parser.add_argument('--media', type=Path, nargs='+', default=[],
+                        help='1..3 image files for --media routes (engine PICTURES_MAX = 3)')
+    parser.add_argument('--audio', type=Path, default=None,
+                        help='external audio reference; fresh_audio defaults to art/env/voice-narrator.wav')
+    parser.add_argument('--continue-anchor', type=Path, default=None,
+                        help='single anchor image for continue_anchor; conflicts with --media / --audio')
     parser.add_argument('--shots', type=int, default=4)
     parser.add_argument('--start', type=int, default=1, help='segment number to render')
     parser.add_argument('--workflow', type=Path, default=DEFAULT_WORKFLOW)
@@ -167,7 +331,18 @@ def main() -> None:
         raise SystemExit(f'--shot-ids has {len(ids)} entries but --shots is {args.shots}')
     if not args.workflow.is_file():
         raise SystemExit(f'workflow not found: {args.workflow}')
+
+    audio_arg = args.audio
+    if args.route == 'fresh_audio' and audio_arg is None:
+        audio_arg = DEFAULT_AUDIO
     comfy_chain = args.comfy_output / args.chain_name
+    first_prev_name = ids[args.start - 2] if ids and args.start > 1 else f'seg{args.start - 1}'
+    first_previous = comfy_chain / f'{first_prev_name}.mp4' if args.start > 1 else None
+    first_previous = first_previous if args.route in CONTINUE_ROUTES else None
+    # Route gate: before doctor(), before mkdir(), before any graph mutation.
+    route_plan = validate_route(route=args.route, media=args.media, audio=audio_arg,
+                                continue_anchor=args.continue_anchor, ref_asset=args.ref_asset,
+                                previous=first_previous)
     comfy_chain.mkdir(parents=True, exist_ok=True)
     args.outdir.mkdir(parents=True, exist_ok=True)
 
@@ -182,7 +357,13 @@ def main() -> None:
             raise SystemExit(f'previous clip not found: {previous}')
         print(f'\n===== {sid} ({segment}/{args.shots}) =====', flush=True)
         seed = args.seed if args.seed is not None else args.seed_base + segment
-        set_shot(args.workflow, previous, seed, args.seconds, args.ref_asset)
+        plan = route_plan
+        if segment > args.start:
+            plan = validate_route(route=args.route, media=args.media, audio=audio_arg,
+                                  continue_anchor=args.continue_anchor, ref_asset=args.ref_asset,
+                                  previous=previous if args.route in CONTINUE_ROUTES else None)
+        set_shot(args.workflow, previous, seed, args.seconds, args.ref_asset,
+                 plan=plan, sid=sid)
         doctor()
         preflight(args.workflow)
         dest = args.outdir / sid
